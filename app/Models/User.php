@@ -28,6 +28,6 @@ class User extends Model
 
     public function vkUser(): HasOne
     {
-        return $this->hasOne('vk_user', 'user_id', 'id');
+        return $this->hasOne(VKUser::class, 'user_id', 'id');
     }
 }

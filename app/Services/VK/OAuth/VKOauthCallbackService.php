@@ -19,8 +19,7 @@ class VKOauthCallbackService
         private VKUserCreatingService $VKUserCreatingService,
         private SendMessageRequestAssembler $sendMessageRequestAssembler,
         private HttpClient $client
-    )
-    {
+    ) {
     }
 
     /**
@@ -31,9 +30,15 @@ class VKOauthCallbackService
     {
         $oauth = $this->VKOauthDTOAssembler->create($params);
         $vkUser = $this->VKUserCreatingService->create($oauth);
-        /** @var User $user */
-        $user = $vkUser->user;
+        $this->sendSuccessfulAuthMessage($vkUser->user);
+    }
 
+    /**
+     * @param User $user
+     * @throws InvalidTelegramResponseException
+     */
+    private function sendSuccessfulAuthMessage(User $user): void
+    {
         $requestDTO = new MessageRequestDTO($user->uuid);
         $requestDTO->setText(self::SUCCESS_AUTH_MESSAGE);
 

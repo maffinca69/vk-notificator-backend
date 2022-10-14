@@ -6,10 +6,6 @@ use App\Http\Request\FormRequest\VKOAuthCallbackRequest;
 use App\Services\Telegram\UrlGenerator;
 use App\Services\VK\OAuth\VKOauthCallbackService;
 use Illuminate\Config\Repository as Config;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Laravel\Lumen\Http\Redirector;
-use Laravel\Lumen\Http\ResponseFactory;
 use Laravel\Lumen\Routing\Controller;
 
 class VKOAuthCallbackController extends Controller

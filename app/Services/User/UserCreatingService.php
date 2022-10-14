@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Core\DTO\FromDTO;
 use App\Core\DTO\UpdateDTO;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -9,13 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserCreatingService
 {
     /**
-     * @param UpdateDTO $updateDTO
+     * @param FromDTO $from
      * @return Model
      */
-    public function create(UpdateDTO $updateDTO): Model
+    public function create(FromDTO $from): Model
     {
-        $message = $updateDTO->getMessage() ?? $updateDTO->getCallbackQuery();
-        $from = $message->getFrom();
         $uuid = $from->getId();
 
         return User::query()->firstOrCreate(

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index()->constrained('user')->cascadeOnDelete();
             $table->bigInteger('vk_id');
-            $table->string('access_token', 500);
+            $table->string('access_token', 1024);
             $table->string('email', 500)->nullable();
             $table->timestamps();
         });

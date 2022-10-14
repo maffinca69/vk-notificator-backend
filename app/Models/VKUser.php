@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Crypt;
 
 class VKUser extends Model
 {
@@ -19,5 +20,15 @@ class VKUser extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function setAccessTokenAttribute(string $token)
+    {
+        $this->attributes['access_token'] = Crypt::encrypt($token);
+    }
+
+    public function getAccessTokenAttribute(string $token): string
+    {
+        return Crypt::decrypt($token);
     }
 }
