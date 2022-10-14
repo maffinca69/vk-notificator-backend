@@ -18,3 +18,5 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('telegram-webhook', 'TelegramWebhookController@process');
+$router->get('vk-oauth-callback', 'VKOAuthCallbackController@callback');
+$router->post('vk-oauth-callback', 'VKOAuthCallbackController@callback');

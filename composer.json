@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0",
         "anik/form-request": "^4.5",
+        "guzzlehttp/guzzle": "^7.5",
         "illuminate/redis": "^9.35",
         "laravel/lumen-framework": "^9.0",
         "predis/predis": "^2.0"

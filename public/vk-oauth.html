@@ -1,0 +1,11 @@
+<html lang="ru">
+<script>
+    let url = window.location.hash
+    const queryParams = url.replace('#', '?')
+    const route = 'vk-oauth-callback'
+
+    fetch('/' + route + queryParams).then((response) => response.json()).then((data) => {
+        window.location.href = data.redirect_uri
+    })
+</script>
+</html>

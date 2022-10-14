@@ -27,7 +27,7 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +65,7 @@ $app->configure('app');
 $app->configure('cache');
 $app->configure('database');
 $app->configure('bot');
+$app->configure('vk-app');
 
 /*
 |--------------------------------------------------------------------------
