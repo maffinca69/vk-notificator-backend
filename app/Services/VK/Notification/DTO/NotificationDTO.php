@@ -4,10 +4,6 @@ namespace App\Services\VK\Notification\DTO;
 
 class NotificationDTO
 {
-    public const LIKE_COMMENT_TYPE = 'like_comment';
-    public const LIKE_PHOTO_TYPE = 'like_photo';
-    public const FOLLOW_TYPE = 'follow';
-
     private string $type;
     private \DateTimeInterface $date;
     private ?NotificationParentDTO $parent = null;

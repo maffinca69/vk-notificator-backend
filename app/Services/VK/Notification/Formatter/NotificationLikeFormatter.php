@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
+use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\ProfileDTO;
 use App\Services\VK\Notification\ProfileForNotificationGettingService;
@@ -65,8 +66,8 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
     private function formatType(string $type): string
     {
         return match ($type) {
-            NotificationDTO::LIKE_COMMENT_TYPE => 'ваш комментарий',
-            NotificationDTO::LIKE_PHOTO_TYPE => 'вашу фотографию',
+            NotificationTypesDictionary::LIKE_COMMENT_TYPE => 'ваш комментарий',
+            NotificationTypesDictionary::LIKE_PHOTO_TYPE => 'вашу фотографию',
             default => '...',
         };
     }

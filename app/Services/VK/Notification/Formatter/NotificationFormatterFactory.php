@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
+use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use Illuminate\Container\Container;
 use Psr\Container\ContainerExceptionInterface;
@@ -22,9 +23,9 @@ class NotificationFormatterFactory
     public function create(NotificationDTO $notification): NotificationFormatterInterface
     {
         return match ($notification->getType()) {
-            NotificationDTO::LIKE_PHOTO_TYPE,
-            NotificationDTO::LIKE_COMMENT_TYPE => $this->container->get(NotificationLikeFormatter::class),
-            NotificationDTO::FOLLOW_TYPE => $this->container->get(NotificationFollowFormatter::class),
+            NotificationTypesDictionary::LIKE_PHOTO_TYPE,
+            NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->container->get(NotificationLikeFormatter::class),
+            NotificationTypesDictionary::FOLLOW_TYPE => $this->container->get(NotificationFollowFormatter::class),
         };
     }
 }
