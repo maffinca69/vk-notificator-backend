@@ -32,6 +32,11 @@ class NotificationsGettingCommand extends Command
     ): void {
         $vkUser = VKUser::query()->find(1);
         $lastNotificationDate = $lastNotificationDateCacheService->get($vkUser);
+        if ($lastNotificationDate === null) {
+            $lastNotificationDate = time();
+            $lastNotificationDateCacheService->save($vkUser, $lastNotificationDate);
+        }
+
         $notificationResponse = $notificationGettingService->get(
             $vkUser,
             $lastNotificationDate,

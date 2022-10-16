@@ -11,7 +11,7 @@ use VK\Exceptions\VKClientException;
 
 class NotificationGettingService
 {
-    public const DEFAULT_NOTIFICATION_COUNT = 25;
+    public const DEFAULT_NOTIFICATION_COUNT = 100;
 
     public function __construct(private NotificationResponseDTOAssembler $notificationResponseDTOAssembler)
     {
