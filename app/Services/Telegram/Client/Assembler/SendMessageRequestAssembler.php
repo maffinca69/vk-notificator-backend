@@ -33,6 +33,8 @@ class SendMessageRequestAssembler
             $fields['text'] = $text;
         }
 
+        $fields['disable_web_page_preview'] = $requestDTO->isDisableWebPagePreview();
+
         return new SendMessageRequest($fields);
     }
 }

@@ -3,10 +3,9 @@
 namespace App\Services\VK\Notification;
 
 use App\Models\User;
-use App\Services\Telegram\Client\Assembler\SendMessageRequestAssembler;
 use App\Services\Telegram\Client\DTO\MessageRequestDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
-use App\Services\Telegram\Client\HttpClient;
+use App\Services\Telegram\MessageSendingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
 use Psr\Container\ContainerExceptionInterface;
@@ -15,13 +14,11 @@ use Psr\Container\NotFoundExceptionInterface;
 class NotificationSendingService
 {
     /**
-     * @param SendMessageRequestAssembler $sendMessageRequestAssembler
-     * @param HttpClient $client
+     * @param MessageSendingService $messageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
      */
     public function __construct(
-        private SendMessageRequestAssembler $sendMessageRequestAssembler,
-        private HttpClient $client,
+        private MessageSendingService $messageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory
     ) {
     }
@@ -43,7 +40,9 @@ class NotificationSendingService
 
         $messageRequest = new MessageRequestDTO($user->uuid);
         $messageRequest->setText($message);
-        $request = $this->sendMessageRequestAssembler->create($messageRequest);
-        $this->client->sendRequest($request);
+        $messageRequest->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
+        $messageRequest->setDisableWebPagePreview(true);
+
+        $this->messageSendingService->send($messageRequest);
     }
 }

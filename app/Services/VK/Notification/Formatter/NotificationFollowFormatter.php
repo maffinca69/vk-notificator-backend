@@ -8,8 +8,10 @@ use App\Services\VK\Notification\ProfileForNotificationGettingService;
 
 class NotificationFollowFormatter implements NotificationFormatterInterface
 {
-    public function __construct(private ProfileForNotificationGettingService $profileForNotificationGettingService)
-    {
+    public function __construct(
+        private ProfileForNotificationGettingService $profileForNotificationGettingService,
+        private ProfileLinkFormatter $profileLinkFormatter
+    ) {
     }
 
     /**
@@ -25,7 +27,7 @@ class NotificationFollowFormatter implements NotificationFormatterInterface
 
         $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
 
-        $fullName = $this->formatFullName($profile);
+        $fullName = $this->profileLinkFormatter->format($profile);
         $action = $this->formatAction($profile->getSex());
 
         return sprintf(
@@ -46,14 +48,5 @@ class NotificationFollowFormatter implements NotificationFormatterInterface
             ProfileDTO::MALE_SEX_TYPE => 'подписался',
             default => '',
         };
-    }
-
-    /**
-     * @param ProfileDTO $profile
-     * @return string
-     */
-    private function formatFullName(ProfileDTO $profile): string
-    {
-        return sprintf('%s %s', $profile->getFirstName(), $profile->getLastName());
     }
 }

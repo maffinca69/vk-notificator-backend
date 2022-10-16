@@ -4,12 +4,16 @@ namespace App\Services\Telegram\Client\DTO;
 
 class MessageRequestDTO
 {
+    public const PARSE_MODE_MARKDOWN = 'Markdown';
+    public const PARSE_MODE_MARKDOWN_V2 = 'MarkdownV2';
+
     private int $chatId;
 
     private ?string $text = null;
     private ?string $parseMode = null;
     private ?int $replyToMessageId = null;
     private ?array $replyMarkup = null;
+    private bool $disableWebPagePreview = false;
 
     /**
      * @param int $chatId
@@ -89,5 +93,21 @@ class MessageRequestDTO
     public function getChatId(): int
     {
         return $this->chatId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisableWebPagePreview(): bool
+    {
+        return $this->disableWebPagePreview;
+    }
+
+    /**
+     * @param bool $disableWebPagePreview
+     */
+    public function setDisableWebPagePreview(bool $disableWebPagePreview): void
+    {
+        $this->disableWebPagePreview = $disableWebPagePreview;
     }
 }

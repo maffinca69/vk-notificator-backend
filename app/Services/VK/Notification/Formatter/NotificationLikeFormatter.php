@@ -5,11 +5,15 @@ namespace App\Services\VK\Notification\Formatter;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\ProfileDTO;
 use App\Services\VK\Notification\ProfileForNotificationGettingService;
+use App\Services\VK\Notification\Translator\ProfileUrlTranslator;
 
 class NotificationLikeFormatter implements NotificationFormatterInterface
 {
-    public function __construct(private ProfileForNotificationGettingService $profileForNotificationGettingService)
-    {
+    public function __construct(
+        private ProfileForNotificationGettingService $profileForNotificationGettingService,
+        private ProfileLinkFormatter $profileLinkFormatter,
+        private ProfileUrlTranslator $profileUrlTranslator
+    ) {
     }
 
     /**
@@ -25,13 +29,13 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
         $parent = $notificationDTO->getParent();
 
-        $fullName = $this->formatFullname($profile);
+        $fullName = $this->profileLinkFormatter->format($profile);
         $action = $this->formatAction($profile->getSex());
         $type = $this->formatType($notificationDTO->getType());
 
         $text = $parent?->getText();
         if (!empty($text)) {
-            $text = sprintf('"%s"', $text);
+            $text = $this->prepareText($text);
         }
 
         return sprintf(
@@ -41,6 +45,17 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
             $type,
             $text
         );
+    }
+
+    /**
+     * @param string $text
+     * @return string
+     */
+    private function prepareText(string $text): string
+    {
+        $translatedText = $this->profileUrlTranslator->translate($text);
+
+        return sprintf('"%s"', $translatedText);
     }
 
     /**
@@ -68,15 +83,4 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
             default => '',
         };
     }
-
-    /**
-     * @param ProfileDTO $profile
-     * @return string
-     */
-    private function formatFullName(ProfileDTO $profile): string
-    {
-        return sprintf('%s %s', $profile->getFirstName(), $profile->getLastName());
-    }
-
-
 }
