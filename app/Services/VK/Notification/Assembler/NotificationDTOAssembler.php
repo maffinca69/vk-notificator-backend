@@ -6,6 +6,7 @@ use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationFeedbackDTO;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
 use App\Services\VK\Notification\DTO\NotificationParentPostDTO;
+use App\Services\VK\Notification\DTO\NotificationParentSizeDTO;
 
 class NotificationDTOAssembler
 {
@@ -55,7 +56,30 @@ class NotificationDTOAssembler
             $parent->setPost($post);
         }
 
+        if (isset($params['sizes'])) {
+            $sizes = [];
+            foreach ($params['sizes'] as $size) {
+                $sizes[] = $this->createSize($size);
+            }
+
+            $parent->setSizes($sizes);
+        }
+
         return $parent;
+    }
+
+    /**
+     * @param array $params
+     * @return NotificationParentSizeDTO
+     */
+    private function createSize(array $params): NotificationParentSizeDTO
+    {
+        return new NotificationParentSizeDTO(
+            $params['height'],
+            $params['width'],
+            $params['url'],
+            $params['type'],
+        );
     }
 
     /**

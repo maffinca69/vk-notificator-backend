@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Keyboards\DTO;
+namespace App\Core\DTO;
 
 class ReplyKeyboardMarkupDTO
 {

@@ -1,9 +1,6 @@
 <?php
 
-namespace App\Core\Keyboards\DTO;
-
-
-use App\Core\DTO\LoginDTO;
+namespace App\Core\DTO;
 
 class InlineKeyboardButtonDTO
 {

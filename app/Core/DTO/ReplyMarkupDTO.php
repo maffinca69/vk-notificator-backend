@@ -2,8 +2,6 @@
 
 namespace App\Core\DTO;
 
-use App\Core\Keyboards\DTO\InlineKeyboardMarkupDTO;
-
 class ReplyMarkupDTO
 {
     private InlineKeyboardMarkupDTO $inlineKeyboard;

@@ -10,6 +10,9 @@ class NotificationParentDTO
     private string $text;
     private NotificationParentPostDTO $post;
 
+    /** @var NotificationParentSizeDTO ...$sizes */
+    private ?array $sizes = null;
+
     /**
      * @param int $id
      */
@@ -88,5 +91,21 @@ class NotificationParentDTO
     public function setPost(NotificationParentPostDTO $post): void
     {
         $this->post = $post;
+    }
+
+    /**
+     * @return NotificationParentSizeDTO[]
+     */
+    public function getSizes(): array
+    {
+        return $this->sizes;
+    }
+
+    /**
+     * @param NotificationParentSizeDTO[] $sizes
+     */
+    public function setSizes(array $sizes): void
+    {
+        $this->sizes = $sizes;
     }
 }

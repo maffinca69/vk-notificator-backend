@@ -2,10 +2,9 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
+use App\Core\DTO\InlineKeyboardButtonDTO;
+use App\Core\DTO\InlineKeyboardMarkupDTO;
 use App\Core\DTO\ReplyMarkupDTO;
-use App\Core\Keyboards\DTO\InlineKeyboardButtonDTO;
-use App\Core\Keyboards\DTO\InlineKeyboardMarkupDTO;
-use Illuminate\Support\Facades\Log;
 
 class MessageReplyMarkupAssembler
 {

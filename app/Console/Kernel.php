@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\NotificationsGettingCommand;
+use App\Console\Commands\NotificationsSendingCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -14,17 +14,17 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        NotificationsGettingCommand::class
+        NotificationsSendingCommand::class
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $schedule->command(NotificationsSendingCommand::class)->everyFiveMinutes();
     }
 }

@@ -10,14 +10,14 @@ use App\Services\VK\Notification\NotificationSendingService;
 use Illuminate\Console\Command;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class NotificationsGettingCommand extends Command
+class NotificationsSendingCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vk:notification {vk_id}';
+    protected $signature = 'vk:send-notifications';
 
     /**
      * The console command description.
@@ -31,42 +31,46 @@ class NotificationsGettingCommand extends Command
         LastNotificationDateCacheService $lastNotificationDateCacheService,
         NotificationSendingService $notificationSendingService
     ): void {
+        $users = VKUser::all();
+
         /** @var VKUser $vkUser */
-        $vkUser = VKUser::query()->find(1);
-        $startTime = $this->getStartTime($lastNotificationDateCacheService, $vkUser);
+        foreach ($users as $vkUser) {
+            $startTime = $this->getStartTime($lastNotificationDateCacheService, $vkUser);
 
-        $notificationResponse = $notificationGettingService->get(
-            $vkUser,
-            $startTime,
-        );
-
-        foreach ($notificationResponse->getNotifications() as $notification) {
-            $user = $vkUser->user;
-            $profiles = $notificationResponse->getProfiles();
-            $groups = $notificationResponse->getGroups();
-
-            $notificationSendingService->send(
-                $user,
-                $notification,
-                $profiles,
-                $groups
+            $notificationResponse = $notificationGettingService->get(
+                $vkUser,
+                $startTime,
             );
+
+            $notifications = $notificationResponse->getNotifications();
+            if (empty($notifications)) {
+                $this->output->info('No new notifications');
+                continue;
+            }
+
+            foreach ($notifications as $notification) {
+                $user = $vkUser->user;
+                $profiles = $notificationResponse->getProfiles();
+                $groups = $notificationResponse->getGroups();
+
+                $notificationSendingService->send(
+                    $user,
+                    $notification,
+                    $profiles,
+                    $groups
+                );
+            }
+
+            /** @var NotificationDTO $lastNotification */
+            $lastNotification = current($notifications);
+
+            $timestamp = $lastNotification->getDate()->getTimestamp() + 1;
+            $lastNotificationDateCacheService->save($vkUser, $timestamp);
+
+            $notificationGettingService->markAsViewed($vkUser);
+
+            $this->output->info('success');
         }
-
-        if (empty($notificationResponse->getNotifications())) {
-            $this->output->info('No new notifications');
-            return;
-        }
-
-        /** @var NotificationDTO $lastNotification */
-        $lastNotification = current($notificationResponse->getNotifications());
-
-        $timestamp = $lastNotification->getDate()->getTimestamp() + 1;
-        $lastNotificationDateCacheService->save($vkUser, $timestamp);
-
-        $notificationGettingService->markAsViewed($vkUser);
-
-        $this->output->info('success');
     }
 
     /**
