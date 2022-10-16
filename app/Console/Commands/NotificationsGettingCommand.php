@@ -8,6 +8,7 @@ use App\Services\VK\Notification\LastNotificationDateCacheService;
 use App\Services\VK\Notification\NotificationGettingService;
 use App\Services\VK\Notification\NotificationSendingService;
 use Illuminate\Console\Command;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class NotificationsGettingCommand extends Command
 {
@@ -30,16 +31,13 @@ class NotificationsGettingCommand extends Command
         LastNotificationDateCacheService $lastNotificationDateCacheService,
         NotificationSendingService $notificationSendingService
     ): void {
+        /** @var VKUser $vkUser */
         $vkUser = VKUser::query()->find(1);
-        $lastNotificationDate = $lastNotificationDateCacheService->get($vkUser);
-        if ($lastNotificationDate === null) {
-            $lastNotificationDate = time();
-            $lastNotificationDateCacheService->save($vkUser, $lastNotificationDate);
-        }
+        $startTime = $this->getStartTime($lastNotificationDateCacheService, $vkUser);
 
         $notificationResponse = $notificationGettingService->get(
             $vkUser,
-            $lastNotificationDate,
+            $startTime,
         );
 
         foreach ($notificationResponse->getNotifications() as $notification) {
@@ -69,5 +67,23 @@ class NotificationsGettingCommand extends Command
         $notificationGettingService->markAsViewed($vkUser);
 
         $this->output->info('success');
+    }
+
+    /**
+     * @param LastNotificationDateCacheService $lastNotificationDateCacheService
+     * @param VKUser $VKUser
+     * @return int
+     * @throws InvalidArgumentException
+     */
+    private function getStartTime(LastNotificationDateCacheService $lastNotificationDateCacheService, VKUser $VKUser): int
+    {
+        $lastNotificationDate = $lastNotificationDateCacheService->get($VKUser);
+
+        if ($lastNotificationDate === null) {
+            $lastNotificationDate = time();
+            $lastNotificationDateCacheService->save($VKUser, $lastNotificationDate);
+        }
+
+        return $lastNotificationDate;
     }
 }
