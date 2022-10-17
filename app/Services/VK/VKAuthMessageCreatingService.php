@@ -9,7 +9,7 @@ use Illuminate\Config\Repository as Config;
 class VKAuthMessageCreatingService
 {
     private const BASE_URL = 'https://oauth.vk.com/authorize';
-    private const SCOPE = 1073737727;
+    private const SCOPE = 232763359;
     private const DISPLAY = 'page';
     private const RESPONSE_TYPE = 'token';
     private const REVOKE = true;
