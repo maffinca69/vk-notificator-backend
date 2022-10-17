@@ -30,14 +30,24 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         $id = current($ids)['from_id'];
         $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
         $parent = $notificationDTO->getParent();
+        $countFeedback = $notificationDTO->getFeedback()->getCount();
 
         $fullName = $this->profileLinkFormatter->format($profile);
-        $action = $this->formatAction($profile->getSex());
+        $action = $this->formatAction($profile->getSex(), $countFeedback);
         $type = $this->formatType($notificationDTO);
 
         $text = $parent?->getText();
         if (!empty($text)) {
             $text = $this->prepareText($text);
+        }
+
+        if ($countFeedback > 1) {
+            $additionLikeCount = $countFeedback - 1;
+            $fullName .= sprintf(' и еще %s %s', $additionLikeCount, ngettext(
+                'человек',
+                'человека',
+                $additionLikeCount
+            ));
         }
 
         return sprintf(
@@ -79,10 +89,15 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
 
     /**
      * @param int $sex
+     * @param int $countFeedback
      * @return string
      */
-    private function formatAction(int $sex): string
+    private function formatAction(int $sex, int $countFeedback): string
     {
+        if ($countFeedback > 1) {
+            return 'оценили';
+        }
+
         return match ($sex) {
             ProfileDTO::FEMALE_SEX_TYPE => 'оценила',
             ProfileDTO::MALE_SEX_TYPE => 'оценил',
