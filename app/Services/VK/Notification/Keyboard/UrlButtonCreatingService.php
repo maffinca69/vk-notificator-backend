@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\VK\Notification;
+namespace App\Services\VK\Notification\Keyboard;
 
-final class ProfileUrlKeyboardCreatingService
+final class UrlButtonCreatingService
 {
     /**
      * @param string $name

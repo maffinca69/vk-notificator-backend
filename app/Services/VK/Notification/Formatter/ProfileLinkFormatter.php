@@ -2,11 +2,17 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
+use App\Services\Telegram\Formatter\HyperLinkFormatter;
 use App\Services\VK\Notification\DTO\ProfileDTO;
 
 class ProfileLinkFormatter
 {
     public const BASE_PROFILE_URL = 'https://vk.com/id';
+
+    public function __construct(
+        private HyperLinkFormatter $hyperLinkFormatter
+    ) {
+    }
 
     /**
      * @param ProfileDTO $profile
@@ -17,7 +23,7 @@ class ProfileLinkFormatter
         $fullName = $this->formatFullName($profile);
         $url = $this->formatUrl($profile);
 
-        return sprintf('[%s](%s)', $fullName, $url);
+        return $this->hyperLinkFormatter->format($url, $fullName);
     }
 
     /**

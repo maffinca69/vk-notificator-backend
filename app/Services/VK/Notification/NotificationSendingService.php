@@ -8,25 +8,23 @@ use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
-use App\Services\VK\Notification\Formatter\ProfileLinkFormatter;
+use App\Services\VK\Notification\Keyboard\UrlButtonCreatingService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationSendingService
 {
+    public const NOTIFICATION_PAGE_URL = 'https://vk.com/feed?section=notifications';
+
     /**
      * @param MessageSendingService $messageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
-     * @param ProfileLinkFormatter $profileLinkFormatter
-     * @param ProfileForNotificationGettingService $profileForNotificationGettingService
-     * @param ProfileUrlKeyboardCreatingService $profileUrlKeyboardCreatingService
+     * @param UrlButtonCreatingService $urlButtonCreatingService
      */
     public function __construct(
         private MessageSendingService $messageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
-        private ProfileLinkFormatter $profileLinkFormatter,
-        private ProfileForNotificationGettingService $profileForNotificationGettingService,
-        private ProfileUrlKeyboardCreatingService $profileUrlKeyboardCreatingService,
+        private UrlButtonCreatingService $urlButtonCreatingService,
     ) {
     }
 
@@ -50,7 +48,7 @@ class NotificationSendingService
         $messageRequest->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
         $messageRequest->setDisableWebPagePreview(true);
 
-        $buttons[] = $this->appendProfileUrlButton($notificationDTO, $profiles);
+        $buttons[] = $this->appendNotificationUrlButton();
         $messageRequest->setReplyMarkup([
             'inline_keyboard' => $buttons
         ]);
@@ -59,22 +57,10 @@ class NotificationSendingService
     }
 
     /**
-     * @param NotificationDTO $notificationDTO
-     * @param array $profiles
      * @return array
      */
-    private function appendProfileUrlButton(NotificationDTO $notificationDTO, array $profiles): array
+    private function appendNotificationUrlButton(): array
     {
-        $ids = $notificationDTO->getFeedback()->getIds();
-        $id = current($ids)['from_id'];
-
-        $profile = $this->profileForNotificationGettingService->getProfile(
-            $id,
-            $profiles
-        );
-        $profileUrl = $this->profileLinkFormatter->formatUrl($profile);
-        $profileName = $this->profileLinkFormatter->formatFullName($profile);
-
-        return $this->profileUrlKeyboardCreatingService->create($profileName, $profileUrl);
+        return $this->urlButtonCreatingService->create('Открыть уведомления', self::NOTIFICATION_PAGE_URL);
     }
 }

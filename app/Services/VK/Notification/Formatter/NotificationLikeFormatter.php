@@ -13,7 +13,8 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
     public function __construct(
         private ProfileForNotificationGettingService $profileForNotificationGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,
-        private ProfileUrlTranslator $profileUrlTranslator
+        private ProfileUrlTranslator $profileUrlTranslator,
+        private VideoUrlFormatter $videoUrlFormatter
     ) {
     }
 
@@ -32,7 +33,7 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
 
         $fullName = $this->profileLinkFormatter->format($profile);
         $action = $this->formatAction($profile->getSex());
-        $type = $this->formatType($notificationDTO->getType());
+        $type = $this->formatType($notificationDTO);
 
         $text = $parent?->getText();
         if (!empty($text)) {
@@ -60,14 +61,18 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
     }
 
     /**
-     * @param string $type
+     * @param NotificationDTO $notification
      * @return string
      */
-    private function formatType(string $type): string
+    private function formatType(NotificationDTO $notification): string
     {
+        $type = $notification->getType();
+        $parent = $notification->getParent();
+
         return match ($type) {
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => 'ваш комментарий',
             NotificationTypesDictionary::LIKE_PHOTO_TYPE => 'вашу фотографию',
+            NotificationTypesDictionary::LIKE_VIDEO_TYPE => 'вашу ' . $this->videoUrlFormatter->format($parent),
             default => '...',
         };
     }

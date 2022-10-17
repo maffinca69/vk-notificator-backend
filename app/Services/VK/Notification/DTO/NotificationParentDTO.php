@@ -7,7 +7,7 @@ class NotificationParentDTO
     private int $id;
     private int $ownerId;
     private \DateTimeInterface $date;
-    private string $text;
+    private ?string $text = null;
     private NotificationParentPostDTO $post;
 
     /** @var NotificationParentSizeDTO ...$sizes */
@@ -62,17 +62,17 @@ class NotificationParentDTO
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
     /**
-     * @param string $text
+     * @param string|null $text
      */
-    public function setText(string $text): void
+    public function setText(?string $text): void
     {
         $this->text = $text;
     }

@@ -23,6 +23,7 @@ class NotificationFormatterFactory
     public function create(NotificationDTO $notification): NotificationFormatterInterface
     {
         return match ($notification->getType()) {
+            NotificationTypesDictionary::LIKE_VIDEO_TYPE,
             NotificationTypesDictionary::LIKE_PHOTO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->container->get(NotificationLikeFormatter::class),
             NotificationTypesDictionary::FOLLOW_TYPE => $this->container->get(NotificationFollowFormatter::class),
