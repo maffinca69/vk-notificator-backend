@@ -127,16 +127,29 @@ class NotificationDTOAssembler
     }
 
     /**
+     * @todo переписать, т.к собирать нужно в зависимости от типа уведомления
+     *
      * @param array $params
      * @return NotificationFeedbackDTO
      */
     private function createFeedback(array $params): NotificationFeedbackDTO
     {
         $ids = [];
-        foreach ($params['items'] as $key => $item) {
+        $items = $params['items'] ?? [];
+        foreach ($items as $key => $item) {
             $ids[$key] = $item;
         }
 
-        return new NotificationFeedbackDTO($params['count'], $ids);
+        $feedback = new NotificationFeedbackDTO($params['count'] ?? 1, $ids);
+
+        if (isset($params['from_id'])) {
+            $feedback->setFromId($params['from_id']);
+        }
+
+        if (isset($params['id'])) {
+            $feedback->setId($params['id']);
+        }
+
+        return $feedback;
     }
 }

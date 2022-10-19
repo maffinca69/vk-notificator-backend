@@ -9,6 +9,9 @@ class NotificationFeedbackDTO
     /** @var array <string, int> */
     private array $ids;
 
+    private ?int $fromId = null;
+    private ?int $Id = null;
+
     /**
      * @param int $count
      * @param array $ids
@@ -33,5 +36,37 @@ class NotificationFeedbackDTO
     public function getIds(): array
     {
         return $this->ids;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getFromId(): ?int
+    {
+        return $this->fromId;
+    }
+
+    /**
+     * @param int|null $fromId
+     */
+    public function setFromId(?int $fromId): void
+    {
+        $this->fromId = $fromId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->Id;
+    }
+
+    /**
+     * @param int|null $Id
+     */
+    public function setId(?int $Id): void
+    {
+        $this->Id = $Id;
     }
 }

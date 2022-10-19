@@ -28,6 +28,7 @@ class NotificationFormatterFactory
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->container->get(NotificationLikeFormatter::class),
             NotificationTypesDictionary::FOLLOW_TYPE => $this->container->get(NotificationFollowFormatter::class),
             NotificationTypesDictionary::FRIEND_ACCEPTED_TYPE => $this->container->get(NotificationFriendAcceptedFormatter::class),
+            NotificationTypesDictionary::WALL_PUBLISH_TYPE => $this->container->get(NotificationWallPublishFormatter::class),
         };
     }
 }
