@@ -33,7 +33,7 @@ class CommandServiceProvider extends ServiceProvider
                 $botCommands[$commandClass->getSignature()] = $commandClass;
             }
 
-            return array_unique($botCommands);
+            return $botCommands;
         });
     }
 }

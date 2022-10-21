@@ -4,6 +4,7 @@ namespace App\Services\Telegram;
 
 use App\Core\Command\AbstractCommand;
 use App\Core\DTO\UpdateDTO;
+use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -27,6 +28,7 @@ class CommandProcessingService
         }
 
         $commands = $this->container->get('bot-commands');
+        Log::info($commands);
 
         /**
          * @var string $signature

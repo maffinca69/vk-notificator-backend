@@ -1,5 +1,6 @@
 <?php
 
+use App\Core\Command\LogoutCommand;
 use App\Core\Command\StartCommand;
 
 return [
@@ -7,5 +8,6 @@ return [
     'username' => env('BOT_USERNAME', ''),
     'commands' => [
         StartCommand::class,
+        LogoutCommand::class,
     ]
 ];

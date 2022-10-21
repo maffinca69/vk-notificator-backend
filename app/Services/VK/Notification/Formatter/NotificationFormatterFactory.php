@@ -4,13 +4,13 @@ namespace App\Services\VK\Notification\Formatter;
 
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
-use Illuminate\Container\Container;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationFormatterFactory
 {
-    public function __construct(private Container $container)
+    public function __construct(private ContainerInterface $container)
     {
     }
 
