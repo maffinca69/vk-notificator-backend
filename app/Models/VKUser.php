@@ -31,4 +31,33 @@ class VKUser extends Model
     {
         return Crypt::decrypt($token);
     }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken(): string
+    {
+        return $this->access_token;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVKID(): int
+    {
+        return $this->vk_id;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
 }

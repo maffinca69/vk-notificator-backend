@@ -44,7 +44,7 @@ class NotificationGettingService
         ?int $endTime = null,
         int $count = self::DEFAULT_NOTIFICATION_COUNT,
     ): NotificationResponseDTO {
-        $accessToken = $VKUser->access_token;
+        $accessToken = $VKUser->getAccessToken();
         $vk = new VKApiClient();
 
         $params = [
@@ -72,7 +72,7 @@ class NotificationGettingService
      */
     public function markAsViewed(VKUser $VKUser): void
     {
-        $accessToken = $VKUser->access_token;
+        $accessToken = $VKUser->getAccessToken();
         $vk = new VKApiClient();
         $vk->notifications()->markAsViewed($accessToken);
     }
