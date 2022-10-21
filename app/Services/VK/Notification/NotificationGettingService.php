@@ -13,6 +13,18 @@ class NotificationGettingService
 {
     public const DEFAULT_NOTIFICATION_COUNT = 100;
 
+    public const LIKES_FILTER_TYPES = 'likes';
+    public const FRIENDS_FILTER_TYPES = 'friends';
+    public const FOLLOWERS_FILTER_TYPES = 'followers';
+    public const WALL_FILTER_TYPES = 'wall';
+
+    public const AVAILABLE_FILTER_TYPES = [
+        self::LIKES_FILTER_TYPES,
+        self::FRIENDS_FILTER_TYPES,
+        self::FOLLOWERS_FILTER_TYPES,
+        self::WALL_FILTER_TYPES,
+    ];
+
     public function __construct(private NotificationResponseDTOAssembler $notificationResponseDTOAssembler)
     {
     }
@@ -36,7 +48,8 @@ class NotificationGettingService
         $vk = new VKApiClient();
 
         $params = [
-            'count' => $count
+            'count' => $count,
+            'filters' => implode(',', self::AVAILABLE_FILTER_TYPES)
         ];
 
         if (isset($startTime)) {
