@@ -73,7 +73,7 @@ class HttpClient
         }
 
         $response = json_decode($response->getBody()->getContents(), true);
-        Log::info($response);
+        Log::info('Telegram Response', $response);
         return $this->responseDTOAssembler->create($response);
     }
 }

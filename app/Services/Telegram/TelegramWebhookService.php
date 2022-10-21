@@ -3,6 +3,7 @@
 namespace App\Services\Telegram;
 
 use App\Core\DTO\UpdateDTO;
+use App\Services\Command\CommandProcessingService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
