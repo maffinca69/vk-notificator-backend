@@ -11,6 +11,7 @@ class NotificationFeedbackDTO
 
     private ?int $fromId = null;
     private ?int $Id = null;
+    private ?string $text = null;
 
     /**
      * @param int $count
@@ -68,5 +69,21 @@ class NotificationFeedbackDTO
     public function setId(?int $Id): void
     {
         $this->Id = $Id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string|null $text
+     */
+    public function setText(?string $text): void
+    {
+        $this->text = $text;
     }
 }

@@ -150,6 +150,10 @@ class NotificationDTOAssembler
             $feedback->setId($params['id']);
         }
 
+        if (isset($params['text'])) {
+            $feedback->setText($params['text']);
+        }
+
         return $feedback;
     }
 }
