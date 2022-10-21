@@ -33,7 +33,7 @@ class TelegramWebhookController extends Controller
 
             $webhookService->process($update);
         } catch (\Throwable $exception) {
-            Log::info($exception->getMessage());
+            Log::info($exception->getMessage(), $exception->getTrace());
         } finally {
             return response('ok');
         }
