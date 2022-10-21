@@ -30,4 +30,12 @@ class User extends Model
     {
         return $this->hasOne(VKUser::class, 'user_id', 'id');
     }
+
+    /**
+     * @return VKUser|null
+     */
+    public function getVKUser(): ?VKUser
+    {
+        return $this->vkUser;
+    }
 }

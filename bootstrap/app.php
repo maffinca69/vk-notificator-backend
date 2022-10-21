@@ -1,6 +1,7 @@
 <?php
 
 use Anik\Form\FormRequestServiceProvider;
+use App\Providers\CommandServiceProvider;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -97,9 +98,10 @@ $app->configure('vk-app');
 |
 */
 
+$app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\CacheServiceProvider::class);
 $app->register(FormRequestServiceProvider::class);
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(CommandServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

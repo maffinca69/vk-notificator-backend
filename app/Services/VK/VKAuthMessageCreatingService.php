@@ -30,7 +30,7 @@ class VKAuthMessageCreatingService
         $fromId = $updateDTO->getMessage()->getFrom()->getId();
 
         $message = new MessageRequestDTO($updateDTO->getChatId());
-        $message->setText('Нужно выполнить вход через VK');
+        $message->setText('🔒 Нужно выполнить вход через VK');
         $message->setReplyMarkup([
             'inline_keyboard' => [
                 [

@@ -11,7 +11,7 @@ use App\Services\VK\OAuth\Assembler\VKOauthDTOAssembler;
 
 class VKOauthCallbackService
 {
-    private const SUCCESS_AUTH_MESSAGE = 'Successfully auth!';
+    private const SUCCESS_AUTH_MESSAGE = '🎉 Вы успешно авторизовались. Бот начнет рассылку уведомлений автоматически';
 
     public function __construct(
         private VKOauthDTOAssembler $VKOauthDTOAssembler,
