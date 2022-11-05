@@ -1,10 +1,8 @@
 <?php
 
-use App\Services\Setting\SettingsDictionary;
-
 return [
     'is_mark_as_read' => [
-        'title' => 'Помечать прочитанным',
-        'description' => 'Отмечать уведомление прочитанным на сайте и/или в мобильном приложении'
+        'title' => 'Mark as read',
+        'description' => 'Mark the notification as read on the website and/or mobile app'
     ]
 ];
