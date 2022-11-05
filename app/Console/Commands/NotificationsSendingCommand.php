@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\VKUser;
+use App\Services\Setting\Assembler\SettingDTOAssembler;
+use App\Services\Setting\UserSettingsGettingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\LastNotificationDateCacheService;
 use App\Services\VK\Notification\NotificationGettingService;
@@ -26,11 +28,15 @@ class NotificationsSendingCommand extends Command
      */
     protected $description = 'Send unread notification to user';
 
+
     public function handle(
         NotificationGettingService $notificationGettingService,
         LastNotificationDateCacheService $lastNotificationDateCacheService,
-        NotificationSendingService $notificationSendingService
+        NotificationSendingService $notificationSendingService,
+        SettingDTOAssembler $settingDTOAssembler,
+        UserSettingsGettingService $settingsGettingService
     ): void {
+        // todo отрефакторить на сервисы
         $users = VKUser::all();
 
         /** @var VKUser $vkUser */
@@ -48,8 +54,8 @@ class NotificationsSendingCommand extends Command
                 continue;
             }
 
+            $user = $vkUser->user;
             foreach ($notifications as $notification) {
-                $user = $vkUser->user;
                 $profiles = $notificationResponse->getProfiles();
                 $groups = $notificationResponse->getGroups();
 
@@ -67,7 +73,12 @@ class NotificationsSendingCommand extends Command
             $timestamp = $lastNotification->getDate()->getTimestamp() + 1;
             $lastNotificationDateCacheService->save($vkUser, $timestamp);
 
-            $notificationGettingService->markAsViewed($vkUser);
+            $settings = $settingsGettingService->get($user);
+            $settings = $settingDTOAssembler->create($settings);
+
+            if ($settings->isMarkAsRead()) {
+                $notificationGettingService->markAsViewed($vkUser);
+            }
 
             $this->output->info('success');
         }

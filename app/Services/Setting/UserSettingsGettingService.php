@@ -16,6 +16,7 @@ class UserSettingsGettingService
     /**
      * @param User $user
      * @return array
+     * @throws Exception\InvalidSettingTypeException
      * @throws InvalidArgumentException
      */
     public function get(User $user): array
