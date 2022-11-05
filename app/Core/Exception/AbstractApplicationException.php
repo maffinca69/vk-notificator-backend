@@ -2,12 +2,22 @@
 
 namespace App\Core\Exception;
 
-use Throwable;
-
 abstract class AbstractApplicationException extends \Exception
 {
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    protected array $context = [];
+
+    public function __construct($message = '', array $context = [])
     {
-        parent::__construct($message, $code, $previous);
+        $this->context = $context;
+
+        parent::__construct($message);
+    }
+
+    /**
+     * @return array
+     */
+    public function getContext(): array
+    {
+        return $this->context;
     }
 }

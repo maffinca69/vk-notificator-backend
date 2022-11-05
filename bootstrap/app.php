@@ -116,9 +116,11 @@ $app->register(CommandServiceProvider::class);
 |
 */
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
+$app->router->group(['namespace' => 'App\Http\Controllers\API'], static function ($router) {
+    require __DIR__.'/../routes/api.php';
+});
+
+$app->router->group(['namespace' => 'App\Http\Controllers'], static function ($router) {
     require __DIR__.'/../routes/web.php';
 });
 

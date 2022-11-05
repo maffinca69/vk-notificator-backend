@@ -16,6 +16,7 @@ services:
     volumes:
       - ../.:/var/www/notificator:cached
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:delegated
+      - ./nginx/api.conf:/etc/nginx/conf.d/api.conf:delegated
 
   postgres:
     image: postgres:14.5-alpine

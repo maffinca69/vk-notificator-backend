@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Services\API\Exception\AbstractAPIException;
+use App\Services\Internal\Exception\ExceptionHandlersFactory;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
@@ -22,6 +24,10 @@ class Handler extends ExceptionHandler
         ModelNotFoundException::class,
         ValidationException::class,
     ];
+
+    public function __construct(private ExceptionHandlersFactory $exceptionHandlersFactory)
+    {
+    }
 
     /**
      * Report or log an exception.
@@ -49,6 +55,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $handler = $this->exceptionHandlersFactory->create($exception);
+        if ($handler !== null) {
+            return $handler->handle($exception);
+        }
+
         return parent::render($request, $exception);
     }
 }

@@ -24,6 +24,11 @@ class User extends Model
         'username',
         'last_name',
         'first_name',
+        'settings',
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
     ];
 
     public function vkUser(): HasOne
@@ -37,5 +42,29 @@ class User extends Model
     public function getVKUser(): ?VKUser
     {
         return $this->vkUser;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUuid(): int
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getSettings(): ?array
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return sprintf('%s %s', $this->first_name, $this->last_name);
     }
 }
