@@ -10,7 +10,7 @@ use App\Services\Telegram\MessageSendingService;
 use App\Services\User\UserRegisteringService;
 use App\Services\VK\VKAuthMessageCreatingService;
 
-class StartCommand extends AbstractCommand
+final class StartCommand extends AbstractCommand
 {
     protected string $signature = '/start';
 

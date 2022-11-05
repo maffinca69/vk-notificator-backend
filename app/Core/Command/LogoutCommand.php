@@ -9,7 +9,7 @@ use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\User\LogoutService;
 
-class LogoutCommand extends AbstractCommand
+final class LogoutCommand extends AbstractCommand
 {
     protected string $signature = '/logout';
 
