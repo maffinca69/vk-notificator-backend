@@ -34,7 +34,8 @@ class SettingSyncCommand extends Command
         User::query()->chunk(100, static function ($users) use ($settings, $context) {
             /** @var User $user */
             foreach ($users as $user) {
-                $newSettings = DiffArray::diffWithoutNewKeys($settings, $user->getSettings());
+                $userSettings = $user->getSettings() ?? [];
+                $newSettings = DiffArray::diffWithoutNewKeys($settings, $userSettings);
                 $user->update(['settings' => $newSettings]);
                 $context->info("User settings [{$user->getFullName()}] synced");
             }
