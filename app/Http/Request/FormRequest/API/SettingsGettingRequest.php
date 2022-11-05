@@ -12,15 +12,15 @@ class SettingsGettingRequest extends FormRequest
     protected function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:user,id']
+            'uuid' => ['required', 'integer', 'exists:user,uuid']
         ];
     }
 
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUuid(): int
     {
-        return $this->get('user_id');
+        return $this->get('uuid');
     }
 }

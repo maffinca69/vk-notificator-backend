@@ -41,6 +41,10 @@ class UserSettingsUpdatingService
     {
         foreach ($defaultSettings as $key => $defaultValue) {
             foreach ($settings as $keySetting => $settingValue) {
+                if ($keySetting !== $key) {
+                    continue;
+                }
+
                 if (gettype($settingValue) === gettype($defaultValue)) {
                     continue;
                 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Request\FormRequest\API\SettingsGettingRequest;
 use App\Http\Request\FormRequest\API\SettingsUpdatingRequest;
+use App\Http\Response\Formatter\SettingsGettingFormatter;
 use App\Models\User;
 use App\Services\Setting\Exception\InvalidSettingTypeException;
 use App\Services\Setting\UserSettingsGettingService;
@@ -18,18 +19,21 @@ class SettingsController extends Controller
      * @param SettingsGettingRequest $request
      * @param UserSettingsGettingService $userSettingsGettingService
      * @param UserGettingService $userGettingService
+     * @param SettingsGettingFormatter $settingsGettingFormatter
      * @return array
      * @throws InvalidArgumentException
      */
     public function get(
         SettingsGettingRequest $request,
         UserSettingsGettingService $userSettingsGettingService,
-        UserGettingService $userGettingService
+        UserGettingService $userGettingService,
+        SettingsGettingFormatter $settingsGettingFormatter
     ): array {
         /** @var User $user */
-        $user = $userGettingService->getById($request->getUserId());
+        $user = $userGettingService->getByUuid($request->getUuid());
 
-        return $userSettingsGettingService->get($user);
+        $settings = $userSettingsGettingService->get($user);
+        return $settingsGettingFormatter->format($settings);
     }
 
     /**
@@ -45,11 +49,11 @@ class SettingsController extends Controller
         UserSettingsUpdatingService $settingsUpdatingService,
         UserGettingService $userGettingService
     ): array {
-        $id = $request->getUserId();
+        $id = $request->getUuid();
         $settings = $request->getSettings();
 
         /** @var User $user */
-        $user = $userGettingService->getById($id);
+        $user = $userGettingService->getByUuid($id);
         return [
             'success' => $settingsUpdatingService->update($user, $settings)
         ];

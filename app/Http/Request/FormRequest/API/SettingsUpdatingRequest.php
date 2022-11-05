@@ -9,18 +9,18 @@ class SettingsUpdatingRequest extends FormRequest
     protected function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:user,id'],
-            'settings' => 'array',
-            'settings.*' => ['required', 'string'],
+            'uuid' => ['required', 'integer', 'exists:user,uuid'],
+            'settings' => ['required', 'array'],
+            'settings.*' => ['required'],
         ];
     }
 
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUuid(): int
     {
-        return $this->get('user_id');
+        return $this->get('uuid');
     }
 
     /**
