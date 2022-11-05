@@ -8,6 +8,7 @@ use App\Services\Telegram\Client\DTO\MessageRequestDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\User\LogoutService;
+use App\Services\User\UserGettingService;
 
 final class LogoutCommand extends AbstractCommand
 {
@@ -15,7 +16,8 @@ final class LogoutCommand extends AbstractCommand
 
     public function __construct(
         private MessageSendingService $messageSendingService,
-        private LogoutService $logoutService
+        private LogoutService $logoutService,
+        private UserGettingService $userGettingService
     ) {
     }
 
@@ -27,23 +29,38 @@ final class LogoutCommand extends AbstractCommand
     {
         $message = $update->getMessage();
         $from = $message->getFrom();
+        $chatId = $update->getChatId();
 
-        $messageRequestDTO = new MessageRequestDTO($update->getChatId());
-
-        $user = User::query()->where(['uuid' => $from->getId()])->first();
-        if ($user === null) {
-            $messageRequestDTO->setText(LogoutService::UNAVAILABLE_LOGOUT);
-            $this->messageSendingService->send($messageRequestDTO);
-            return;
-        }
+        $messageRequestDTO = new MessageRequestDTO($chatId);
 
         /** @var User $user */
+        $user = $this->userGettingService->getByUuid($from->getId());
         $logout = $this->logoutService->logout($user);
-        if (!$logout) {
-            $messageRequestDTO->setText(LogoutService::FAILURE_LOGOUT);
-        }
 
-        $messageRequestDTO->setText(LogoutService::SUCCESSFUL_LOGOUT);
-        $this->messageSendingService->send($messageRequestDTO);
+        $this->sendLogoutMessage(
+            $messageRequestDTO,
+            $logout ? LogoutService::SUCCESSFUL_LOGOUT : LogoutService::FAILURE_LOGOUT
+        );
+    }
+
+    /**
+     * @param MessageRequestDTO $request
+     * @param string $message
+     * @throws InvalidTelegramResponseException
+     */
+    private function sendLogoutMessage(MessageRequestDTO $request, string $message): void
+    {
+        $request->setText($message);
+        $this->messageSendingService->send($request);
+    }
+
+    /**
+     * @param MessageRequestDTO $request
+     * @throws InvalidTelegramResponseException
+     */
+    private function unavailableLogout(MessageRequestDTO $request): void
+    {
+        $request->setText(LogoutService::UNAVAILABLE_LOGOUT);
+        $this->messageSendingService->send($request);
     }
 }

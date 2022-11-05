@@ -37,7 +37,7 @@ class VKOauthCallbackService
      */
     private function sendSuccessfulAuthMessage(User $user): void
     {
-        $requestDTO = new MessageRequestDTO($user->uuid);
+        $requestDTO = new MessageRequestDTO($user->getUuid());
         $requestDTO->setText(self::SUCCESS_AUTH_MESSAGE);
 
         $this->messageSendingService->send($requestDTO);
