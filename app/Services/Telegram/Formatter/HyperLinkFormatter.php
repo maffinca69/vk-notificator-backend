@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram\Formatter;
 
-class HyperLinkFormatter
+final class HyperLinkFormatter
 {
     /**
      * @param string $url
