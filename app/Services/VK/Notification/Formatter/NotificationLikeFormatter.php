@@ -5,6 +5,8 @@ namespace App\Services\VK\Notification\Formatter;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\ProfileDTO;
+use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
+use App\Services\VK\Notification\Formatter\Link\VideoLinkFormatter;
 use App\Services\VK\Notification\ProfileForNotificationGettingService;
 use App\Services\VK\Notification\Translator\ProfileUrlTranslator;
 
@@ -14,7 +16,7 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         private ProfileForNotificationGettingService $profileForNotificationGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,
         private ProfileUrlTranslator $profileUrlTranslator,
-        private VideoUrlFormatter $videoUrlFormatter
+        private VideoLinkFormatter $videoUrlFormatter
     ) {
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification\Translator;
 
-use App\Services\VK\Notification\Formatter\ProfileLinkFormatter;
+use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
 
 class ProfileUrlTranslator
 {

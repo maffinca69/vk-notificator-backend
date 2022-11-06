@@ -2,9 +2,9 @@
 
 namespace App\Services\Internal\Exception;
 
+use App\Core\Exception\AbstractAPIException;
 use App\Core\Exception\AbstractApplicationException;
 use App\Exceptions\Handlers\ApiExceptionHandler;
-use App\Services\API\Exception\AbstractAPIException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;

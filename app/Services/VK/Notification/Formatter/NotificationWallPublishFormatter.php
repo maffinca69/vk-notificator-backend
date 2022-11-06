@@ -3,6 +3,8 @@
 namespace App\Services\VK\Notification\Formatter;
 
 use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\Notification\Formatter\Link\GroupLinkFormatter;
+use App\Services\VK\Notification\Formatter\Link\PostLinkFormatter;
 use App\Services\VK\Notification\NotificationGroupGettingService;
 
 class NotificationWallPublishFormatter implements NotificationFormatterInterface
