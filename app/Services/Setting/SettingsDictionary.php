@@ -7,8 +7,7 @@ use ReflectionClassConstant;
 final class SettingsDictionary
 {
     public const IS_MARK_AS_READ = false;
-    public const FORMAT_NAME_TYPE = 1;
-    public const SHOW_PHOTO = false;
+    public const IS_SEND_VIEWED_NOTIFICATIONS = true;
 
     /**
      * @return array

@@ -5,11 +5,13 @@ namespace App\Services\VK\Notification;
 use App\Models\User;
 use App\Models\VKUser;
 use App\Services\Setting\Assembler\SettingDTOAssembler;
+use App\Services\Setting\DTO\SettingDTO;
 use App\Services\Setting\Exception\InvalidSettingTypeException;
 use App\Services\Setting\UserSettingsGettingService;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use App\Services\VK\Notification\Filter\ViewedNotificationsFilteringService;
 use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -22,6 +24,7 @@ class NotificationMailingService
     // Telegram API limit 30 messages as per second
     private const MAX_MAILING_LIMIT = 30;
     private const TIMEOUT = 1;
+    private SettingDTO $settings;
 
     /**
      * @param LastNotificationDateCacheService $lastNotificationDateCacheService
@@ -29,13 +32,15 @@ class NotificationMailingService
      * @param NotificationSendingService $notificationSendingService
      * @param UserSettingsGettingService $settingsGettingService
      * @param SettingDTOAssembler $settingDTOAssembler
+     * @param ViewedNotificationsFilteringService $viewedNotificationsFilteringService
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
         private NotificationSendingService $notificationSendingService,
         private UserSettingsGettingService $settingsGettingService,
-        private SettingDTOAssembler $settingDTOAssembler
+        private SettingDTOAssembler $settingDTOAssembler,
+        private ViewedNotificationsFilteringService $viewedNotificationsFilteringService
     ) {
     }
 
@@ -51,6 +56,8 @@ class NotificationMailingService
      */
     public function send(VKUser $VKUser): void
     {
+        $this->prepareSettings($VKUser->user);
+
         $startTime = $this->getStartTime($VKUser);
         $response = $this->notificationGettingService->get($VKUser, $startTime);
 
@@ -61,27 +68,37 @@ class NotificationMailingService
         }
 
         $user = $VKUser->user;
-        $this->sendNotifications($response, $user);
+
+        if (!$this->settings->isSendViewedNotifications()) {
+            $viewedTime = $response->getLastViewed()->getTimestamp();
+            $notifications = $this->viewedNotificationsFilteringService->filter($viewedTime, ...$notifications);
+        }
+
+        $this->sendNotifications($response, $user, ...$notifications);
         $this->saveLastCheckTime($response, $VKUser);
 
         $this->markAsViewedIfNeeded($VKUser);
     }
 
     /**
-     * @param VKUser $VKUser
+     * @param User $user
      * @throws InvalidArgumentException
      * @throws InvalidSettingTypeException
+     */
+    private function prepareSettings(User $user): void
+    {
+        $settings = $this->settingsGettingService->get($user);
+        $this->settings = $this->settingDTOAssembler->create($settings);
+    }
+
+    /**
+     * @param VKUser $VKUser
      * @throws VKApiException
      * @throws VKClientException
      */
     private function markAsViewedIfNeeded(VKUser $VKUser): void
     {
-        $user = $VKUser->user;
-
-        $settings = $this->settingsGettingService->get($user);
-        $settings = $this->settingDTOAssembler->create($settings);
-
-        if ($settings->isMarkAsRead()) {
+        if ($this->settings->isMarkAsRead()) {
             $this->notificationGettingService->markAsViewed($VKUser);
         }
     }
@@ -104,23 +121,20 @@ class NotificationMailingService
 
     /**
      * @param NotificationResponseDTO $response
-     * @param User $user
-     * @throws InvalidTelegramResponseException
+     * @param User $recipient
+     * @param NotificationDTO ...$notifications
      * @throws ContainerExceptionInterface
+     * @throws InvalidTelegramResponseException
      * @throws NotFoundExceptionInterface
      */
-    private function sendNotifications(NotificationResponseDTO $response, User $user): void
+    private function sendNotifications(NotificationResponseDTO $response, User $recipient, NotificationDTO ...$notifications): void
     {
         $sendingCount = 0;
-        foreach ($response->getNotifications() as $notification) {
-            $profiles = $response->getProfiles();
-            $groups = $response->getGroups();
-
+        foreach ($notifications as $notification) {
             $this->notificationSendingService->send(
-                $user,
+                $response,
                 $notification,
-                $profiles,
-                $groups
+                $recipient
             );
 
             $sendingCount++;
@@ -139,6 +153,7 @@ class NotificationMailingService
      */
     private function getStartTime(VKUser $VKUser): int
     {
+        return strtotime('-4 hours');
         $lastNotificationDate = $this->lastNotificationDateCacheService->get($VKUser);
 
         if ($lastNotificationDate === null) {

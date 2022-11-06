@@ -18,8 +18,8 @@ class SettingDTOAssembler
             $setting->setIsMarkAsRead($settings['is_mark_as_read']);
         }
 
-        if (array_key_exists('format_name_type', $settings)) {
-            $setting->setFormatNameType($settings['format_name_type']);
+        if (array_key_exists('is_send_viewed_notifications', $settings)) {
+            $setting->setIsSendViewedNotifications($settings['is_send_viewed_notifications']);
         }
 
         return $setting;

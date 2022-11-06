@@ -7,7 +7,7 @@ use App\Services\Setting\SettingsDictionary;
 class SettingDTO
 {
     private bool $isMarkAsRead = SettingsDictionary::IS_MARK_AS_READ;
-    private int $formatNameType = SettingsDictionary::FORMAT_NAME_TYPE;
+    private bool $isSendViewedNotifications = SettingsDictionary::IS_SEND_VIEWED_NOTIFICATIONS;
 
     /**
      * @return bool
@@ -26,18 +26,18 @@ class SettingDTO
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getFormatNameType(): int
+    public function isSendViewedNotifications(): bool
     {
-        return $this->formatNameType;
+        return $this->isSendViewedNotifications;
     }
 
     /**
-     * @param int $formatNameType
+     * @param bool $isSendViewedNotifications
      */
-    public function setFormatNameType(int $formatNameType): void
+    public function setIsSendViewedNotifications(bool $isSendViewedNotifications): void
     {
-        $this->formatNameType = $formatNameType;
+        $this->isSendViewedNotifications = $isSendViewedNotifications;
     }
 }

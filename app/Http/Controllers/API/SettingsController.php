@@ -22,6 +22,7 @@ class SettingsController extends Controller
      * @param SettingsGettingFormatter $settingsGettingFormatter
      * @return array
      * @throws InvalidArgumentException
+     * @throws InvalidSettingTypeException
      */
     public function get(
         SettingsGettingRequest $request,

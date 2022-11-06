@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use App\Services\Internal\DiffArray;
+use App\Services\Setting\SettingsCachingService;
 use App\Services\Setting\SettingsDictionary;
 use Illuminate\Console\Command;
 
@@ -24,19 +25,20 @@ class SettingSyncCommand extends Command
      */
     protected $description = 'Sync settings with user settings';
 
-    public function handle(): void
+    public function handle(SettingsCachingService $settingsCachingService): void
     {
         $this->info('Start...');
 
         $settings = SettingsDictionary::getFields();
         $context = $this;
 
-        User::query()->chunk(100, static function ($users) use ($settings, $context) {
+        User::query()->chunk(100, static function ($users) use ($settings, $context, $settingsCachingService) {
             /** @var User $user */
             foreach ($users as $user) {
                 $userSettings = $user->getSettings() ?? [];
                 $newSettings = DiffArray::diffWithoutNewKeys($settings, $userSettings);
                 $user->update(['settings' => $newSettings]);
+                $settingsCachingService->set($user, $newSettings);
                 $context->info("User settings [{$user->getFullName()}] synced");
             }
         });
