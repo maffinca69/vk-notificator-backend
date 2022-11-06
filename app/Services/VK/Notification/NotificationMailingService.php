@@ -77,7 +77,9 @@ class NotificationMailingService
         $this->sendNotifications($response, $user, ...$notifications);
         $this->saveLastCheckTime($response, $VKUser);
 
-        $this->markAsViewedIfNeeded($VKUser);
+        if ($this->settings->isMarkAsRead()) {
+            $this->notificationGettingService->markAsViewed($VKUser);
+        }
     }
 
     /**
@@ -89,18 +91,6 @@ class NotificationMailingService
     {
         $settings = $this->settingsGettingService->get($user);
         $this->settings = $this->settingDTOAssembler->create($settings);
-    }
-
-    /**
-     * @param VKUser $VKUser
-     * @throws VKApiException
-     * @throws VKClientException
-     */
-    private function markAsViewedIfNeeded(VKUser $VKUser): void
-    {
-        if ($this->settings->isMarkAsRead()) {
-            $this->notificationGettingService->markAsViewed($VKUser);
-        }
     }
 
     /**
