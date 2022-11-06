@@ -143,7 +143,6 @@ class NotificationMailingService
      */
     private function getStartTime(VKUser $VKUser): int
     {
-        return strtotime('-4 hours');
         $lastNotificationDate = $this->lastNotificationDateCacheService->get($VKUser);
 
         if ($lastNotificationDate === null) {
