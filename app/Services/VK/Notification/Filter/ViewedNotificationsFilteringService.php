@@ -13,6 +13,9 @@ class ViewedNotificationsFilteringService
      */
     public function filter(int $viewedTime, NotificationDTO ...$notifications): array
     {
-       return array_filter($notifications, fn($notification) => $notification->getDate()->getTimestamp() > $viewedTime);
+       return array_filter(
+           $notifications,
+           fn($notification) => $notification->getDate()->getTimestamp() > $viewedTime
+       );
     }
 }
