@@ -14,7 +14,6 @@
         "vkcom/vk-php-sdk": "^5.101"
     },
     "require-dev": {
-        "deployer/deployer": "^7.0",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.4",
         "phpunit/phpunit": "^9.5.10"
