@@ -16,6 +16,7 @@ set('application', 'VK Notificator');
 set('repository', 'https://github.com/maffinca69/vk-notificator-backend');
 
 task('deploy:prepared', function () {
+    var_export(input()->getOption('path'));die;
     set('deploy_path', input()->getOption('path'));
     // Hosts
     host(input()->getOption('ip-address'))
