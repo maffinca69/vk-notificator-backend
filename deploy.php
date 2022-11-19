@@ -7,7 +7,7 @@ require 'recipe/laravel.php';
 
 option('ip-address', 'ip', InputOption::VALUE_OPTIONAL, 'Adds the cache tables to the backup command.', false);
 option('user', 'user', InputOption::VALUE_OPTIONAL, 'Adds the cache tables to the backup command.', false);
-option('deploy-path', 'path', InputOption::VALUE_OPTIONAL, 'Adds the cache tables to the backup command.', false);
+option('path', 'dp', InputOption::VALUE_OPTIONAL, 'Adds the cache tables to the backup command.', false);
 
 // Project name
 set('application', 'VK Notificator');
@@ -19,7 +19,7 @@ task('deploy:prepared', function () {
     // Hosts
     host(input()->getOption('ip-address'))
         ->user(input()->getOption('user'))
-        ->set('deploy_path', input()->getOption('deploy-path'));
+        ->set('deploy_path', input()->getOption('path'));
 });
 
 task('artisan:cache:clear', function () {
