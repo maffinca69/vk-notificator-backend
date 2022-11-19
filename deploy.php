@@ -17,11 +17,15 @@ add('shared_files', []);
 add('shared_dirs', []);
 add('writable_dirs', []);
 
+task('deploy:test', function () {
+    host(input()->getOption('ip-address'))
+        ->set('remote_user', input()->getOption('user'))
+        ->set('deploy_path', input()->getOption('deploy-path'));
+});
+
 // Hosts
 
-host(input()->getOption('ip-address'))
-    ->set('remote_user', input()->getOption('user'))
-    ->set('deploy_path', input()->getOption('deploy-path'));
+
 
 // Hooks
 
