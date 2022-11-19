@@ -15,6 +15,8 @@ set('application', 'VK Notificator');
 // Project repository
 set('repository', 'https://github.com/maffinca69/vk-notificator-backend');
 
+echo input()->getOption('ip-address');
+
 // Hosts
 host(input()->getOption('ip-address'))
 ->user(input()->getOption('user'))
