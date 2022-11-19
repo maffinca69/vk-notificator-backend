@@ -23,3 +23,6 @@ jobs:
         with:
           dep: deploy
           private-key: ${{ secrets.PRIVATE_KEY }}
+          secrets:
+            IP_ADDRESS: 127.0.0.1
+          secrets.IP_ADDRESS: 127.0.02
