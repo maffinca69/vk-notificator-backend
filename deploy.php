@@ -7,7 +7,7 @@ require 'recipe/laravel.php';
 
 option('ip-address', 'ip', InputOption::VALUE_OPTIONAL, 'IP ADDRESS', false);
 option('user', 'user', InputOption::VALUE_OPTIONAL, 'User', false);
-option('deploy_path', 'dp', InputOption::VALUE_OPTIONAL, 'Deploy path', false);
+option('deploy-path', 'dp', InputOption::VALUE_OPTIONAL, 'Deploy path', false);
 
 // Project name
 set('application', 'VK Notificator');
