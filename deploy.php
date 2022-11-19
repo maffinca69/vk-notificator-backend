@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputOption;
 require 'recipe/laravel.php';
 
 option('ip-address', 'ip', InputOption::VALUE_OPTIONAL, 'IP ADDRESS', false);
+option('user', 'user', InputOption::VALUE_OPTIONAL, 'User', false);
+option('deploy_path', 'dp', InputOption::VALUE_OPTIONAL, 'Deploy path', false);
 
 // Project name
 set('application', 'VK Notificator');
@@ -14,9 +16,9 @@ set('application', 'VK Notificator');
 set('repository', 'https://github.com/maffinca69/vk-notificator-backend');
 
 // Hosts
-host('${{ secrets.IP_ADDRESS }}')
-->user('${{ secrets.SERVER_USER }}')
-->set('deploy_path', '${{ secrets.DEPLOY_PATH }}');
+host(input()->getOption('ip-address'))
+->user(input()->getOption('user'))
+->set('deploy_path', input()->getOption('deploy-path'));
 
 task('artisan:cache:clear', function () {
 run('{{bin/php}} {{release_path}}/artisan cache:clear');
@@ -38,16 +40,16 @@ task('artisan:view:clear', function() {})->setPrivate();
 
 // Tasks
 task('deploy', [
-'deploy:info',
-'deploy:prepare',
-'deploy:lock',
-'deploy:release',
-'deploy:update_code',
-'deploy:shared',
-'deploy:vendors',
-'deploy:writable',
-'artisan:cache:clear',
-'deploy:symlink',
-'deploy:unlock',
-'cleanup',
+    'deploy:info',
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:writable',
+    'artisan:cache:clear',
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
 ]);
