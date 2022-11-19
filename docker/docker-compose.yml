@@ -9,7 +9,7 @@ services:
       - ./fpm/config/php.ini-local:/usr/local/etc/php/php.ini:ro
 
   nginx:
-    image: nginx:stable-alpine
+    image: arm64v8/nginx:stable-alpine
     working_dir: /var/www/notificator
     ports:
       - "80:80"
@@ -19,7 +19,7 @@ services:
       - ./nginx/api.conf:/etc/nginx/conf.d/api.conf:delegated
 
   postgres:
-    image: postgres:14.5-alpine
+    image: arm64v8/postgres:14.5-alpine
     environment:
       POSTGRES_DB: "notificator"
       POSTGRES_USER: "notificator"
@@ -28,7 +28,7 @@ services:
       - "5432:5432"
 
   redis:
-      image: redis:alpine
+      image: arm64v8/redis:alpine
       command: redis-server --appendonly yes
       volumes:
           - ./data/redis:/data

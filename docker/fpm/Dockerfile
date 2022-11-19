@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM arm64v8/php:8.1-fpm-alpine
 
 RUN apk add libzip-dev
 RUN apk add --no-cache zip libzip-dev nano libpq-dev
