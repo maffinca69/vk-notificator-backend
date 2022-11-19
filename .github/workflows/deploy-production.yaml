@@ -21,5 +21,5 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1
         with:
-          dep: deploy --ip-address=${{ secrets.IP_ADDRESS }}
+          dep: deploy --ip-address=127.0.0.1 --user=tester --deploy-path=google
           private-key: ${{ secrets.PRIVATE_KEY }}
