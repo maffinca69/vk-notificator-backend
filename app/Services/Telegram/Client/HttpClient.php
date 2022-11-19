@@ -16,18 +16,17 @@ class HttpClient
 {
     private const BASE_API_URL = 'https://api.telegram.org/bot%s/';
 
-    private Client $client;
-    private TelegramResponseDTOAssembler $responseDTOAssembler;
-
     /**
      * @param TelegramResponseDTOAssembler $responseDTOAssembler
+     * @param Client $client
      */
-    public function __construct(TelegramResponseDTOAssembler $responseDTOAssembler)
-    {
+    public function __construct(
+        private TelegramResponseDTOAssembler $responseDTOAssembler,
+        private Client $client
+    ) {
         $this->client = new Client([
             'base_uri' => $this->getBaseURI()
         ]);
-        $this->responseDTOAssembler = $responseDTOAssembler;
     }
 
     /**

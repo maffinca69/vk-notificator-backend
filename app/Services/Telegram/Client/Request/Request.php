@@ -2,27 +2,18 @@
 
 namespace App\Services\Telegram\Client\Request;
 
-class Request
+abstract class Request
 {
-    private string $endpoint;
-    private string $method;
-
-    /** @var array */
-    private array $params;
-
     /**
      * @param string $endpoint
      * @param string $method
      * @param array $params
      */
     public function __construct(
-        string $endpoint,
-        string $method,
-        array $params
+        private string $endpoint,
+        private string $method,
+        private array $params
     ) {
-        $this->endpoint = $endpoint;
-        $this->method = $method;
-        $this->params = $params;
     }
 
     /**
