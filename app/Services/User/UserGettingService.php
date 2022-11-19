@@ -13,7 +13,7 @@ class UserGettingService
      */
     public function getByUuid(int $uuid): ?Model
     {
-        return User::query()->where(['uuid' => $uuid])->firstOrFail();
+        return User::query()->where(['uuid' => $uuid])->first();
     }
 
     /**
