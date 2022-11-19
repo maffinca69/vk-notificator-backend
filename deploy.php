@@ -21,6 +21,8 @@ add('writable_dirs', []);
 // Hosts
 
 task('deploy:prepare', function () {
+    set('deploy_path', input()->getOption('path'));
+
     host(input()->getOption('ip-address'))
         ->set('remote_user', input()->getOption('user'))
         ->set('deploy_path', input()->getOption('path'));
