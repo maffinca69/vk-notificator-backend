@@ -1,7 +1,11 @@
 <?php
 namespace Deployer;
 
+use Symfony\Component\Console\Input\InputOption;
+
 require 'recipe/laravel.php';
+
+option('ip-address', 'ip', InputOption::VALUE_OPTIONAL, 'IP ADDRESS', false);
 
 // Project name
 set('application', 'VK Notificator');
