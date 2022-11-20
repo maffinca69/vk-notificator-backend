@@ -5,6 +5,7 @@ namespace App\Services\VK\Notification;
 use App\Models\VKUser;
 use App\Services\VK\Notification\Assembler\NotificationResponseDTOAssembler;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use Illuminate\Support\Facades\Log;
 use VK\Client\VKApiClient;
 use VK\Exceptions\VKApiException;
 use VK\Exceptions\VKClientException;
@@ -62,6 +63,7 @@ class NotificationGettingService
         }
 
         $notifications = $this->apiClient->notifications()->get($accessToken, $params);
+        Log::info($notifications);
 
         return $this->notificationResponseDTOAssembler->create($notifications);
     }

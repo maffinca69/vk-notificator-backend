@@ -77,7 +77,10 @@ class ProfileDTOAssembler
 
         $onlineInfo->setIsOnline($params['is_online']);
         $onlineInfo->setIsMobile($params['is_mobile']);
-        $onlineInfo->setLastSeen(new \DateTime(date('Y-m-d H:i:s', $params['last_seen'])));
+
+        if (isset($params['last_seen'])) {
+            $onlineInfo->setLastSeen(new \DateTime(date('Y-m-d H:i:s', $params['last_seen'])));
+        }
 
         return $onlineInfo;
     }

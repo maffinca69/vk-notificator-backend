@@ -33,6 +33,7 @@ class NotificationMailingService
      * @param UserSettingsGettingService $settingsGettingService
      * @param SettingDTOAssembler $settingDTOAssembler
      * @param ViewedNotificationsFilteringService $viewedNotificationsFilteringService
+     * @param NotificationMailingLogger $logger
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
@@ -71,8 +72,10 @@ class NotificationMailingService
         $user = $VKUser->user;
 
         if (!$this->settings->isSendViewedNotifications()) {
-            $viewedTime = $response->getLastViewed()->getTimestamp();
-            $notifications = $this->viewedNotificationsFilteringService->filter($viewedTime, ...$notifications);
+            $notifications = $this->filterNotifications(
+                $response->getLastViewed()->getTimestamp(),
+                ...$notifications
+            );
         }
 
         $this->sendNotifications($response, $user, ...$notifications);
@@ -81,6 +84,25 @@ class NotificationMailingService
         if ($this->settings->isMarkAsRead()) {
             $this->notificationGettingService->markAsViewed($VKUser);
         }
+    }
+
+    /**
+     * @param int $viewedTime
+     * @param NotificationDTO ...$notifications
+     * @return array
+     */
+    private function filterNotifications(int $viewedTime, NotificationDTO ...$notifications): array
+    {
+        $filteredNotifications = $this->viewedNotificationsFilteringService->filter($viewedTime, ...$notifications);
+
+        if (count($notifications) !== count($filteredNotifications)) {
+            $this->logger->info('Filter notification', [
+                'before' => count($notifications),
+                'after' => count($filteredNotifications)
+            ]);
+        }
+
+        return $filteredNotifications;
     }
 
     /**
