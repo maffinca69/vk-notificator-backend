@@ -13,4 +13,5 @@ return [
         SettingsCommand::class,
     ],
     'settings_url' => env('BOT_SETTINGS_URL', ''),
+    'base_api_url' => 'https://api.telegram.org/bot%s/',
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Services\Telegram\Client;
 
+use App\Infrastructure\Logger\TelegramClientLogger;
 use App\Services\Telegram\Client\Assembler\TelegramResponseDTOAssembler;
 use App\Services\Telegram\Client\DTO\TelegramResponseDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
@@ -10,7 +11,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Facades\Log;
 
 class HttpClient
 {
@@ -19,10 +19,12 @@ class HttpClient
     /**
      * @param TelegramResponseDTOAssembler $responseDTOAssembler
      * @param Client $client
+     * @param TelegramClientLogger $logger
      */
     public function __construct(
         private TelegramResponseDTOAssembler $responseDTOAssembler,
-        private Client $client
+        private Client $client,
+        private TelegramClientLogger $logger
     ) {
         $this->client = new Client([
             'base_uri' => $this->getBaseURI()
@@ -57,22 +59,25 @@ class HttpClient
             ]
         ];
 
-        Log::info('requestParams', $requestParams);
+        $this->logger->info('Telegram Request', [
+            'method' => $method,
+            'endpoint' => $endpoint,
+            'options' => $options,
+        ]);
 
         try {
             $response = $this->client->request($method, $endpoint, $options);
-        } catch (ClientException $e) {
-            $message = $e->getResponse()->getBody()->getContents();
-            Log::error($message);
-            throw new InvalidTelegramResponseException($message);
-        } catch (GuzzleException $exception) {
-            $responseBody = $exception->getResponse()->getBody(true);
-            Log::error($responseBody);
-            throw new InvalidTelegramResponseException($exception->getMessage());
+        } catch (ClientException|GuzzleException $e) {
+            $content = $e->getResponse()->getBody()->getContents();
+            $this->logger->critical('Telegram error!', [
+                'response' => $content,
+                'code' => $e->getCode()
+            ]);
+            throw new InvalidTelegramResponseException($content);
         }
 
         $response = json_decode($response->getBody()->getContents(), true);
-        Log::info('Telegram Response', $response);
+        $this->logger->info('Telegram Response', $response);
         return $this->responseDTOAssembler->create($response);
     }
 }
