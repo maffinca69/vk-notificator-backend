@@ -25,8 +25,10 @@ class NotificationGettingService
         self::WALL_FILTER_TYPES,
     ];
 
-    public function __construct(private NotificationResponseDTOAssembler $notificationResponseDTOAssembler)
-    {
+    public function __construct(
+        private NotificationResponseDTOAssembler $notificationResponseDTOAssembler,
+        private VKApiClient $apiClient
+    ) {
     }
 
     /**
@@ -45,7 +47,6 @@ class NotificationGettingService
         int $count = self::DEFAULT_NOTIFICATION_COUNT,
     ): NotificationResponseDTO {
         $accessToken = $VKUser->getAccessToken();
-        $vk = new VKApiClient();
 
         $params = [
             'count' => $count,
@@ -60,7 +61,7 @@ class NotificationGettingService
             $params['end_time'] = $endTime;
         }
 
-        $notifications = $vk->notifications()->get($accessToken, $params);
+        $notifications = $this->apiClient->notifications()->get($accessToken, $params);
 
         return $this->notificationResponseDTOAssembler->create($notifications);
     }
@@ -73,7 +74,6 @@ class NotificationGettingService
     public function markAsViewed(VKUser $VKUser): void
     {
         $accessToken = $VKUser->getAccessToken();
-        $vk = new VKApiClient();
-        $vk->notifications()->markAsViewed($accessToken);
+        $this->apiClient->notifications()->markAsViewed($accessToken);
     }
 }

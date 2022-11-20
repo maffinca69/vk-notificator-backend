@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 abstract class ServiceLogger implements LoggerInterface
 {
-    public const DATE_FORMAT = 'd.m.Y';
+    public const DATE_FORMAT = 'Y-m-d';
 
     /**
      * @param LoggerInterface $logger

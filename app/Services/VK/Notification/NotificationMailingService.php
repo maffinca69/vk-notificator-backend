@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification;
 
+use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Models\User;
 use App\Models\VKUser;
 use App\Services\Setting\Assembler\SettingDTOAssembler;
@@ -12,7 +13,6 @@ use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
 use App\Services\VK\Notification\Filter\ViewedNotificationsFilteringService;
-use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -40,7 +40,8 @@ class NotificationMailingService
         private NotificationSendingService $notificationSendingService,
         private UserSettingsGettingService $settingsGettingService,
         private SettingDTOAssembler $settingDTOAssembler,
-        private ViewedNotificationsFilteringService $viewedNotificationsFilteringService
+        private ViewedNotificationsFilteringService $viewedNotificationsFilteringService,
+        private NotificationMailingLogger $logger
     ) {
     }
 
@@ -63,7 +64,7 @@ class NotificationMailingService
 
         $notifications = $response->getNotifications();
         if (empty($notifications)) {
-            Log::info('No new notifications');
+            $this->logger->info('No new notifications');
             return;
         }
 

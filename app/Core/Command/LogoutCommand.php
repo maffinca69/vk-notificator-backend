@@ -53,14 +53,4 @@ final class LogoutCommand extends AbstractCommand
         $request->setText($message);
         $this->messageSendingService->send($request);
     }
-
-    /**
-     * @param MessageRequestDTO $request
-     * @throws InvalidTelegramResponseException
-     */
-    private function unavailableLogout(MessageRequestDTO $request): void
-    {
-        $request->setText(LogoutService::UNAVAILABLE_LOGOUT);
-        $this->messageSendingService->send($request);
-    }
 }

@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class VKUserCreatingService
 {
+    public function __construct(private UserGettingService $userGettingService)
+    {
+    }
+
     /**
      * @param VKOAuthDTO $oauthDTO
      * @return Model
@@ -18,7 +22,7 @@ class VKUserCreatingService
         $state = $oauthDTO->getState();
         $vkId = $oauthDTO->getUserId();
 
-        $user = User::query()->where(['uuid' => $state])->first();
+        $user = $this->userGettingService->getByUuid($state);
 
         return VKUser::query()->firstOrCreate(
             ['vk_id' => $vkId],

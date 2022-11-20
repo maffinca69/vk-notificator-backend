@@ -17,14 +17,13 @@ class UserCreatingService
     {
         $uuid = $from->getId();
 
-        return User::query()->firstOrCreate(
-            ['uuid' => $uuid],
+        return User::query()->create(
             [
                 'username' => $from->getUsername(),
                 'last_name' => $from->getLastName(),
                 'first_name' => $from->getFirstName(),
                 'uuid' => $uuid,
-            ],
+            ]
         );
     }
 }

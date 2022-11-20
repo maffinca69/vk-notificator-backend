@@ -15,7 +15,7 @@ class ViewedNotificationsFilteringService
     {
        return array_filter(
            $notifications,
-           fn($notification) => $notification->getDate()->getTimestamp() > $viewedTime
+           static fn($notification) => $notification->getDate()->getTimestamp() > $viewedTime
        );
     }
 }
