@@ -7,7 +7,9 @@ use App\Services\Telegram\Client\DTO\MessageRequestDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\Notification\DTO\NotificationParentDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use App\Services\VK\Notification\Formatter\Link\WallReplyLinkFormatter;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
 use App\Services\VK\Notification\Keyboard\UrlButtonCreatingService;
 use Psr\Container\ContainerExceptionInterface;
@@ -21,11 +23,13 @@ class NotificationSendingService
      * @param MessageSendingService $messageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
      * @param UrlButtonCreatingService $urlButtonCreatingService
+     * @param WallReplyLinkFormatter $wallReplyLinkFormatter
      */
     public function __construct(
         private MessageSendingService $messageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
         private UrlButtonCreatingService $urlButtonCreatingService,
+        private WallReplyLinkFormatter $wallReplyLinkFormatter,
     ) {
     }
 
@@ -52,8 +56,12 @@ class NotificationSendingService
         $messageRequest->setDisableWebPagePreview(true);
 
         $buttons[] = $this->appendNotificationUrlButton();
+
+        $parent = $notification->getParent();
+        $buttons[] = $parent ? $this->appendReplyUrlButton($parent) : [];
+
         $messageRequest->setReplyMarkup([
-            'inline_keyboard' => $buttons
+            'inline_keyboard' => array_filter($buttons)
         ]);
 
         $this->messageSendingService->send($messageRequest);
@@ -65,5 +73,15 @@ class NotificationSendingService
     private function appendNotificationUrlButton(): array
     {
         return $this->urlButtonCreatingService->create('Открыть уведомления', self::NOTIFICATION_PAGE_URL);
+    }
+
+    /**
+     * @param NotificationParentDTO $parent
+     * @return array
+     */
+    private function appendReplyUrlButton(NotificationParentDTO $parent): array
+    {
+        $url = $this->wallReplyLinkFormatter->format($parent);
+        return $this->urlButtonCreatingService->create('Открыть пост', $url);
     }
 }
