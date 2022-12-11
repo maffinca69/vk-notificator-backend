@@ -81,6 +81,11 @@ class NotificationSendingService
      */
     private function appendReplyUrlButton(NotificationParentDTO $parent): array
     {
+        // todo фикс, если лайкнули картинку
+        if ($parent->getPost() === null) {
+            return [];
+        }
+
         $url = $this->wallReplyLinkFormatter->format($parent);
         return $this->urlButtonCreatingService->create('Открыть пост', $url);
     }
