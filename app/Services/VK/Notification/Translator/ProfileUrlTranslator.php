@@ -4,11 +4,14 @@ namespace App\Services\VK\Notification\Translator;
 
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
 
-class ProfileUrlTranslator
+final class ProfileUrlTranslator
 {
     public const PROFILE_URL_REGEXP = '[id(\d*)\|([а-яА-Яa-zA-ZЁёЙй]*)]u';
 
     /**
+     * Search vk-formatted profile link and converting to markdown
+     * Example: [id123|Vladimir] -> [Vladimir](https://vk.com/id123)
+     *
      * @param string $text
      * @return string
      */
@@ -30,7 +33,7 @@ class ProfileUrlTranslator
         foreach ($groups as $match => $group) {
             $url = ProfileLinkFormatter::BASE_PROFILE_URL . $group['id'];
 
-            $links[$match] = sprintf( sprintf('[%s](%s)', $group['name'], $url));
+            $links[$match] = sprintf('[%s](%s)', $group['name'], $url);
         }
 
         return str_replace(array_keys($links), array_values($links), $text);

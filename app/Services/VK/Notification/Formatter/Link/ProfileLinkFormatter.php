@@ -5,13 +5,12 @@ namespace App\Services\VK\Notification\Formatter\Link;
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
 use App\Services\VK\Notification\DTO\ProfileDTO;
 
-class ProfileLinkFormatter
+final class ProfileLinkFormatter
 {
     public const BASE_PROFILE_URL = 'https://vk.com/id';
 
-    public function __construct(
-        private HyperLinkFormatter $hyperLinkFormatter
-    ) {
+    public function __construct(private HyperLinkFormatter $hyperLinkFormatter)
+    {
     }
 
     /**

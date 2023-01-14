@@ -81,6 +81,7 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         $type = $notification->getType();
         $parent = $notification->getParent();
 
+        // todo разнести на разные форматтеры
         return match ($type) {
             NotificationTypesDictionary::LIKE_COMMENT_PHOTO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => 'ваш комментарий',

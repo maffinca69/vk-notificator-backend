@@ -8,6 +8,7 @@ use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\User\VKUserCreatingService;
 use App\Services\VK\OAuth\Assembler\VKOauthDTOAssembler;
+use App\Services\VK\OAuth\DTO\VKOAuthDTO;
 
 class VKOauthCallbackService
 {
@@ -26,8 +27,8 @@ class VKOauthCallbackService
      */
     public function process(array $params)
     {
-        $oauth = $this->VKOauthDTOAssembler->create($params);
-        $vkUser = $this->VKUserCreatingService->create($oauth);
+        $oauthDTO = $this->VKOauthDTOAssembler->create($params);
+        $vkUser = $this->VKUserCreatingService->create($oauthDTO);
         $this->sendSuccessfulAuthMessage($vkUser->user);
     }
 

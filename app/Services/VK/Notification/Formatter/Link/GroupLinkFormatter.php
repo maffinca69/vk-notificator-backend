@@ -5,7 +5,7 @@ namespace App\Services\VK\Notification\Formatter\Link;
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
 use App\Services\VK\Notification\DTO\GroupDTO;
 
-class GroupLinkFormatter
+final class GroupLinkFormatter
 {
     public const BASE_GROUP_URL = 'https://vk.com/public';
 

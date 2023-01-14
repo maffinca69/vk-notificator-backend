@@ -5,7 +5,7 @@ namespace App\Services\VK\Notification\Formatter\Link;
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
 
-class VideoLinkFormatter
+final class VideoLinkFormatter
 {
     public const VK_VIDEO_BASE_URL = 'https://vk.com/video';
     public const VIDEO_NAME = 'Видеозапись';

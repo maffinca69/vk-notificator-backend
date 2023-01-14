@@ -12,6 +12,10 @@ class VKOauthDTOAssembler
      */
     public function create(array $params): VKOAuthDTO
     {
+        if (!isset($params['access_token'], $params['user_id'])) {
+            throw new \RuntimeException('access_token and user_id must be not null');
+        }
+
         $oauthDTO = new VKOAuthDTO(
             $params['access_token'],
             $params['user_id']

@@ -4,7 +4,7 @@ namespace App\Services\VK\Notification\Formatter\Link;
 
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
 
-class WallReplyLinkFormatter
+final class WallReplyLinkFormatter
 {
     public const WALL_URL = 'https://vk.com/wall%s_%s?reply=%s';
 

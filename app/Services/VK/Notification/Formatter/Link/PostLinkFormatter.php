@@ -4,7 +4,7 @@ namespace App\Services\VK\Notification\Formatter\Link;
 
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
 
-class PostLinkFormatter
+final class PostLinkFormatter
 {
     public const BASE_POST_URL = 'https://vk.com/wall';
 
