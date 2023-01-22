@@ -1,22 +1,13 @@
 version: '3'
 services:
-  fpm:
-    build: ./fpm
-    tty: true
-    working_dir: /var/www/notificator
-    volumes:
-      - ../.:/var/www/notificator:cached
-      - ./fpm/config/php.ini-local:/usr/local/etc/php/php.ini:ro
-
-  nginx:
-    image: arm64v8/nginx:stable-alpine
-    working_dir: /var/www/notificator
+  nginx-unit:
+    image: maffinca69/nginx-unit-m1:latest
+    working_dir: /var/www/
     ports:
       - "80:80"
     volumes:
-      - ../.:/var/www/notificator:cached
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:delegated
-      - ./nginx/api.conf:/etc/nginx/conf.d/api.conf:delegated
+      - ./unit/config.json:/docker-entrypoint.d/config.json:cached
+      - ./../.:/var/www:cached
 
   postgres:
     image: arm64v8/postgres:14.5-alpine
