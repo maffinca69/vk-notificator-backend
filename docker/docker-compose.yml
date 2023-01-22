@@ -1,13 +1,13 @@
 version: '3'
 services:
   nginx-unit:
-    image: maffinca69/nginx-unit-m1:latest
+    build: ./unit
     working_dir: /var/www/
     ports:
       - "80:80"
     volumes:
-      - ./unit/config.json:/docker-entrypoint.d/config.json:cached
-      - ./../.:/var/www:cached
+      - ./unit/config.json:/docker-entrypoint.d/config.json
+      - ./../.:/var/www
 
   postgres:
     image: arm64v8/postgres:14.5-alpine
