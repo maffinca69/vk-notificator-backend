@@ -25,7 +25,7 @@ class VKOauthCallbackService
      * @param array $params
      * @throws InvalidTelegramResponseException
      */
-    public function process(array $params)
+    public function process(array $params): void
     {
         $oauthDTO = $this->VKOauthDTOAssembler->create($params);
         $vkUser = $this->VKUserCreatingService->create($oauthDTO);

@@ -35,6 +35,6 @@ class TelegramWebhookService
         }
 
         // Text messages/audio/sticker etc...
-        $this->logger->warning('Not implemented yet action');
+        $this->logger->warning('Not implemented yet action', $update->getJson());
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Services\Telegram\Client;
 
+use App\Infrastructure\Config\ConfigService;
 use App\Infrastructure\Logger\TelegramClientLogger;
 use App\Services\Telegram\Client\Assembler\TelegramResponseDTOAssembler;
 use App\Services\Telegram\Client\DTO\TelegramResponseDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
-use App\Services\Telegram\Client\Request\Request;
+use App\Services\Telegram\Client\Request\AbstractRequest;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -20,11 +21,13 @@ class HttpClient
      * @param TelegramResponseDTOAssembler $responseDTOAssembler
      * @param Client $client
      * @param TelegramClientLogger $logger
+     * @param ConfigService $configService
      */
     public function __construct(
         private TelegramResponseDTOAssembler $responseDTOAssembler,
         private Client $client,
-        private TelegramClientLogger $logger
+        private TelegramClientLogger $logger,
+        private ConfigService $configService
     ) {
         $this->client = new Client([
             'base_uri' => $this->getBaseURI()
@@ -36,17 +39,22 @@ class HttpClient
      */
     private function getBaseURI(): string
     {
-        $token = config('bot.token');
+        $config = $this->configService->get('bot');
+        $token = $config['token'] ?? null;
+
+        if ($token === null) {
+            throw new \RuntimeException('Invalid configure bot. Token is required');
+        }
 
         return sprintf(self::BASE_API_URL, $token);
     }
 
     /**
-     * @param Request $request
+     * @param AbstractRequest $request
      * @return TelegramResponseDTO
      * @throws InvalidTelegramResponseException
      */
-    public function sendRequest(Request $request): TelegramResponseDTO
+    public function sendRequest(AbstractRequest $request): TelegramResponseDTO
     {
         $endpoint = $request->getEndpoint();
         $requestParams = $request->getParams();
@@ -59,7 +67,7 @@ class HttpClient
             ]
         ];
 
-        $this->logger->info('Telegram Request', [
+        $this->logger->info('Telegram AbstractRequest', [
             'method' => $method,
             'endpoint' => $endpoint,
             'options' => $options,

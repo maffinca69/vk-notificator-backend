@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
+use App\Services\Pluralization\PluralizingService;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\ProfileDTO;
@@ -16,7 +17,8 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         private ProfileForNotificationGettingService $profileForNotificationGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,
         private ProfileUrlTranslator $profileUrlTranslator,
-        private VideoLinkFormatter $videoUrlFormatter
+        private VideoLinkFormatter $videoUrlFormatter,
+        private PluralizingService $pluralizingService
     ) {
     }
 
@@ -45,11 +47,12 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
 
         if ($countFeedback > 1) {
             $additionLikeCount = $countFeedback - 1;
-            $fullName .= sprintf(' и еще %s %s', $additionLikeCount, ngettext(
-                'человек',
-                'человека',
-                $additionLikeCount
-            ));
+            $pluralization = $this->pluralizingService->plural(
+                $additionLikeCount,
+                ['человек', 'человека'],
+                true
+            );
+            $fullName .= sprintf(' и еще %s', $pluralization);
         }
 
         return sprintf(

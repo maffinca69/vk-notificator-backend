@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\NotificationsSendingCommand;
-use App\Console\Commands\SettingSyncCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +15,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         NotificationsSendingCommand::class,
-        SettingSyncCommand::class,
     ];
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram;
 
-class UrlGenerator
+class ProfileUrlCreatingService
 {
     private const BASE_URL = 'https://t.me/';
 
@@ -10,7 +10,7 @@ class UrlGenerator
      * @param string $username
      * @return string
      */
-    public function generate(string $username): string
+    public function create(string $username): string
     {
         return self::BASE_URL . $username;
     }

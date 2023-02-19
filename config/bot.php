@@ -1,7 +1,6 @@
 <?php
 
 use App\Core\Command\LogoutCommand;
-use App\Core\Command\SettingsCommand;
 use App\Core\Command\StartCommand;
 
 return [
@@ -10,8 +9,6 @@ return [
     'commands' => [
         StartCommand::class,
         LogoutCommand::class,
-        SettingsCommand::class,
     ],
-    'settings_url' => env('BOT_SETTINGS_URL', ''),
     'base_api_url' => 'https://api.telegram.org/bot%s/',
 ];

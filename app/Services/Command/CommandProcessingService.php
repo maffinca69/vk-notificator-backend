@@ -5,12 +5,11 @@ namespace App\Services\Command;
 use App\Core\Command\AbstractCommand;
 use App\Core\DTO\UpdateDTO;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class CommandProcessingService
 {
-    public function __construct(private ContainerInterface $container)
+    public function __construct(private CommandsGettingService $commandsGettingService)
     {
     }
 
@@ -26,7 +25,7 @@ class CommandProcessingService
             return;
         }
 
-        $commands = $this->container->get('bot-commands');
+        $commands = $this->commandsGettingService->get();
 
         /**
          * @var string $signature

@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram\Client\Request;
 
-abstract class Request
+abstract class AbstractRequest
 {
     /**
      * @param string $endpoint

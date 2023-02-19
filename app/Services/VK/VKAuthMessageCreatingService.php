@@ -3,8 +3,8 @@
 namespace App\Services\VK;
 
 use App\Core\DTO\UpdateDTO;
+use App\Infrastructure\Config\ConfigService;
 use App\Services\Telegram\Client\DTO\MessageRequestDTO;
-use Illuminate\Config\Repository as Config;
 
 class VKAuthMessageCreatingService
 {
@@ -15,9 +15,9 @@ class VKAuthMessageCreatingService
     private const REVOKE = true;
 
     /**
-     * @param Config $config
+     * @param ConfigService $configService
      */
-    public function __construct(private Config $config)
+    public function __construct(private ConfigService $configService)
     {
     }
 
@@ -51,7 +51,7 @@ class VKAuthMessageCreatingService
      */
     private function createOAuthUrl(string $state): string
     {
-        $vkAppConfig = $this->config->get('vk-app');
+        $vkAppConfig = $this->configService->get('vk-app');
 
         $queryParams = [
             'client_id' => $vkAppConfig['app_id'],

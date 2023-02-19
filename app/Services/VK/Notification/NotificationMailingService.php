@@ -5,14 +5,9 @@ namespace App\Services\VK\Notification;
 use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Models\User;
 use App\Models\VKUser;
-use App\Services\Setting\Assembler\SettingDTOAssembler;
-use App\Services\Setting\DTO\SettingDTO;
-use App\Services\Setting\Exception\InvalidSettingTypeException;
-use App\Services\Setting\UserSettingsGettingService;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
-use App\Services\VK\Notification\Filter\ViewedNotificationsFilteringService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -24,24 +19,17 @@ class NotificationMailingService
     // Telegram API limit 30 messages as per second
     private const MAX_MAILING_LIMIT = 30;
     private const TIMEOUT = 1;
-    private SettingDTO $settings;
 
     /**
      * @param LastNotificationDateCacheService $lastNotificationDateCacheService
      * @param NotificationGettingService $notificationGettingService
      * @param NotificationSendingService $notificationSendingService
-     * @param UserSettingsGettingService $settingsGettingService
-     * @param SettingDTOAssembler $settingDTOAssembler
-     * @param ViewedNotificationsFilteringService $viewedNotificationsFilteringService
      * @param NotificationMailingLogger $logger
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
         private NotificationSendingService $notificationSendingService,
-        private UserSettingsGettingService $settingsGettingService,
-        private SettingDTOAssembler $settingDTOAssembler,
-        private ViewedNotificationsFilteringService $viewedNotificationsFilteringService,
         private NotificationMailingLogger $logger
     ) {
     }
@@ -52,14 +40,11 @@ class NotificationMailingService
      * @throws InvalidArgumentException
      * @throws InvalidTelegramResponseException
      * @throws NotFoundExceptionInterface
-     * @throws InvalidSettingTypeException
      * @throws VKApiException
      * @throws VKClientException
      */
     public function send(VKUser $VKUser): void
     {
-        $this->prepareSettings($VKUser->user);
-
         $startTime = $this->getStartTime($VKUser);
         $response = $this->notificationGettingService->get($VKUser, $startTime);
 
@@ -71,49 +56,8 @@ class NotificationMailingService
 
         $user = $VKUser->user;
 
-        if (!$this->settings->isSendViewedNotifications()) {
-            $notifications = $this->filterNotifications(
-                $response->getLastViewed()->getTimestamp(),
-                ...$notifications
-            );
-        }
-
         $this->sendNotifications($response, $user, ...$notifications);
         $this->saveLastCheckTime($response, $VKUser);
-
-        if ($this->settings->isMarkAsRead()) {
-            $this->notificationGettingService->markAsViewed($VKUser);
-        }
-    }
-
-    /**
-     * @param int $viewedTime
-     * @param NotificationDTO ...$notifications
-     * @return array
-     */
-    private function filterNotifications(int $viewedTime, NotificationDTO ...$notifications): array
-    {
-        $filteredNotifications = $this->viewedNotificationsFilteringService->filter($viewedTime, ...$notifications);
-
-        if (count($notifications) !== count($filteredNotifications)) {
-            $this->logger->info('Filter notification', [
-                'before' => count($notifications),
-                'after' => count($filteredNotifications)
-            ]);
-        }
-
-        return $filteredNotifications;
-    }
-
-    /**
-     * @param User $user
-     * @throws InvalidArgumentException
-     * @throws InvalidSettingTypeException
-     */
-    private function prepareSettings(User $user): void
-    {
-        $settings = $this->settingsGettingService->get($user);
-        $this->settings = $this->settingDTOAssembler->create($settings);
     }
 
     /**

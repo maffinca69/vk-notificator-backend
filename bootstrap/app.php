@@ -1,7 +1,6 @@
 <?php
 
 use Anik\Form\FormRequestServiceProvider;
-use App\Providers\CommandServiceProvider;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -65,8 +64,6 @@ $app->singleton(
 $app->configure('app');
 $app->configure('cache');
 $app->configure('database');
-$app->configure('bot');
-$app->configure('vk-app');
 
 /*
 |--------------------------------------------------------------------------
@@ -101,7 +98,6 @@ $app->configure('vk-app');
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\CacheServiceProvider::class);
 $app->register(FormRequestServiceProvider::class);
-$app->register(CommandServiceProvider::class);
 $app->register(App\Providers\LoggerServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
@@ -116,10 +112,6 @@ $app->register(App\Providers\LoggerServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
-$app->router->group(['namespace' => 'App\Http\Controllers\API'], static function ($router) {
-    require __DIR__.'/../routes/api.php';
-});
 
 $app->router->group(['namespace' => 'App\Http\Controllers'], static function ($router) {
     require __DIR__.'/../routes/web.php';
