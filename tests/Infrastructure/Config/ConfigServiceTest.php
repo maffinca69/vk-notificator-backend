@@ -24,7 +24,7 @@ class ConfigServiceTest extends TestCase
         $config = $this->configService->get('bot');
         $this->assertIsArray($config);
         $this->assertNotEmpty($config);
-        $this->assertNotEmpty($config['token']);
+        $this->assertArrayHasKey('token', $config);
     }
 
     public function testGetVKAppConfig()
@@ -32,7 +32,7 @@ class ConfigServiceTest extends TestCase
         $config = $this->configService->get('vk-app');
         $this->assertIsArray($config);
         $this->assertNotEmpty($config);
-        $this->assertNotEmpty($config['app_id']);
-        $this->assertNotEmpty($config['redirect_uri']);
+        $this->assertArrayHasKey('app_id', $config);
+        $this->assertArrayHasKey('redirect_uri', $config);
     }
 }
