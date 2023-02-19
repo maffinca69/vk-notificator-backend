@@ -17,9 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Translator::class, static function (Application $app) {
-            return $app->make('translator');
-        });
+        $this->app->bind(Translator::class, static fn(Application $app) => $app->make('translator'));
 
         $this->app->bind(ContainerInterface::class, Container::class);
     }
