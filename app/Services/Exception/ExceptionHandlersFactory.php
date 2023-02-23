@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Internal\Exception;
+namespace App\Services\Exception;
 
 use App\Core\Exception\AbstractAPIException;
 use App\Core\Exception\AbstractApplicationException;

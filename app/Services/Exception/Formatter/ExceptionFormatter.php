@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Internal\Exception\Formatter;
+namespace App\Services\Exception\Formatter;
 
 use Illuminate\Translation\Translator;
 

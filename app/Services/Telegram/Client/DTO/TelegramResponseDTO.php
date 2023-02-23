@@ -6,19 +6,14 @@ use App\Core\DTO\MessageDTO;
 
 class TelegramResponseDTO
 {
-    private bool $isOk;
-
-    /** @var array<MessageDTO>|bool  */
-    private array|bool $result;
-
     /**
      * @param bool $isOk
-     * @param array|bool $result
+     * @param array<MessageDTO>|bool $result
      */
-    public function __construct(bool $isOk, array|bool $result)
-    {
-        $this->isOk = $isOk;
-        $this->result = $result;
+    public function __construct(
+        private bool $isOk,
+        private array|bool $result
+    ) {
     }
 
     /**

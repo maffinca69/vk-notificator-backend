@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Services\Internal\Exception\ExceptionHandlersFactory;
+use App\Services\Exception\ExceptionHandlersFactory;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

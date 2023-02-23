@@ -67,11 +67,7 @@ class HttpClient
             ]
         ];
 
-        $this->logger->info('Telegram AbstractRequest', [
-            'method' => $method,
-            'endpoint' => $endpoint,
-            'options' => $options,
-        ]);
+        $this->logRequest($request);
 
         try {
             $response = $this->client->request($method, $endpoint, $options);
@@ -85,7 +81,29 @@ class HttpClient
         }
 
         $response = json_decode($response->getBody()->getContents(), true);
-        $this->logger->info('Telegram Response', $response);
+        $this->logResponse($response);
         return $this->responseDTOAssembler->create($response);
+    }
+
+    /**
+     * @param AbstractRequest $request
+     * @return void
+     */
+    private function logRequest(AbstractRequest $request): void
+    {
+        $this->logger->info('Telegram request', [
+            'method' => $request->getMethod(),
+            'endpoint' => $request->getEndpoint(),
+            'options' => $request->getParams(),
+        ]);
+    }
+
+    /**
+     * @param array $response
+     * @return void
+     */
+    private function logResponse(array $response): void
+    {
+        $this->logger->info('Telegram Response', $response);
     }
 }

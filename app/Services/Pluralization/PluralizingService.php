@@ -5,12 +5,12 @@ namespace App\Services\Pluralization;
 class PluralizingService
 {
     /**
-     * @param string $value
+     * @param int $value
      * @param array $variants
      * @param bool $includeValue
      * @return string
      */
-    public function plural(string $value, array $variants, bool $includeValue = false): string
+    public function plural(int $value, array $variants, bool $includeValue = false): string
     {
         $num = $value % 100;
         if ($num > 19) {

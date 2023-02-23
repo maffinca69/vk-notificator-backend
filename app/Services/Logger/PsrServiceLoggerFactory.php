@@ -2,11 +2,8 @@
 
 namespace App\Services\Logger;
 
-use App\Infrastructure\Logger\TelegramClientLogger;
-use Illuminate\Support\Facades\Log;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class PsrServiceLoggerFactory

@@ -2,10 +2,9 @@
 
 namespace App\Services\Command;
 
-use App\Core\Command\AbstractCommand;
+use App\Core\Command\CommandInterface;
 use App\Core\DTO\UpdateDTO;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Services\Command\Exception\CommandNotFound;
 
 class CommandProcessingService
 {
@@ -15,8 +14,6 @@ class CommandProcessingService
 
     /**
      * @param UpdateDTO $update
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function process(UpdateDTO $update): void
     {
@@ -26,15 +23,31 @@ class CommandProcessingService
         }
 
         $commands = $this->commandsGettingService->get();
+        $signature = $message->getCommand()->getCommand();
 
+        $command = $this->findCommandBySignature($commands, $signature);
+        $command->handle($update);
+    }
+
+    /**
+     * @throws CommandNotFound
+     */
+    private function findCommandBySignature(array $commands, string $requestedCommand): CommandInterface
+    {
         /**
          * @var string $signature
-         * @var AbstractCommand $command
+         * @var CommandInterface $command
          */
         foreach ($commands as $signature => $command) {
-            if ($message->getCommand()->getCommand() === $signature) {
-                $command->handle($update);
+            if ($requestedCommand === $signature) {
+                return $command;
             }
         }
+
+        throw new CommandNotFound('Not found available command', [
+            'method' => __METHOD__,
+            'requestedCommand' => $requestedCommand,
+            'commands' => array_keys($commands)
+        ]);
     }
 }

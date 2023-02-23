@@ -2,8 +2,8 @@
 
 namespace App\Exceptions\Handlers;
 
-use App\Services\Internal\Exception\ExceptionHandlerInterface;
-use App\Services\Internal\Exception\Formatter\ExceptionFormatter;
+use App\Services\Exception\ExceptionHandlerInterface;
+use App\Services\Exception\Formatter\ExceptionFormatter;
 use Illuminate\Http\Response;
 
 class ApiExceptionHandler implements ExceptionHandlerInterface

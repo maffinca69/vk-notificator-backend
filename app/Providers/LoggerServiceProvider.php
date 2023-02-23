@@ -2,36 +2,33 @@
 
 namespace App\Providers;
 
-use App\Infrastructure\Logger\NotificationMailingLogger;
-use App\Infrastructure\Logger\TelegramClientLogger;
-use App\Infrastructure\Logger\TelegramWebhookLogger;
+use App\Infrastructure\Config\ConfigService;
 use App\Services\Logger\PsrServiceLoggerFactory;
 use Illuminate\Support\ServiceProvider;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class LoggerServiceProvider extends ServiceProvider
 {
     /**
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function register(): void
     {
-        $this->app->bind(TelegramClientLogger::class, static function (ContainerInterface $container) {
-            /** @var PsrServiceLoggerFactory $psrServiceLoggerFactory */
-            $psrServiceLoggerFactory = $container->get(PsrServiceLoggerFactory::class);
-            return $psrServiceLoggerFactory->create(TelegramClientLogger::class);
-        });
+        /** @var ConfigService $configService */
+        $configService = $this->app->get(ConfigService::class);
+        $loggers = $configService->get('logger');
 
-        $this->app->bind(NotificationMailingLogger::class, static function (ContainerInterface $container) {
-            /** @var PsrServiceLoggerFactory $psrServiceLoggerFactory */
-            $psrServiceLoggerFactory = $container->get(PsrServiceLoggerFactory::class);
-            return $psrServiceLoggerFactory->create(NotificationMailingLogger::class);
-        });
+        foreach ($loggers as $logger) {
+            $this->app->singleton($logger, static function (ContainerInterface $container) use ($logger) {
+                /** @var PsrServiceLoggerFactory $psrServiceLoggerFactory */
+                $psrServiceLoggerFactory = $container->get(PsrServiceLoggerFactory::class);
 
-        $this->app->bind(TelegramWebhookLogger::class, static function (ContainerInterface $container) {
-            /** @var PsrServiceLoggerFactory $psrServiceLoggerFactory */
-            $psrServiceLoggerFactory = $container->get(PsrServiceLoggerFactory::class);
-            return $psrServiceLoggerFactory->create(TelegramWebhookLogger::class);
-        });
+                return $psrServiceLoggerFactory->create($logger);
+            });
+        }
     }
 }

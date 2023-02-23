@@ -22,8 +22,6 @@ class TelegramWebhookService
 
     /**
      * @param UpdateDTO $update
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function process(UpdateDTO $update)
     {
