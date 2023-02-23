@@ -4,18 +4,16 @@ namespace App\Services\Telegram;
 
 use App\Core\DTO\UpdateDTO;
 use App\Infrastructure\Logger\TelegramWebhookLogger;
-use App\Services\Command\CommandProcessingService;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Services\Command\CommandHandlingService;
 
 class TelegramWebhookService
 {
     /**
-     * @param CommandProcessingService $commandProcessingService
+     * @param CommandHandlingService $commandHandlingService
      * @param TelegramWebhookLogger $logger
      */
     public function __construct(
-        private CommandProcessingService $commandProcessingService,
+        private CommandHandlingService $commandHandlingService,
         private TelegramWebhookLogger $logger
     ) {
     }
@@ -28,7 +26,7 @@ class TelegramWebhookService
         $message = $update->getMessage() ?? $update->getCallbackQuery();
 
         if ($message->isCommand()) {
-            $this->commandProcessingService->process($update);
+            $this->commandHandlingService->handle($update);
             return;
         }
 

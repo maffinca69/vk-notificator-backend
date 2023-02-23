@@ -6,7 +6,7 @@ use App\Core\Command\CommandInterface;
 use App\Core\DTO\UpdateDTO;
 use App\Services\Command\Exception\CommandNotFound;
 
-class CommandProcessingService
+class CommandHandlingService
 {
     public function __construct(private CommandsGettingService $commandsGettingService)
     {
@@ -15,7 +15,7 @@ class CommandProcessingService
     /**
      * @param UpdateDTO $update
      */
-    public function process(UpdateDTO $update): void
+    public function handle(UpdateDTO $update): void
     {
         $message = $update->getMessage();
         if (!$message->isCommand()) {
