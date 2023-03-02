@@ -23,13 +23,13 @@ class NotificationMailingService
     /**
      * @param LastNotificationDateCacheService $lastNotificationDateCacheService
      * @param NotificationGettingService $notificationGettingService
-     * @param NotificationSendingService $notificationSendingService
+     * @param NotificationSendingServiceFactory $notificationSendingServiceFactory
      * @param NotificationMailingLogger $logger
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
-        private NotificationSendingService $notificationSendingService,
+        private NotificationSendingServiceFactory $notificationSendingServiceFactory,
         private NotificationMailingLogger $logger
     ) {
     }
@@ -46,7 +46,7 @@ class NotificationMailingService
     public function send(VKUser $VKUser): void
     {
         $startTime = $this->getStartTime($VKUser);
-        $response = $this->notificationGettingService->get($VKUser, $startTime);
+        $response = $this->notificationGettingService->get($VKUser);
 
         $notifications = $response->getNotifications();
         if (empty($notifications)) {
@@ -81,14 +81,14 @@ class NotificationMailingService
      * @param User $recipient
      * @param NotificationDTO ...$notifications
      * @throws ContainerExceptionInterface
-     * @throws InvalidTelegramResponseException
      * @throws NotFoundExceptionInterface
      */
     private function sendNotifications(NotificationResponseDTO $response, User $recipient, NotificationDTO ...$notifications): void
     {
         $sendingCount = 0;
         foreach ($notifications as $notification) {
-            $this->notificationSendingService->send(
+            $notificationSendingService = $this->notificationSendingServiceFactory->create($notification);
+            $notificationSendingService->send(
                 $response,
                 $notification,
                 $recipient

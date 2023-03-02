@@ -4,10 +4,10 @@ namespace App\Services\Telegram\Client;
 
 use App\Infrastructure\Config\ConfigService;
 use App\Infrastructure\Logger\TelegramClientLogger;
-use App\Services\Telegram\Client\Assembler\TelegramResponseDTOAssembler;
-use App\Services\Telegram\Client\DTO\TelegramResponseDTO;
+use App\Services\Telegram\Assembler\TelegramResponseDTOAssembler;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\Client\Request\AbstractRequest;
+use App\Services\Telegram\DTO\TelegramResponseDTO;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;

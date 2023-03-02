@@ -2,10 +2,16 @@
 
 namespace App\Services\VK\Notification;
 
+use App\Core\DTO\PhotoDTO;
 use App\Models\User;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Services\Telegram\DTO\InputMedia\AbstractInputMedia;
+use App\Services\Telegram\DTO\InputMedia\InputMediaPhotoDTO;
+use App\Services\Telegram\DTO\MediaGroupRequestDTO;
 use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\MediaGroupMessageSendingService;
 use App\Services\Telegram\MessageSendingService;
+use App\Services\VK\DTO\Attachment\AttachmentDTO;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
@@ -15,18 +21,18 @@ use App\Services\VK\Notification\Keyboard\UrlButtonCreatingService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class NotificationSendingService implements NotificationSendingInterface
+class NotificationWithAttachmentsSendingService implements NotificationSendingInterface
 {
     public const NOTIFICATION_PAGE_URL = 'https://vk.com/feed?section=notifications';
 
     /**
-     * @param MessageSendingService $messageSendingService
+     * @param MediaGroupMessageSendingService $mediaGroupMessageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
      * @param UrlButtonCreatingService $urlButtonCreatingService
      * @param WallReplyLinkFormatter $wallReplyLinkFormatter
      */
     public function __construct(
-        private MessageSendingService $messageSendingService,
+        private MediaGroupMessageSendingService $mediaGroupMessageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
         private UrlButtonCreatingService $urlButtonCreatingService,
         private WallReplyLinkFormatter $wallReplyLinkFormatter,
@@ -50,10 +56,15 @@ class NotificationSendingService implements NotificationSendingInterface
         $notificationFormatter = $this->notificationFormatterFactory->create($notification);
         $message = $notificationFormatter->format($notification, $profiles, $groups);
 
-        $messageRequest = new MessageRequestDTO($recipient->getUuid());
-        $messageRequest->setText($message);
+        $attachments = $notification->getParent()?->getPost()?->getAttachments() ?: [];
+
+        $media = $this->getMedia($attachments, $message);
+
+        $messageRequest = new MediaGroupRequestDTO(
+            $recipient->getUuid(),
+            $media
+        );
         $messageRequest->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
-        $messageRequest->setDisableWebPagePreview(true);
 
         $buttons[] = $this->appendNotificationUrlButton();
 
@@ -64,7 +75,30 @@ class NotificationSendingService implements NotificationSendingInterface
             'inline_keyboard' => array_filter($buttons)
         ]);
 
-        $this->messageSendingService->send($messageRequest);
+        $this->mediaGroupMessageSendingService->send($messageRequest);
+    }
+
+    /**
+     * @param array<AttachmentDTO> $attachments
+     * @return array<AbstractInputMedia>
+     */
+    private function getMedia(array $attachments, string $caption): array
+    {
+        $media = [];
+
+        foreach ($attachments as $attachment) {
+            $photo = $attachment->getPhoto();
+            if ($photo !== null) {
+                $photoSizes = $photo->getSizes() ?: [];
+                $maxSize = end($photoSizes);
+                $media[] = new InputMediaPhotoDTO(
+                    $maxSize->getUrl(),
+                    empty($media) ? $caption : null
+                );
+            }
+        }
+
+        return $media;
     }
 
     /**
@@ -81,11 +115,6 @@ class NotificationSendingService implements NotificationSendingInterface
      */
     private function appendReplyUrlButton(NotificationParentDTO $parent): array
     {
-        // todo фикс, если лайкнули картинку
-        if ($parent->getPost() === null) {
-            return [];
-        }
-
         $url = $this->wallReplyLinkFormatter->format($parent);
         return $this->urlButtonCreatingService->create('Открыть пост', $url);
     }

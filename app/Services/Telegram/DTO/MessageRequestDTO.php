@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram\Client\DTO;
+namespace App\Services\Telegram\DTO;
 
 class MessageRequestDTO
 {

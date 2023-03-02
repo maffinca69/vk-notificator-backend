@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification\Assembler;
 
+use App\Services\VK\Notification\Assembler\Attachment\AttachmentDTOAssembler;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationFeedbackDTO;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
@@ -10,6 +11,10 @@ use App\Services\VK\Notification\DTO\NotificationParentSizeDTO;
 
 class NotificationDTOAssembler
 {
+    public function __construct(private AttachmentDTOAssembler $attachmentDTOAssembler)
+    {
+    }
+
     /**
      * @param array $params
      * @return NotificationDTO
@@ -121,6 +126,12 @@ class NotificationDTOAssembler
 
         if (isset($params['short_text_date'])) {
             $post->setShortTextRate($params['short_text_date']);
+        }
+
+        $attachments = $params['attachments'] ?: [];
+        foreach ($attachments as $attachment) {
+            $attachment = $this->attachmentDTOAssembler->create($attachment);
+            $post->addAttachment($attachment);
         }
 
         return $post;

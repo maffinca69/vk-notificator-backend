@@ -20,7 +20,7 @@ class PluralizingService
         $result = match ($num) {
             1 => $variants[0],
             2, 3, 4 => $variants[1],
-            default => $variants[2],
+            default => $variants[0],
         };
 
         return $includeValue ? sprintf('%s %s', $value, $result) : $result;

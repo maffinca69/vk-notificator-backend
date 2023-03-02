@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Telegram\Client\Assembler;
+namespace App\Services\Telegram\Assembler;
 
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
-use App\Services\Telegram\Client\DTO\TelegramResponseDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Services\Telegram\DTO\TelegramResponseDTO;
 
 class TelegramResponseDTOAssembler
 {

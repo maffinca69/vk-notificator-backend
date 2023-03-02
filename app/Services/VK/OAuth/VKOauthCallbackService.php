@@ -3,12 +3,11 @@
 namespace App\Services\VK\OAuth;
 
 use App\Models\User;
-use App\Services\Telegram\Client\DTO\MessageRequestDTO;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\User\VKUserCreatingService;
 use App\Services\VK\OAuth\Assembler\VKOauthDTOAssembler;
-use App\Services\VK\OAuth\DTO\VKOAuthDTO;
 
 class VKOauthCallbackService
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Telegram\Client\Assembler;
+namespace App\Services\Telegram\Assembler;
 
 use App\Services\Telegram\Client\Request\SendMessageRequest;
-use App\Services\Telegram\Client\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\MessageRequestDTO;
 
 class SendMessageRequestAssembler
 {

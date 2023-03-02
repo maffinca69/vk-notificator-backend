@@ -4,7 +4,7 @@ namespace App\Services\VK;
 
 use App\Core\DTO\UpdateDTO;
 use App\Infrastructure\Config\ConfigService;
-use App\Services\Telegram\Client\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\MessageRequestDTO;
 
 class VKAuthMessageCreatingService
 {

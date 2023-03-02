@@ -2,6 +2,8 @@
 
 namespace App\Services\VK\Notification\DTO;
 
+use App\Services\VK\DTO\Attachment\AttachmentDTO;
+
 class NotificationParentPostDTO
 {
     private int $id;
@@ -13,6 +15,7 @@ class NotificationParentPostDTO
     private string $text;
     private int $singerId;
     private float $shortTextRate;
+    private array $attachments = [];
 
     public function __construct(int $id)
     {
@@ -153,5 +156,29 @@ class NotificationParentPostDTO
     public function setShortTextRate(float $shortTextRate): void
     {
         $this->shortTextRate = $shortTextRate;
+    }
+
+    /**
+     * @return array<AttachmentDTO>
+     */
+    public function getAttachments(): array
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * @param array<AttachmentDTO> $attachments
+     */
+    public function setAttachments(array $attachments): void
+    {
+        $this->attachments = $attachments;
+    }
+
+    /**
+     * @param AttachmentDTO $attachment
+     */
+    public function addAttachment(AttachmentDTO $attachment): void
+    {
+        $this->attachments[] = $attachment;
     }
 }
