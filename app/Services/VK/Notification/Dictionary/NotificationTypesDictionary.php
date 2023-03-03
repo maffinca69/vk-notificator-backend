@@ -10,6 +10,7 @@ final class NotificationTypesDictionary
     public const LIKE_VIDEO_TYPE = 'like_video';
     public const LIKE_COMMENT_PHOTO_TYPE = 'like_comment_photo';
     public const LIKE_COMMENT_VIDEO_TYPE = 'like_comment_video';
+    public const LIKE_COMMENT_TOPIC_TYPE = 'like_comment_topic';
 
     public const MENTION_COMMENTS_TYPE = 'mention_comments';
     public const MENTION_COMMENT_PHOTO_TYPE = 'mention_comment_photo';
