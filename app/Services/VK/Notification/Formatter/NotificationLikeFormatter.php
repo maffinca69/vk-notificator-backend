@@ -87,6 +87,7 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
         // todo разнести на разные форматтеры
         return match ($type) {
             NotificationTypesDictionary::LIKE_COMMENT_PHOTO_TYPE,
+            NotificationTypesDictionary::LIKE_COMMENT_TOPIC_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => 'ваш комментарий',
             NotificationTypesDictionary::LIKE_PHOTO_TYPE => 'вашу фотографию',
             NotificationTypesDictionary::LIKE_VIDEO_TYPE => 'вашу ' . $this->videoUrlFormatter->format($parent),
