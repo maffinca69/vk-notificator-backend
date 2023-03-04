@@ -4,7 +4,7 @@ namespace App\Services\Telegram\Assembler;
 
 use App\Infrastructure\Telegram\Client\Request\SendMediaGroupRequest;
 use App\Services\Telegram\DTO\InputMedia\InputMediaPhotoDTO;
-use App\Services\Telegram\DTO\MediaGroupRequestDTO;
+use App\Services\Telegram\DTO\Request\MediaGroupRequestDTO;
 use App\Services\Telegram\Hydrator\InputMediaPhotoDTOHydrator;
 
 class SendMediaGroupRequestAssembler

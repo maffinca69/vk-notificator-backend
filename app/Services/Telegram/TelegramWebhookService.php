@@ -2,9 +2,9 @@
 
 namespace App\Services\Telegram;
 
-use App\Core\DTO\UpdateDTO;
 use App\Infrastructure\Logger\TelegramWebhookLogger;
 use App\Services\Command\CommandHandlingService;
+use App\Services\Telegram\DTO\UpdateDTO;
 
 class TelegramWebhookService
 {

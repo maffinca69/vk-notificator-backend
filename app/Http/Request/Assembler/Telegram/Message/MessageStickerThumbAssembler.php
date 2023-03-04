@@ -2,7 +2,7 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\StickerThumbDTO;
+use App\Services\Telegram\DTO\StickerThumbDTO;
 
 class MessageStickerThumbAssembler
 {

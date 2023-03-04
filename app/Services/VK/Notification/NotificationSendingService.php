@@ -4,7 +4,7 @@ namespace App\Services\VK\Notification;
 
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
-use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;

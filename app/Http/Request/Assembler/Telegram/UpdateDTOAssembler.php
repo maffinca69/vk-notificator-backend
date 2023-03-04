@@ -2,8 +2,8 @@
 
 namespace App\Http\Request\Assembler\Telegram;
 
-use App\Core\DTO\UpdateDTO;
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
+use App\Services\Telegram\DTO\UpdateDTO;
 
 class UpdateDTOAssembler
 {

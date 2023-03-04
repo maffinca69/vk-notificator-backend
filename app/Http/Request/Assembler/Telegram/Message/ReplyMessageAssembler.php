@@ -2,8 +2,8 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\ReplyMessageDTO;
 use App\Http\Request\Assembler\Telegram\Message\Traits\MessageFieldTrait;
+use App\Services\Telegram\DTO\ReplyMessageDTO;
 
 class ReplyMessageAssembler
 {

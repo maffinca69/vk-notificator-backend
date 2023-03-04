@@ -2,8 +2,8 @@
 
 namespace App\Services\Command;
 
-use App\Core\Command\AbstractCommand;
 use App\Infrastructure\Config\ConfigService;
+use App\Services\Telegram\Command\AbstractCommand;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;

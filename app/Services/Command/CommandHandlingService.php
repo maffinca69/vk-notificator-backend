@@ -2,9 +2,9 @@
 
 namespace App\Services\Command;
 
-use App\Core\Command\CommandInterface;
-use App\Core\DTO\UpdateDTO;
 use App\Services\Command\Exception\CommandNotFoundException;
+use App\Services\Telegram\Command\CommandInterface;
+use App\Services\Telegram\DTO\UpdateDTO;
 
 class CommandHandlingService
 {

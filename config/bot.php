@@ -1,7 +1,7 @@
 <?php
 
-use App\Core\Command\LogoutCommand;
-use App\Core\Command\StartCommand;
+use App\Services\Telegram\Command\LogoutCommand;
+use App\Services\Telegram\Command\StartCommand;
 
 return [
     'token' => env('BOT_TOKEN', ''),

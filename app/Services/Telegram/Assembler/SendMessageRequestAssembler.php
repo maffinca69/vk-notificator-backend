@@ -3,7 +3,7 @@
 namespace App\Services\Telegram\Assembler;
 
 use App\Infrastructure\Telegram\Client\Request\SendMessageRequest;
-use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 
 class SendMessageRequestAssembler
 {

@@ -5,7 +5,7 @@ namespace App\Infrastructure\Telegram\Client;
 use App\Infrastructure\Logger\TelegramClientLogger;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\Request\AbstractRequest;
-use App\Services\Telegram\DTO\TelegramResponseDTO;
+use App\Services\Telegram\DTO\Response\TelegramResponseDTO;
 use App\Services\Telegram\Translator\TelegramResponseTranslator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

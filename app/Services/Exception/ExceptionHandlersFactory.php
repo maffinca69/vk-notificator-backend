@@ -2,8 +2,6 @@
 
 namespace App\Services\Exception;
 
-use App\Core\Exception\AbstractAPIException;
-use App\Core\Exception\AbstractApplicationException;
 use App\Exceptions\Handlers\ApiExceptionHandler;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

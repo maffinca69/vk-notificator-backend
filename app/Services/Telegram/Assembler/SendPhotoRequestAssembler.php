@@ -3,7 +3,7 @@
 namespace App\Services\Telegram\Assembler;
 
 use App\Infrastructure\Telegram\Client\Request\SendPhotoRequest;
-use App\Services\Telegram\DTO\SendPhotoRequestDTO;
+use App\Services\Telegram\DTO\Request\SendPhotoRequestDTO;
 
 class SendPhotoRequestAssembler
 {

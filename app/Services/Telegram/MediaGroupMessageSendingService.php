@@ -5,7 +5,7 @@ namespace App\Services\Telegram;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendMediaGroupRequestAssembler;
-use App\Services\Telegram\DTO\MediaGroupRequestDTO;
+use App\Services\Telegram\DTO\Request\MediaGroupRequestDTO;
 
 class MediaGroupMessageSendingService
 {

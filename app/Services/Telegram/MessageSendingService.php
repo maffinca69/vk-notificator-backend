@@ -5,7 +5,7 @@ namespace App\Services\Telegram;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendMessageRequestAssembler;
-use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 
 class MessageSendingService
 {

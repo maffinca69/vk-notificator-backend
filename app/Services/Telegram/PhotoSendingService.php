@@ -5,7 +5,7 @@ namespace App\Services\Telegram;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendPhotoRequestAssembler;
-use App\Services\Telegram\DTO\SendPhotoRequestDTO;
+use App\Services\Telegram\DTO\Request\SendPhotoRequestDTO;
 
 class PhotoSendingService
 {

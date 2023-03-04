@@ -2,7 +2,7 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\CommandDTO;
+use App\Services\Telegram\DTO\CommandDTO;
 
 class MessageCommandAssembler
 {

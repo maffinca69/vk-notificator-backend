@@ -2,7 +2,7 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\PhotoDTO;
+use App\Services\Telegram\DTO\PhotoDTO;
 
 class MessagePhotoAssembler
 {

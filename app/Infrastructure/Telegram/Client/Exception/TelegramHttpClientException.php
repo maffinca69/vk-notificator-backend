@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Telegram\Client\Exception;
 
-use App\Core\Exception\AbstractApplicationException;
+use App\Services\Exception\AbstractApplicationException;
 
 class TelegramHttpClientException extends AbstractApplicationException
 {

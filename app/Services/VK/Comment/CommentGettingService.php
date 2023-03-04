@@ -4,11 +4,11 @@ namespace App\Services\VK\Comment;
 
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Infrastructure\VK\Client\HttpClient;
-use App\Infrastructure\VK\Client\Request\DTO\CommentsRequestDTO;
 use App\Infrastructure\VK\Client\Request\GetCommentsRequest;
 use App\Models\VKUser;
 use App\Services\VK\Comment\Assembler\CommentDTOAssembler;
 use App\Services\VK\DTO\Comment\CommentDTO;
+use App\Services\VK\DTO\Request\CommentsRequestDTO;
 
 class CommentGettingService
 {

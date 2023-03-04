@@ -2,7 +2,7 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\ChatDTO;
+use App\Services\Telegram\DTO\ChatDTO;
 
 class MessageChatAssembler
 {

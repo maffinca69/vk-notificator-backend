@@ -4,7 +4,7 @@ namespace App\Services\Telegram\Translator;
 
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
-use App\Services\Telegram\DTO\TelegramResponseDTO;
+use App\Services\Telegram\DTO\Response\TelegramResponseDTO;
 
 class TelegramResponseTranslator
 {

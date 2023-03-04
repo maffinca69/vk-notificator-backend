@@ -2,13 +2,13 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message\Traits;
 
-use App\Core\DTO\MessageDTO;
-use App\Core\DTO\ReplyMessageDTO;
 use App\Http\Request\Assembler\Telegram\Message\MessageChatAssembler;
 use App\Http\Request\Assembler\Telegram\Message\MessageCommandAssembler;
 use App\Http\Request\Assembler\Telegram\Message\MessageFromAssembler;
 use App\Http\Request\Assembler\Telegram\Message\MessagePhotoAssembler;
 use App\Http\Request\Assembler\Telegram\Message\MessageStickerAssembler;
+use App\Services\Telegram\DTO\MessageDTO;
+use App\Services\Telegram\DTO\ReplyMessageDTO;
 
 trait MessageFieldTrait
 {

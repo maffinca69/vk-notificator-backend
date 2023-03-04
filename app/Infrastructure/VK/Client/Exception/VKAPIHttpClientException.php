@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\VK\Client\Exception;
 
-use App\Core\Exception\AbstractApplicationException;
+use App\Services\Exception\AbstractApplicationException;
 
 class VKAPIHttpClientException extends AbstractApplicationException
 {

@@ -29,7 +29,6 @@ class NotificationAttachmentsAssigningService
             NotificationTypesDictionary::LIKE_COMMENT_PHOTO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_VIDEO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->assignCommentAttachments($VKUser, $notification),
-//            NotificationTypesDictionary::LIKE_PHOTO_TYPE => $this->assignPhoto($VKUser, $notification),
             default => $this->logger->warning('Not implement yet type', [
                 'type' => $notification->getType()
             ])

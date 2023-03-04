@@ -2,11 +2,11 @@
 
 namespace App\Services\VK\OAuth;
 
+use App\Domain\Service\VKUser\VKUserCreatingService;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
-use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
-use App\Services\User\VKUserCreatingService;
 use App\Services\VK\OAuth\Assembler\VKOauthDTOAssembler;
 
 class VKOauthCallbackService

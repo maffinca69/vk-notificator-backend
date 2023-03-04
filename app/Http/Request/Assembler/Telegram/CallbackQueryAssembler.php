@@ -2,9 +2,9 @@
 
 namespace App\Http\Request\Assembler\Telegram;
 
-use App\Core\DTO\CallbackQueryDTO;
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
 use App\Http\Request\Assembler\Telegram\Message\MessageFromAssembler;
+use App\Services\Telegram\DTO\CallbackQueryDTO;
 
 class CallbackQueryAssembler
 {

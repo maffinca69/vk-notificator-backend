@@ -3,7 +3,7 @@
 namespace App\Infrastructure\VK\Client\Request;
 
 use App\Infrastructure\VK\Client\ApiMethodDictionary;
-use App\Infrastructure\VK\Client\Request\DTO\CommentsRequestDTO;
+use App\Services\VK\DTO\Request\CommentsRequestDTO;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class GetCommentsRequest extends AbstractRequest

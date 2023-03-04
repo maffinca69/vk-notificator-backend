@@ -2,7 +2,7 @@
 
 namespace App\Http\Request\Assembler\Telegram\Message;
 
-use App\Core\DTO\FromDTO;
+use App\Services\Telegram\DTO\FromDTO;
 
 class MessageFromAssembler
 {
