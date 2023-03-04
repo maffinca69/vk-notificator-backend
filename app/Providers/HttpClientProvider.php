@@ -23,11 +23,11 @@ class HttpClientProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ClientInterface::class, static function (Application $app) {
+        $this->app->singleton(ClientInterface::class, static function (Application $app) {
             return new Client();
         });
 
-        $this->app->bind(VKHttpClient::class, static function (Application $app) {
+        $this->app->singleton(VKHttpClient::class, static function (Application $app) {
             /** @var ConfigService $configService */
             $configService = $app->get(ConfigService::class);
             $config = $configService->get(self::VK_HTTP_CLIENT);
@@ -51,7 +51,7 @@ class HttpClientProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(TelegramHttpClient::class, static function (Application $app) {
+        $this->app->singleton(TelegramHttpClient::class, static function (Application $app) {
             /** @var ConfigService $configService */
             $configService = $app->get(ConfigService::class);
             $config = $configService->get(self::TELEGRAM_HTTP_CLIENT);
