@@ -9,8 +9,10 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationSendingServiceFactory
 {
-    public function __construct(private ContainerInterface $container)
-    {
+    public function __construct(
+        private ContainerInterface $container,
+        private NotificationAttachmentsGettingService $notificationAttachmentsGettingService
+    ) {
     }
 
     /**
@@ -21,7 +23,8 @@ class NotificationSendingServiceFactory
      */
     public function create(NotificationDTO $notificationDTO): NotificationSendingInterface
     {
-        $attachments = $notificationDTO->getParent()?->getPost()?->getAttachments() ?: [];
+        $attachments = $this->notificationAttachmentsGettingService->get($notificationDTO);
+
         if (!empty($attachments)) {
             return $this->container->get(NotificationWithAttachmentsSendingService::class);
         }

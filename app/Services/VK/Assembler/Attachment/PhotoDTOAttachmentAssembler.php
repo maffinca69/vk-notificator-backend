@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\Notification\Assembler\Attachment;
+namespace App\Services\VK\Assembler\Attachment;
 
 use App\Services\VK\DTO\Photo\PhotoDTO;
 use App\Services\VK\DTO\Photo\PhotoSizeDTO;

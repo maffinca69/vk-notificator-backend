@@ -9,8 +9,10 @@ use App\Services\Telegram\DTO\InputMedia\AbstractInputMedia;
 use App\Services\Telegram\DTO\InputMedia\InputMediaPhotoDTO;
 use App\Services\Telegram\DTO\MediaGroupRequestDTO;
 use App\Services\Telegram\DTO\MessageRequestDTO;
+use App\Services\Telegram\DTO\SendPhotoRequestDTO;
 use App\Services\Telegram\MediaGroupMessageSendingService;
 use App\Services\Telegram\MessageSendingService;
+use App\Services\Telegram\PhotoSendingService;
 use App\Services\VK\DTO\Attachment\AttachmentDTO;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;
@@ -26,16 +28,18 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
     public const NOTIFICATION_PAGE_URL = 'https://vk.com/feed?section=notifications';
 
     /**
-     * @param MediaGroupMessageSendingService $mediaGroupMessageSendingService
+     * @param PhotoSendingService $photoSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
      * @param UrlButtonCreatingService $urlButtonCreatingService
      * @param WallReplyLinkFormatter $wallReplyLinkFormatter
+     * @param NotificationAttachmentsGettingService $notificationAttachmentsGettingService
      */
     public function __construct(
-        private MediaGroupMessageSendingService $mediaGroupMessageSendingService,
+        private PhotoSendingService $photoSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
         private UrlButtonCreatingService $urlButtonCreatingService,
         private WallReplyLinkFormatter $wallReplyLinkFormatter,
+        private NotificationAttachmentsGettingService $notificationAttachmentsGettingService
     ) {
     }
 
@@ -56,26 +60,28 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
         $notificationFormatter = $this->notificationFormatterFactory->create($notification);
         $message = $notificationFormatter->format($notification, $profiles, $groups);
 
-        $attachments = $notification->getParent()?->getPost()?->getAttachments() ?: [];
+        $attachments = $this->notificationAttachmentsGettingService->get($notification);
 
-        $media = $this->getMedia($attachments, $message);
+        $medias = $this->getMedia($attachments, $message);
+        $media = reset($medias);
 
-        $messageRequest = new MediaGroupRequestDTO(
+        $photoRequestDTO = new SendPhotoRequestDTO(
             $recipient->getUuid(),
-            $media
+            $media->getMedia()
         );
-        $messageRequest->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
+        $photoRequestDTO->setCaption($message);
+        $photoRequestDTO->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
 
         $buttons[] = $this->appendNotificationUrlButton();
 
         $parent = $notification->getParent();
         $buttons[] = $parent ? $this->appendReplyUrlButton($parent) : [];
 
-        $messageRequest->setReplyMarkup([
+        $photoRequestDTO->setReplyMarkup([
             'inline_keyboard' => array_filter($buttons)
         ]);
 
-        $this->mediaGroupMessageSendingService->send($messageRequest);
+        $this->photoSendingService->send($photoRequestDTO);
     }
 
     /**

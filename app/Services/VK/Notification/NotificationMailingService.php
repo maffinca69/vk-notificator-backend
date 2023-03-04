@@ -3,9 +3,12 @@
 namespace App\Services\VK\Notification;
 
 use App\Infrastructure\Logger\NotificationMailingLogger;
+use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\User;
 use App\Models\VKUser;
 use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Services\VK\Comment\CommentGettingService;
+use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
 use Psr\Container\ContainerExceptionInterface;
@@ -30,7 +33,8 @@ class NotificationMailingService
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
         private NotificationSendingServiceFactory $notificationSendingServiceFactory,
-        private NotificationMailingLogger $logger
+        private NotificationMailingLogger $logger,
+        private CommentGettingService $commentGettingService
     ) {
     }
 
@@ -38,7 +42,6 @@ class NotificationMailingService
      * @param VKUser $VKUser
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     * @throws InvalidTelegramResponseException
      * @throws NotFoundExceptionInterface
      * @throws VKApiException
      * @throws VKClientException
@@ -46,7 +49,7 @@ class NotificationMailingService
     public function send(VKUser $VKUser): void
     {
         $startTime = $this->getStartTime($VKUser);
-        $response = $this->notificationGettingService->get($VKUser);
+        $response = $this->notificationGettingService->get($VKUser, $startTime);
 
         $notifications = $response->getNotifications();
         if (empty($notifications)) {
@@ -56,8 +59,32 @@ class NotificationMailingService
 
         $user = $VKUser->user;
 
+        $this->prepareNotifications($VKUser, ...$notifications);
         $this->sendNotifications($response, $user, ...$notifications);
         $this->saveLastCheckTime($response, $VKUser);
+    }
+
+    /**
+     * @param VKUser $VKUser
+     * @param NotificationDTO ...$notifications
+     * @return void
+     * @throws VKAPIHttpClientException
+     */
+    private function prepareNotifications(VKUser $VKUser, NotificationDTO ...$notifications): void
+    {
+        foreach ($notifications as $notification) {
+            if ($notification->getType() === NotificationTypesDictionary::LIKE_COMMENT_TYPE) {
+                $ownerId = $notification->getParent()?->getPost()?->getFromId();
+                $postId = $notification->getParent()?->getPost()?->getId();
+                $commentId = $notification->getParent()?->getId();
+                if (!isset($ownerId, $postId, $commentId)) {
+                    continue;
+                }
+
+                $comment = $this->commentGettingService->get($VKUser, $ownerId, $postId, $commentId);
+                $notification->setCommentAttachments($comment?->getAttachments() ?? []);
+            }
+        }
     }
 
     /**

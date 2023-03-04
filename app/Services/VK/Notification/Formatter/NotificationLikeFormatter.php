@@ -31,7 +31,7 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
     public function format(NotificationDTO $notificationDTO, array $profiles, array $groups): string
     {
         $ids = $notificationDTO->getFeedback()->getIds();
-        $id = current($ids)['from_id'];
+        $id = reset($ids)['from_id'];
         $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
         $parent = $notificationDTO->getParent();
         $countFeedback = $notificationDTO->getFeedback()->getCount();

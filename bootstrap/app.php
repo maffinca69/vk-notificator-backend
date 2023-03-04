@@ -97,8 +97,9 @@ $app->configure('database');
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\CacheServiceProvider::class);
-$app->register(FormRequestServiceProvider::class);
 $app->register(App\Providers\LoggerServiceProvider::class);
+$app->register(App\Providers\HttpClientProvider::class);
+$app->register(FormRequestServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

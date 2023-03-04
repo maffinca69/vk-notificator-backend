@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\Notification\Assembler\Attachment;
+namespace App\Services\VK\Assembler\Attachment;
 
 use App\Services\VK\DTO\Attachment\AttachmentDTO;
 
@@ -14,6 +14,7 @@ class AttachmentDTOAssembler
     /**
      * @param array $params
      * @return AttachmentDTO
+     * @throws \Exception
      */
     public function create(array $params): AttachmentDTO
     {

@@ -2,7 +2,8 @@
 
 namespace App\Services\VK\Notification\Assembler;
 
-use App\Services\VK\Notification\Assembler\Attachment\AttachmentDTOAssembler;
+use App\Services\VK\Assembler\Attachment\AttachmentDTOAssembler;
+use App\Services\VK\Comment\CommentGettingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
 use App\Services\VK\Notification\DTO\NotificationFeedbackDTO;
 use App\Services\VK\Notification\DTO\NotificationParentDTO;

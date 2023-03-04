@@ -9,7 +9,7 @@ use App\Services\Telegram\DTO\MessageRequestDTO;
 class VKAuthMessageCreatingService
 {
     private const BASE_URL = 'https://oauth.vk.com/authorize';
-    private const SCOPE = 232763359;
+    private const SCOPE = 215986135;
     private const DISPLAY = 'page';
     private const RESPONSE_TYPE = 'token';
     private const REVOKE = true;

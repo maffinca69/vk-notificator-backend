@@ -8,6 +8,7 @@ class NotificationDTO
     private \DateTimeInterface $date;
     private ?NotificationParentDTO $parent = null;
     private NotificationFeedbackDTO $feedback;
+    private array $commentAttachments = [];
 
     /**
      * @param string $type
@@ -62,5 +63,21 @@ class NotificationDTO
     public function setParent(?NotificationParentDTO $parent): void
     {
         $this->parent = $parent;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommentAttachments(): array
+    {
+        return $this->commentAttachments;
+    }
+
+    /**
+     * @param array $commentAttachments
+     */
+    public function setCommentAttachments(array $commentAttachments): void
+    {
+        $this->commentAttachments = $commentAttachments;
     }
 }

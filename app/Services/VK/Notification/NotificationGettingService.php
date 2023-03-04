@@ -2,6 +2,9 @@
 
 namespace App\Services\VK\Notification;
 
+use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
+use App\Infrastructure\VK\Client\HttpClient;
+use App\Infrastructure\VK\Client\Request\GetNotificationRequest;
 use App\Models\VKUser;
 use App\Services\VK\Notification\Assembler\NotificationResponseDTOAssembler;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
@@ -27,7 +30,8 @@ class NotificationGettingService
 
     public function __construct(
         private NotificationResponseDTOAssembler $notificationResponseDTOAssembler,
-        private VKApiClient $apiClient
+        private VKApiClient $apiClient,
+        private HttpClient $client
     ) {
     }
 
@@ -37,8 +41,7 @@ class NotificationGettingService
      * @param int|null $endTime
      * @param int $count
      * @return NotificationResponseDTO
-     * @throws VKApiException
-     * @throws VKClientException
+     * @throws VKAPIHttpClientException
      */
     public function get(
         VKUser $VKUser,
@@ -61,7 +64,9 @@ class NotificationGettingService
             $params['end_time'] = $endTime;
         }
 
-        $notifications = $this->apiClient->notifications()->get($accessToken, $params);
+        $request = new GetNotificationRequest($params, $accessToken);
+
+        $notifications = $this->client->sendRequest($request);
 
         return $this->notificationResponseDTOAssembler->create($notifications);
     }
