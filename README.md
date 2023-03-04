@@ -11,6 +11,9 @@ This bot allows you to receive notifications about various events from VK
 * Acceptng request to friends
 * Subscribe for you
 
+## Known issues
+* If you like a comment with an attachment in a thread, the attachment will not be sent. [More](https://github.com/maffinca69/vk-notificator-backend/tree/master/app/Services/VK/Comment/CommentGettingService.php#L26)
+
 ## Based
 
 Based on Laravel (Lumen) fraemwork 9.1.3, minimum dependencies

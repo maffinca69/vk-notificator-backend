@@ -76,6 +76,7 @@ class NotificationMailingService
     private function prepareNotifications(VKUser $VKUser, NotificationDTO ...$notifications): void
     {
         // Не используем DI, т.к нужны разные инстансы со своими ограничениями
+        /** @var RateLimiterExecutionService $rateLimiter */
         $rateLimiter = $this->container->get(RateLimiterExecutionService::class);
 
         foreach ($notifications as $notification) {
@@ -111,6 +112,7 @@ class NotificationMailingService
      */
     private function sendNotifications(NotificationResponseDTO $response, User $recipient, NotificationDTO ...$notifications): void
     {
+        /** @var RateLimiterExecutionService $rateLimiter */
         $rateLimiter = $this->container->get(RateLimiterExecutionService::class);
 
         foreach ($notifications as $notification) {
