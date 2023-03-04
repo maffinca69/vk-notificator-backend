@@ -60,6 +60,8 @@ class NotificationMailingService
             return;
         }
 
+        $notifications = array_reverse($notifications);
+
         $user = $VKUser->user;
 
         $this->prepareNotifications($VKUser, ...$notifications);

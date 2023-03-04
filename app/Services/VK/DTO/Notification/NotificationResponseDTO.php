@@ -27,7 +27,7 @@ class NotificationResponseDTO
     }
 
     /**
-     * @return array
+     * @return array<NotificationDTO>
      */
     public function getNotifications(): array
     {
@@ -35,7 +35,7 @@ class NotificationResponseDTO
     }
 
     /**
-     * @return array
+     * @return array<ProfileDTO>
      */
     public function getProfiles(): array
     {
@@ -43,7 +43,7 @@ class NotificationResponseDTO
     }
 
     /**
-     * @return array
+     * @return array<GroupDTO>
      */
     public function getGroups(): array
     {

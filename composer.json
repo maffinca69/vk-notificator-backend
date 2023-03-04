@@ -10,8 +10,7 @@
         "guzzlehttp/guzzle": "^7.5",
         "illuminate/redis": "^9.35",
         "laravel/lumen-framework": "^9.0",
-        "predis/predis": "^2.0",
-        "vkcom/vk-php-sdk": "^5.101"
+        "predis/predis": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

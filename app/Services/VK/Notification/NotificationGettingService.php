@@ -8,9 +8,6 @@ use App\Infrastructure\VK\Client\Request\GetNotificationRequest;
 use App\Models\VKUser;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Assembler\NotificationResponseDTOAssembler;
-use VK\Client\VKApiClient;
-use VK\Exceptions\VKApiException;
-use VK\Exceptions\VKClientException;
 
 class NotificationGettingService
 {
@@ -30,7 +27,6 @@ class NotificationGettingService
 
     public function __construct(
         private NotificationResponseDTOAssembler $notificationResponseDTOAssembler,
-        private VKApiClient $apiClient,
         private HttpClient $client
     ) {
     }
@@ -69,16 +65,5 @@ class NotificationGettingService
         $notifications = $this->client->sendRequest($request);
 
         return $this->notificationResponseDTOAssembler->create($notifications);
-    }
-
-    /**
-     * @param VKUser $VKUser
-     * @throws VKApiException
-     * @throws VKClientException
-     */
-    public function markAsViewed(VKUser $VKUser): void
-    {
-        $accessToken = $VKUser->getAccessToken();
-        $this->apiClient->notifications()->markAsViewed($accessToken);
     }
 }
