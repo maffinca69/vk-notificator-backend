@@ -4,6 +4,7 @@ namespace App\Services\Command;
 
 use App\Infrastructure\Config\ConfigService;
 use App\Services\Telegram\Command\AbstractCommand;
+use App\Services\Telegram\Command\CommandInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,7 +22,7 @@ class CommandsGettingService
     }
 
     /**
-     * @return array
+     * @return array<CommandInterface>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */

@@ -6,5 +6,5 @@ use App\Services\Logger\ServiceLogger;
 
 class VKHttpClientLogger extends ServiceLogger
 {
-    public const LOG_COLLECTION = 'vk_http_client';
+    public const LOG_COLLECTION = 'vk_client';
 }

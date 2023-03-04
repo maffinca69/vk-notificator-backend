@@ -5,6 +5,8 @@ namespace App\Services\Command;
 use App\Services\Command\Exception\CommandNotFoundException;
 use App\Services\Telegram\Command\CommandInterface;
 use App\Services\Telegram\DTO\UpdateDTO;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CommandHandlingService
 {
@@ -14,6 +16,10 @@ class CommandHandlingService
 
     /**
      * @param UpdateDTO $update
+     * @return void
+     * @throws CommandNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function handle(UpdateDTO $update): void
     {
@@ -30,6 +36,9 @@ class CommandHandlingService
     }
 
     /**
+     * @param array<CommandInterface> $commands
+     * @param string $requestedCommand
+     * @return CommandInterface
      * @throws CommandNotFoundException
      */
     private function findCommandBySignature(array $commands, string $requestedCommand): CommandInterface
