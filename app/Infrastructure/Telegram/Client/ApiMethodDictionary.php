@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram\Client;
+namespace App\Infrastructure\Telegram\Client;
 
 final class ApiMethodDictionary
 {

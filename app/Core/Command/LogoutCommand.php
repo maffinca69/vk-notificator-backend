@@ -3,8 +3,8 @@
 namespace App\Core\Command;
 
 use App\Core\DTO\UpdateDTO;
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Models\User;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\User\LogoutService;

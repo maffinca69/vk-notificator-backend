@@ -3,6 +3,7 @@
 namespace App\Services\VK\Notification;
 
 use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\Notification\Specification\HasAttachmentsSpecification;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -11,7 +12,7 @@ class NotificationSendingServiceFactory
 {
     public function __construct(
         private ContainerInterface $container,
-        private NotificationAttachmentsGettingService $notificationAttachmentsGettingService
+        private HasAttachmentsSpecification $hasAttachmentsSpecification
     ) {
     }
 
@@ -23,9 +24,8 @@ class NotificationSendingServiceFactory
      */
     public function create(NotificationDTO $notificationDTO): NotificationSendingInterface
     {
-        $attachments = $this->notificationAttachmentsGettingService->get($notificationDTO);
-
-        if (!empty($attachments)) {
+        $hasAttachments = $this->hasAttachmentsSpecification->isSatisfiedBy($notificationDTO);
+        if ($hasAttachments) {
             return $this->container->get(NotificationWithAttachmentsSendingService::class);
         }
 

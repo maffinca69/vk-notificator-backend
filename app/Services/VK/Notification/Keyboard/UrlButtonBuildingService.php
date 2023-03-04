@@ -2,14 +2,14 @@
 
 namespace App\Services\VK\Notification\Keyboard;
 
-final class UrlButtonCreatingService
+final class UrlButtonBuildingService
 {
     /**
      * @param string $name
      * @param string $url
      * @return array
      */
-    public function create(string $name, string $url): array
+    public function build(string $name, string $url): array
     {
         return [
             [

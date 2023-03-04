@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Request\FormRequest\VKOAuthCallbackRequest;
 use App\Infrastructure\Config\ConfigService;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\ProfileUrlCreatingService;
 use App\Services\VK\OAuth\VKOauthCallbackService;
 use Laravel\Lumen\Routing\Controller;

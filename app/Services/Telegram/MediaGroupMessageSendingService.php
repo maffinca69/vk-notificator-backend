@@ -2,8 +2,9 @@
 
 namespace App\Services\Telegram;
 
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendMediaGroupRequestAssembler;
-use App\Services\Telegram\Client\HttpClient;
 use App\Services\Telegram\DTO\MediaGroupRequestDTO;
 
 class MediaGroupMessageSendingService
@@ -21,7 +22,7 @@ class MediaGroupMessageSendingService
     /**
      * @param MediaGroupRequestDTO $mediaGroupRequestDTO
      * @return void
-     * @throws Client\Exception\InvalidTelegramResponseException
+     * @throws InvalidTelegramResponseException
      */
     public function send(MediaGroupRequestDTO $mediaGroupRequestDTO): void
     {

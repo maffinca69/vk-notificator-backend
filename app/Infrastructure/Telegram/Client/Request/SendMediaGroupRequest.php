@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Telegram\Client\Request;
+namespace App\Infrastructure\Telegram\Client\Request;
 
-use App\Services\Telegram\Client\ApiMethodDictionary;
+use App\Infrastructure\Telegram\Client\ApiMethodDictionary;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class SendMediaGroupRequest extends AbstractRequest

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Telegram\Assembler;
+namespace App\Services\Telegram\Translator;
 
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\DTO\TelegramResponseDTO;
 
-class TelegramResponseDTOAssembler
+class TelegramResponseTranslator
 {
     /**
      * @param MessageAssembler $messageAssembler
@@ -20,7 +20,7 @@ class TelegramResponseDTOAssembler
      * @return TelegramResponseDTO
      * @throws InvalidTelegramResponseException
      */
-    public function create(array $response): TelegramResponseDTO
+    public function translate(array $response): TelegramResponseDTO
     {
         if (!isset($response['ok'], $response['result'])) {
             throw new InvalidTelegramResponseException(

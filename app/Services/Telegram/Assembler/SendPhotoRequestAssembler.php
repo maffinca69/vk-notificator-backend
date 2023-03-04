@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram\Assembler;
 
-use App\Services\Telegram\Client\Request\SendPhotoRequest;
+use App\Infrastructure\Telegram\Client\Request\SendPhotoRequest;
 use App\Services\Telegram\DTO\SendPhotoRequestDTO;
 
 class SendPhotoRequestAssembler

@@ -6,7 +6,6 @@ use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\User;
 use App\Models\VKUser;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\VK\Comment\CommentGettingService;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\DTO\NotificationDTO;

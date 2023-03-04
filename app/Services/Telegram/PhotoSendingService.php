@@ -2,9 +2,9 @@
 
 namespace App\Services\Telegram;
 
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendPhotoRequestAssembler;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
-use App\Services\Telegram\Client\HttpClient;
 use App\Services\Telegram\DTO\SendPhotoRequestDTO;
 
 class PhotoSendingService

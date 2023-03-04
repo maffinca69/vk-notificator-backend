@@ -2,8 +2,8 @@
 
 namespace App\Services\VK\Notification;
 
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Models\User;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
 use App\Services\VK\Notification\DTO\NotificationDTO;
@@ -11,7 +11,7 @@ use App\Services\VK\Notification\DTO\NotificationParentDTO;
 use App\Services\VK\Notification\DTO\NotificationResponseDTO;
 use App\Services\VK\Notification\Formatter\Link\WallReplyLinkFormatter;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
-use App\Services\VK\Notification\Keyboard\UrlButtonCreatingService;
+use App\Services\VK\Notification\Keyboard\UrlButtonBuildingService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -22,13 +22,13 @@ class NotificationSendingService implements NotificationSendingInterface
     /**
      * @param MessageSendingService $messageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
-     * @param UrlButtonCreatingService $urlButtonCreatingService
+     * @param UrlButtonBuildingService $urlButtonCreatingService
      * @param WallReplyLinkFormatter $wallReplyLinkFormatter
      */
     public function __construct(
         private MessageSendingService $messageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
-        private UrlButtonCreatingService $urlButtonCreatingService,
+        private UrlButtonBuildingService $urlButtonBuildingService,
         private WallReplyLinkFormatter $wallReplyLinkFormatter,
     ) {
     }
@@ -72,7 +72,7 @@ class NotificationSendingService implements NotificationSendingInterface
      */
     private function appendNotificationUrlButton(): array
     {
-        return $this->urlButtonCreatingService->create('Открыть уведомления', self::NOTIFICATION_PAGE_URL);
+        return $this->urlButtonBuildingService->build('Открыть уведомления', self::NOTIFICATION_PAGE_URL);
     }
 
     /**
@@ -87,6 +87,6 @@ class NotificationSendingService implements NotificationSendingInterface
         }
 
         $url = $this->wallReplyLinkFormatter->format($parent);
-        return $this->urlButtonCreatingService->create('Открыть пост', $url);
+        return $this->urlButtonBuildingService->build('Открыть пост', $url);
     }
 }

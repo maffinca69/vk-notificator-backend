@@ -2,8 +2,8 @@
 
 namespace App\Services\Telegram;
 
+use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendMessageRequestAssembler;
-use App\Services\Telegram\Client\HttpClient;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 
 class MessageSendingService
@@ -16,7 +16,7 @@ class MessageSendingService
 
     /**
      * @param MessageRequestDTO $messageRequestDTO
-     * @throws Client\Exception\InvalidTelegramResponseException
+     * @throws \App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException
      */
     public function send(MessageRequestDTO $messageRequestDTO): void
     {

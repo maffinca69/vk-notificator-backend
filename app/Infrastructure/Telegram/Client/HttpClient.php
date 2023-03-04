@@ -1,52 +1,32 @@
 <?php
 
-namespace App\Services\Telegram\Client;
+namespace App\Infrastructure\Telegram\Client;
 
-use App\Infrastructure\Config\ConfigService;
 use App\Infrastructure\Logger\TelegramClientLogger;
-use App\Services\Telegram\Assembler\TelegramResponseDTOAssembler;
-use App\Services\Telegram\Client\Exception\InvalidTelegramResponseException;
-use App\Services\Telegram\Client\Request\AbstractRequest;
+use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Request\AbstractRequest;
 use App\Services\Telegram\DTO\TelegramResponseDTO;
+use App\Services\Telegram\Translator\TelegramResponseTranslator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
+use Psr\Log\LoggerInterface;
 
 class HttpClient
 {
-    private const BASE_API_URL = 'https://api.telegram.org/bot%s/';
-
     /**
-     * @param TelegramResponseDTOAssembler $responseDTOAssembler
+     * @param TelegramResponseTranslator $translator
      * @param Client $client
      * @param TelegramClientLogger $logger
-     * @param ConfigService $configService
+     * @param string $baseUrl
      */
     public function __construct(
-        private TelegramResponseDTOAssembler $responseDTOAssembler,
+        private TelegramResponseTranslator $translator,
         private Client $client,
-        private TelegramClientLogger $logger,
-        private ConfigService $configService
+        private LoggerInterface $logger,
+        private string $baseUrl
     ) {
-        $this->client = new Client([
-            'base_uri' => $this->getBaseURI()
-        ]);
-    }
-
-    /**
-     * @return string
-     */
-    private function getBaseURI(): string
-    {
-        $config = $this->configService->get('bot');
-        $token = $config['token'] ?? null;
-
-        if ($token === null) {
-            throw new \RuntimeException('Invalid configure bot. Token is required');
-        }
-
-        return sprintf(self::BASE_API_URL, $token);
     }
 
     /**
@@ -56,7 +36,7 @@ class HttpClient
      */
     public function sendRequest(AbstractRequest $request): TelegramResponseDTO
     {
-        $endpoint = $request->getEndpoint();
+        $endpoint = $this->baseUrl . '/' .$request->getEndpoint();
         $requestParams = $request->getParams();
         $method = $request->getMethod();
 
@@ -82,7 +62,7 @@ class HttpClient
 
         $response = json_decode($response->getBody()->getContents(), true);
         $this->logResponse($response);
-        return $this->responseDTOAssembler->create($response);
+        return $this->translator->translate($response);
     }
 
     /**

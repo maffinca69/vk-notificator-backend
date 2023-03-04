@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram\Client\Exception;
+namespace App\Infrastructure\Telegram\Client\Exception;
 
 use App\Core\Exception\AbstractApplicationException;
 
