@@ -8,65 +8,65 @@ namespace App\Services\VK\DTO\Photo;
 class PhotoDTO
 {
     /**
-     * @param int $id
-     * @param int $albumId
-     * @param int $userId
-     * @param string $text
-     * @param \DateTimeInterface $date
+     * @param int|null $id
+     * @param int|null $albumId
+     * @param int|null $userId
+     * @param string|null $text
+     * @param \DateTimeInterface|null $date
      * @param array<PhotoSizeDTO> $sizes
      */
     public function __construct(
-        private int $id,
-        private int $albumId,
-        private int $userId,
-        private string $text,
-        private \DateTimeInterface $date,
-        private array $sizes,
+        private ?int $id = null,
+        private ?int $albumId = null,
+        private ?int $userId = null,
+        private ?string $text = null,
+        private ?\DateTimeInterface $date = null,
+        private array $sizes = [],
     ) {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getAlbumId(): int
+    public function getAlbumId(): ?int
     {
         return $this->albumId;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return \DateTimeInterface|null
      */
-    public function getDate(): \DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
     /**
-     * @return array<PhotoSizeDTO>
+     * @return array
      */
     public function getSizes(): array
     {

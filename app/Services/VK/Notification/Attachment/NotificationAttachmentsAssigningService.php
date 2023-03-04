@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification\Attachment;
 
+use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\VKUser;
 use App\Services\VK\Comment\CommentGettingService;
@@ -10,8 +11,10 @@ use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 
 class NotificationAttachmentsAssigningService
 {
-    public function __construct(private CommentGettingService $commentGettingService)
-    {
+    public function __construct(
+        private CommentGettingService $commentGettingService,
+        private NotificationMailingLogger $logger
+    ) {
     }
 
     /**
@@ -25,7 +28,11 @@ class NotificationAttachmentsAssigningService
         match ($notification->getType()) {
             NotificationTypesDictionary::LIKE_COMMENT_PHOTO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_VIDEO_TYPE,
-            NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->assignCommentAttachments($VKUser, $notification)
+            NotificationTypesDictionary::LIKE_COMMENT_TYPE => $this->assignCommentAttachments($VKUser, $notification),
+//            NotificationTypesDictionary::LIKE_PHOTO_TYPE => $this->assignPhoto($VKUser, $notification),
+            default => $this->logger->warning('Not implement yet type', [
+                'type' => $notification->getType()
+            ])
         };
     }
 

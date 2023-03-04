@@ -2,6 +2,8 @@
 
 namespace App\Services\VK\DTO\Notification;
 
+use App\Services\VK\DTO\Photo\PhotoSizeDTO;
+
 class NotificationParentDTO
 {
     private int $id;
@@ -10,8 +12,8 @@ class NotificationParentDTO
     private ?string $text = null;
     private ?NotificationParentPostDTO $post = null;
 
-    /** @var NotificationParentSizeDTO ...$sizes */
-    private ?array $sizes = null;
+    /** @var PhotoSizeDTO ...$sizes */
+    private array $sizes = [];
 
     /**
      * @param int $id
@@ -94,7 +96,7 @@ class NotificationParentDTO
     }
 
     /**
-     * @return NotificationParentSizeDTO[]
+     * @return array<PhotoSizeDTO>
      */
     public function getSizes(): array
     {
@@ -102,10 +104,18 @@ class NotificationParentDTO
     }
 
     /**
-     * @param NotificationParentSizeDTO[] $sizes
+     * @param array<PhotoSizeDTO> $sizes
      */
     public function setSizes(array $sizes): void
     {
         $this->sizes = $sizes;
+    }
+
+    /**
+     * @param PhotoSizeDTO $size
+     */
+    public function addSize(PhotoSizeDTO $size): void
+    {
+        $this->sizes[] = $size;
     }
 }

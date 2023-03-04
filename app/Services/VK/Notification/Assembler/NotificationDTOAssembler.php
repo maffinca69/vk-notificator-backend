@@ -8,6 +8,7 @@ use App\Services\VK\DTO\Notification\NotificationFeedbackDTO;
 use App\Services\VK\DTO\Notification\NotificationParentDTO;
 use App\Services\VK\DTO\Notification\NotificationParentPostDTO;
 use App\Services\VK\DTO\Notification\NotificationParentSizeDTO;
+use App\Services\VK\DTO\Photo\PhotoSizeDTO;
 
 class NotificationDTOAssembler
 {
@@ -75,15 +76,14 @@ class NotificationDTOAssembler
 
     /**
      * @param array $params
-     * @return NotificationParentSizeDTO
+     * @return PhotoSizeDTO
      */
-    private function createSize(array $params): NotificationParentSizeDTO
+    private function createSize(array $params): PhotoSizeDTO
     {
-        return new NotificationParentSizeDTO(
-            $params['height'],
-            $params['width'],
+        return new PhotoSizeDTO(
             $params['url'],
-            $params['type'],
+            $params['width'],
+            $params['height'],
         );
     }
 
