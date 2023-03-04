@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification\Assembler;
 
-use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 
 class NotificationResponseDTOAssembler
 {

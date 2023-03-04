@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification;
 
-use App\Services\VK\Notification\DTO\ProfileDTO;
+use App\Services\VK\DTO\Notification\ProfileDTO;
 
 class ProfileForNotificationGettingService
 {

@@ -20,8 +20,9 @@ class TelegramWebhookService
 
     /**
      * @param UpdateDTO $update
+     * @return void
      */
-    public function process(UpdateDTO $update)
+    public function process(UpdateDTO $update): void
     {
         $message = $update->getMessage() ?? $update->getCallbackQuery();
 

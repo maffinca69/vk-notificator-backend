@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Telegram\Client;
 
 use App\Infrastructure\Logger\TelegramClientLogger;
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\Request\AbstractRequest;
 use App\Services\Telegram\DTO\TelegramResponseDTO;
 use App\Services\Telegram\Translator\TelegramResponseTranslator;
@@ -15,6 +15,10 @@ use Psr\Log\LoggerInterface;
 
 class HttpClient
 {
+    private const REQUEST_HEADERS = [
+        'Accept-Encoding' => 'gzip, deflate, br',
+    ];
+
     /**
      * @param TelegramResponseTranslator $translator
      * @param Client $client
@@ -32,7 +36,7 @@ class HttpClient
     /**
      * @param AbstractRequest $request
      * @return TelegramResponseDTO
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function sendRequest(AbstractRequest $request): TelegramResponseDTO
     {
@@ -42,9 +46,7 @@ class HttpClient
 
         $options = [
             RequestOptions::JSON => $requestParams,
-            RequestOptions::HEADERS => [
-                'Accept-Encoding' => 'gzip, deflate, br'
-            ]
+            RequestOptions::HEADERS => self::REQUEST_HEADERS
         ];
 
         $this->logRequest($request);
@@ -53,11 +55,11 @@ class HttpClient
             $response = $this->client->request($method, $endpoint, $options);
         } catch (ClientException|GuzzleException $e) {
             $content = $e->getResponse()->getBody()->getContents();
-            $this->logger->critical('Telegram error!', [
+            $this->logger->error('Telegram error!', [
                 'response' => $content,
                 'code' => $e->getCode()
             ]);
-            throw new InvalidTelegramResponseException($content);
+            throw new TelegramHttpClientException($content);
         }
 
         $response = json_decode($response->getBody()->getContents(), true);

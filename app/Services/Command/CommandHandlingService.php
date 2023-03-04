@@ -4,7 +4,7 @@ namespace App\Services\Command;
 
 use App\Core\Command\CommandInterface;
 use App\Core\DTO\UpdateDTO;
-use App\Services\Command\Exception\CommandNotFound;
+use App\Services\Command\Exception\CommandNotFoundException;
 
 class CommandHandlingService
 {
@@ -30,7 +30,7 @@ class CommandHandlingService
     }
 
     /**
-     * @throws CommandNotFound
+     * @throws CommandNotFoundException
      */
     private function findCommandBySignature(array $commands, string $requestedCommand): CommandInterface
     {
@@ -44,7 +44,7 @@ class CommandHandlingService
             }
         }
 
-        throw new CommandNotFound('Not found available command', [
+        throw new CommandNotFoundException('Not found available command', [
             'method' => __METHOD__,
             'requestedCommand' => $requestedCommand,
             'commands' => array_keys($commands)

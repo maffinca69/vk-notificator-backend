@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
-use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
 
 interface NotificationFormatterInterface
 {

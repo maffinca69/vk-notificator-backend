@@ -2,8 +2,8 @@
 
 namespace App\Services\VK\Notification\Specification;
 
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\NotificationAttachmentsGettingService;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\Notification\Attachment\NotificationAttachmentsGettingService;
 
 class HasAttachmentsSpecification
 {

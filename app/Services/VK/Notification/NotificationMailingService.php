@@ -6,15 +6,12 @@ use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\User;
 use App\Models\VKUser;
-use App\Services\VK\Comment\CommentGettingService;
-use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationResponseDTO;
+use App\Services\VK\Notification\Attachment\NotificationAttachmentsAssigningService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\InvalidArgumentException;
-use VK\Exceptions\VKApiException;
-use VK\Exceptions\VKClientException;
 
 class NotificationMailingService
 {
@@ -27,13 +24,14 @@ class NotificationMailingService
      * @param NotificationGettingService $notificationGettingService
      * @param NotificationSendingServiceFactory $notificationSendingServiceFactory
      * @param NotificationMailingLogger $logger
+     * @param NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
         private NotificationSendingServiceFactory $notificationSendingServiceFactory,
         private NotificationMailingLogger $logger,
-        private CommentGettingService $commentGettingService
+        private NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService
     ) {
     }
 
@@ -42,8 +40,7 @@ class NotificationMailingService
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
      * @throws NotFoundExceptionInterface
-     * @throws VKApiException
-     * @throws VKClientException
+     * @throws VKAPIHttpClientException
      */
     public function send(VKUser $VKUser): void
     {
@@ -72,17 +69,7 @@ class NotificationMailingService
     private function prepareNotifications(VKUser $VKUser, NotificationDTO ...$notifications): void
     {
         foreach ($notifications as $notification) {
-            if ($notification->getType() === NotificationTypesDictionary::LIKE_COMMENT_TYPE) {
-                $ownerId = $notification->getParent()?->getPost()?->getFromId();
-                $postId = $notification->getParent()?->getPost()?->getId();
-                $commentId = $notification->getParent()?->getId();
-                if (!isset($ownerId, $postId, $commentId)) {
-                    continue;
-                }
-
-                $comment = $this->commentGettingService->get($VKUser, $ownerId, $postId, $commentId);
-                $notification->setCommentAttachments($comment?->getAttachments() ?? []);
-            }
+            $this->notificationAttachmentsAssigningService->assign($VKUser, $notification);
         }
     }
 

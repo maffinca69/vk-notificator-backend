@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram;
 
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Services\Telegram\Assembler\SendPhotoRequestAssembler;
 use App\Services\Telegram\DTO\SendPhotoRequestDTO;
@@ -17,7 +17,7 @@ class PhotoSendingService
 
     /**
      * @param SendPhotoRequestDTO $sendPhotoRequestDTO
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function send(SendPhotoRequestDTO $sendPhotoRequestDTO): void
     {

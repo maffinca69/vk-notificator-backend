@@ -3,7 +3,7 @@
 namespace App\Services\Telegram\Translator;
 
 use App\Http\Request\Assembler\Telegram\Message\MessageAssembler;
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Services\Telegram\DTO\TelegramResponseDTO;
 
 class TelegramResponseTranslator
@@ -18,14 +18,12 @@ class TelegramResponseTranslator
     /**
      * @param array $response
      * @return TelegramResponseDTO
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function translate(array $response): TelegramResponseDTO
     {
         if (!isset($response['ok'], $response['result'])) {
-            throw new InvalidTelegramResponseException(
-                'Invalid response: ' . json_encode($response)
-            );
+            throw new TelegramHttpClientException('Invalid response', $response);
         }
 
         $result = null;

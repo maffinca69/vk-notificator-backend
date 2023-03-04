@@ -10,7 +10,8 @@ class SendMessageRequestAssembler
     public function create(MessageRequestDTO $requestDTO): SendMessageRequest
     {
         $fields = [
-            'chat_id' => $requestDTO->getChatId()
+            'chat_id' => $requestDTO->getChatId(),
+            'disable_web_page_preview' => $requestDTO->isDisableWebPagePreview(),
         ];
 
         $replyMarkup = $requestDTO->getReplyMarkup();
@@ -32,8 +33,6 @@ class SendMessageRequestAssembler
         if (isset($text)) {
             $fields['text'] = $text;
         }
-
-        $fields['disable_web_page_preview'] = $requestDTO->isDisableWebPagePreview();
 
         return new SendMessageRequest($fields);
     }

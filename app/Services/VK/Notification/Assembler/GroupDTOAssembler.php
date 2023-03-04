@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification\Assembler;
 
-use App\Services\VK\Notification\DTO\GroupDTO;
+use App\Services\VK\DTO\Notification\GroupDTO;
 
 class GroupDTOAssembler
 {

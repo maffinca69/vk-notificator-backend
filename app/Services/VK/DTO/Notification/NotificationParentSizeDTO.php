@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\Notification\DTO;
+namespace App\Services\VK\DTO\Notification;
 
 class NotificationParentSizeDTO
 {

@@ -3,9 +3,9 @@
 namespace App\Services\VK\Notification\Formatter;
 
 use App\Services\Pluralization\PluralizingService;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\DTO\ProfileDTO;
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
 use App\Services\VK\Notification\Formatter\Link\VideoLinkFormatter;
 use App\Services\VK\Notification\ProfileForNotificationGettingService;

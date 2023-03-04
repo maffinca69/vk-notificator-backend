@@ -10,6 +10,7 @@ class MediaGroupRequestDTO
      * @param int $chatId
      * @param array<AbstractInputMedia> $media
      * @param array|null $replyMarkup
+     * @param string|null $parseMode
      */
     public function __construct(
         private int $chatId,

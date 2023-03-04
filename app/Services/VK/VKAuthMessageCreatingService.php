@@ -29,9 +29,7 @@ class VKAuthMessageCreatingService
     {
         $fromId = $updateDTO->getMessage()->getFrom()->getId();
 
-        $message = new MessageRequestDTO($updateDTO->getChatId());
-        $message->setText('🔒 Нужно выполнить вход через VK');
-        $message->setReplyMarkup([
+        $replyMarkup = [
             'inline_keyboard' => [
                 [
                     [
@@ -40,9 +38,13 @@ class VKAuthMessageCreatingService
                     ]
                 ]
             ]
-        ]);
+        ];
 
-        return $message;
+        return new MessageRequestDTO(
+            chatId: $updateDTO->getChatId(),
+            text: '🔒 Нужно выполнить вход через VK',
+            replyMarkup: $replyMarkup
+        );
     }
 
     /**

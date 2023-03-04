@@ -3,12 +3,11 @@
 namespace App\Services\VK\Notification\Assembler;
 
 use App\Services\VK\Assembler\Attachment\AttachmentDTOAssembler;
-use App\Services\VK\Comment\CommentGettingService;
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\DTO\NotificationFeedbackDTO;
-use App\Services\VK\Notification\DTO\NotificationParentDTO;
-use App\Services\VK\Notification\DTO\NotificationParentPostDTO;
-use App\Services\VK\Notification\DTO\NotificationParentSizeDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationFeedbackDTO;
+use App\Services\VK\DTO\Notification\NotificationParentDTO;
+use App\Services\VK\DTO\Notification\NotificationParentPostDTO;
+use App\Services\VK\DTO\Notification\NotificationParentSizeDTO;
 
 class NotificationDTOAssembler
 {

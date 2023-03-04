@@ -2,8 +2,8 @@
 
 namespace App\Services\VK\Notification\Assembler;
 
-use App\Services\VK\Notification\DTO\ProfileDTO;
-use App\Services\VK\Notification\DTO\ProfileOnlineInfoDTO;
+use App\Services\VK\DTO\Notification\ProfileDTO;
+use App\Services\VK\DTO\Notification\ProfileOnlineInfoDTO;
 
 class ProfileDTOAssembler
 {

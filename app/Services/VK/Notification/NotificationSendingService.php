@@ -2,34 +2,28 @@
 
 namespace App\Services\VK\Notification;
 
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\DTO\NotificationParentDTO;
-use App\Services\VK\Notification\DTO\NotificationResponseDTO;
-use App\Services\VK\Notification\Formatter\Link\WallReplyLinkFormatter;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
-use App\Services\VK\Notification\Keyboard\UrlButtonBuildingService;
+use App\Services\VK\Notification\Keyboard\ReplyMarkupCreatingService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationSendingService implements NotificationSendingInterface
 {
-    public const NOTIFICATION_PAGE_URL = 'https://vk.com/feed?section=notifications';
-
     /**
      * @param MessageSendingService $messageSendingService
      * @param NotificationFormatterFactory $notificationFormatterFactory
-     * @param UrlButtonBuildingService $urlButtonCreatingService
-     * @param WallReplyLinkFormatter $wallReplyLinkFormatter
+     * @param ReplyMarkupCreatingService $replyMarkupCreatingService
      */
     public function __construct(
         private MessageSendingService $messageSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
-        private UrlButtonBuildingService $urlButtonBuildingService,
-        private WallReplyLinkFormatter $wallReplyLinkFormatter,
+        private ReplyMarkupCreatingService $replyMarkupCreatingService
     ) {
     }
 
@@ -39,7 +33,7 @@ class NotificationSendingService implements NotificationSendingInterface
      * @param User $recipient
      * @return void
      * @throws ContainerExceptionInterface
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      * @throws NotFoundExceptionInterface
      */
     public function send(NotificationResponseDTO $response, NotificationDTO $notification, User $recipient): void
@@ -50,43 +44,15 @@ class NotificationSendingService implements NotificationSendingInterface
         $notificationFormatter = $this->notificationFormatterFactory->create($notification);
         $message = $notificationFormatter->format($notification, $profiles, $groups);
 
-        $messageRequest = new MessageRequestDTO($recipient->getUuid());
-        $messageRequest->setText($message);
-        $messageRequest->setParseMode(MessageRequestDTO::PARSE_MODE_MARKDOWN);
-        $messageRequest->setDisableWebPagePreview(true);
-
-        $buttons[] = $this->appendNotificationUrlButton();
-
-        $parent = $notification->getParent();
-        $buttons[] = $parent ? $this->appendReplyUrlButton($parent) : [];
-
-        $messageRequest->setReplyMarkup([
-            'inline_keyboard' => array_filter($buttons)
-        ]);
+        $replyMarkup = $this->replyMarkupCreatingService->create($notification);
+        $messageRequest = new MessageRequestDTO(
+            chatId: $recipient->getUuid(),
+            text: $message,
+            parseMode: MessageRequestDTO::PARSE_MODE_MARKDOWN,
+            replyMarkup: $replyMarkup,
+            disableWebPagePreview: true
+        );
 
         $this->messageSendingService->send($messageRequest);
-    }
-
-    /**
-     * @return array
-     */
-    private function appendNotificationUrlButton(): array
-    {
-        return $this->urlButtonBuildingService->build('Открыть уведомления', self::NOTIFICATION_PAGE_URL);
-    }
-
-    /**
-     * @param NotificationParentDTO $parent
-     * @return array
-     */
-    private function appendReplyUrlButton(NotificationParentDTO $parent): array
-    {
-        // todo фикс, если лайкнули картинку
-        if ($parent->getPost() === null) {
-            return [];
-        }
-
-        $url = $this->wallReplyLinkFormatter->format($parent);
-        return $this->urlButtonBuildingService->build('Открыть пост', $url);
     }
 }

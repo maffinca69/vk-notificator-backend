@@ -7,20 +7,22 @@ class MessageRequestDTO
     public const PARSE_MODE_MARKDOWN = 'Markdown';
     public const PARSE_MODE_MARKDOWN_V2 = 'MarkdownV2';
 
-    private int $chatId;
-
-    private ?string $text = null;
-    private ?string $parseMode = null;
-    private ?int $replyToMessageId = null;
-    private ?array $replyMarkup = null;
-    private bool $disableWebPagePreview = false;
-
     /**
      * @param int $chatId
+     * @param string|null $text
+     * @param string|null $parseMode
+     * @param int|null $replyToMessageId
+     * @param array|null $replyMarkup
+     * @param bool $disableWebPagePreview
      */
-    public function __construct(int $chatId)
-    {
-        $this->chatId = $chatId;
+    public function __construct(
+        private int $chatId,
+        private ?string $text = null,
+        private ?string $parseMode = null,
+        private ?int $replyToMessageId = null,
+        private ?array $replyMarkup = null,
+        private bool $disableWebPagePreview = false,
+    ) {
     }
 
     /**
@@ -48,14 +50,6 @@ class MessageRequestDTO
     }
 
     /**
-     * @param string|null $parseMode
-     */
-    public function setParseMode(?string $parseMode): void
-    {
-        $this->parseMode = $parseMode;
-    }
-
-    /**
      * @return int|null
      */
     public function getReplyToMessageId(): ?int
@@ -64,27 +58,11 @@ class MessageRequestDTO
     }
 
     /**
-     * @param int|null $replyToMessageId
-     */
-    public function setReplyToMessageId(?int $replyToMessageId): void
-    {
-        $this->replyToMessageId = $replyToMessageId;
-    }
-
-    /**
      * @return array|null
      */
     public function getReplyMarkup(): ?array
     {
         return $this->replyMarkup;
-    }
-
-    /**
-     * @param array|null $replyMarkup
-     */
-    public function setReplyMarkup(?array $replyMarkup): void
-    {
-        $this->replyMarkup = $replyMarkup;
     }
 
     /**
@@ -101,13 +79,5 @@ class MessageRequestDTO
     public function isDisableWebPagePreview(): bool
     {
         return $this->disableWebPagePreview;
-    }
-
-    /**
-     * @param bool $disableWebPagePreview
-     */
-    public function setDisableWebPagePreview(bool $disableWebPagePreview): void
-    {
-        $this->disableWebPagePreview = $disableWebPagePreview;
     }
 }

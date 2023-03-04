@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Request\FormRequest\VKOAuthCallbackRequest;
 use App\Infrastructure\Config\ConfigService;
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
-use App\Services\Telegram\ProfileUrlCreatingService;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
+use App\Services\Telegram\ProfileUrlGettingService;
 use App\Services\VK\OAuth\VKOauthCallbackService;
 use Laravel\Lumen\Routing\Controller;
 
@@ -14,22 +14,22 @@ class VKOAuthCallbackController extends Controller
     /**
      * @param VKOAuthCallbackRequest $request
      * @param VKOauthCallbackService $VKOauthCallbackService
-     * @param ProfileUrlCreatingService $profileUrlCreatingService
+     * @param ProfileUrlGettingService $profileUrlGettingService
      * @param ConfigService $configService
      * @return array
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function callback(
         VKOAuthCallbackRequest $request,
         VKOauthCallbackService $VKOauthCallbackService,
-        ProfileUrlCreatingService $profileUrlCreatingService,
+        ProfileUrlGettingService $profileUrlGettingService,
         ConfigService $configService
     ): array {
         $params = $request->all();
         $VKOauthCallbackService->process($params);
 
         $botConfig = $configService->get('bot');
-        $redirectUrl = $profileUrlCreatingService->create($botConfig['username']);
+        $redirectUrl = $profileUrlGettingService->get($botConfig['username']);
 
         return [
             'redirect_uri' => $redirectUrl

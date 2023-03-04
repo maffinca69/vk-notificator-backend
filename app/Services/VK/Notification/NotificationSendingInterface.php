@@ -3,8 +3,8 @@
 namespace App\Services\VK\Notification;
 
 use App\Models\User;
-use App\Services\VK\Notification\DTO\NotificationDTO;
-use App\Services\VK\Notification\DTO\NotificationResponseDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 
 interface NotificationSendingInterface
 {

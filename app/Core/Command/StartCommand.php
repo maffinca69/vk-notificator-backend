@@ -3,7 +3,7 @@
 namespace App\Core\Command;
 
 use App\Core\DTO\UpdateDTO;
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
@@ -25,7 +25,7 @@ final class StartCommand extends AbstractCommand
      * @param UpdateDTO $update
      *
      * @return void
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function handle(UpdateDTO $update): void
     {
@@ -45,7 +45,7 @@ final class StartCommand extends AbstractCommand
 
     /**
      * @param UpdateDTO $updateDTO
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     private function sendOAuthMessage(UpdateDTO $updateDTO): void
     {

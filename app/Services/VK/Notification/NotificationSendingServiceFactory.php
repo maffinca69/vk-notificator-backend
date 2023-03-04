@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\Notification;
 
-use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\Notification\Specification\HasAttachmentsSpecification;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

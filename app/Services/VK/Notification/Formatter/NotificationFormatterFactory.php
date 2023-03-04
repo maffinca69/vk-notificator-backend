@@ -2,8 +2,8 @@
 
 namespace App\Services\VK\Notification\Formatter;
 
+use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
-use App\Services\VK\Notification\DTO\NotificationDTO;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;

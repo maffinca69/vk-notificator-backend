@@ -2,7 +2,7 @@
 
 namespace App\Services\VK\OAuth;
 
-use App\Infrastructure\Telegram\Client\Exception\InvalidTelegramResponseException;
+use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
@@ -22,7 +22,7 @@ class VKOauthCallbackService
 
     /**
      * @param array $params
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     public function process(array $params): void
     {
@@ -33,12 +33,14 @@ class VKOauthCallbackService
 
     /**
      * @param User $user
-     * @throws InvalidTelegramResponseException
+     * @throws TelegramHttpClientException
      */
     private function sendSuccessfulAuthMessage(User $user): void
     {
-        $requestDTO = new MessageRequestDTO($user->getUuid());
-        $requestDTO->setText(self::SUCCESS_AUTH_MESSAGE);
+        $requestDTO = new MessageRequestDTO(
+            chatId: $user->getUuid(),
+            text: self::SUCCESS_AUTH_MESSAGE
+        );
 
         $this->messageSendingService->send($requestDTO);
     }

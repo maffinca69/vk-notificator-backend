@@ -3,7 +3,7 @@
 namespace App\Services\VK\Notification\Formatter\Link;
 
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
-use App\Services\VK\Notification\DTO\NotificationParentDTO;
+use App\Services\VK\DTO\Notification\NotificationParentDTO;
 
 final class VideoLinkFormatter
 {

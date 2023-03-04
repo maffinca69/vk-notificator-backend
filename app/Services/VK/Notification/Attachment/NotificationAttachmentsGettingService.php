@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\VK\Notification;
+namespace App\Services\VK\Notification\Attachment;
 
-use App\Services\VK\Notification\DTO\NotificationDTO;
+use App\Services\VK\DTO\Notification\NotificationDTO;
 
 class NotificationAttachmentsGettingService
 {

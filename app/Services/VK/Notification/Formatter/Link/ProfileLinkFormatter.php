@@ -3,7 +3,7 @@
 namespace App\Services\VK\Notification\Formatter\Link;
 
 use App\Services\Telegram\Formatter\HyperLinkFormatter;
-use App\Services\VK\Notification\DTO\ProfileDTO;
+use App\Services\VK\DTO\Notification\ProfileDTO;
 
 final class ProfileLinkFormatter
 {
