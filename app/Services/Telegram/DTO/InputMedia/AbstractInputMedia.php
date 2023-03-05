@@ -39,4 +39,12 @@ abstract class AbstractInputMedia
     {
         return $this->caption;
     }
+
+    /**
+     * @param string|null $caption
+     */
+    public function setCaption(?string $caption): void
+    {
+        $this->caption = $caption;
+    }
 }

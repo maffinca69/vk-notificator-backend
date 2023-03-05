@@ -62,29 +62,16 @@ class NotificationDTOAssembler
             $parent->setPost($post);
         }
 
-        if (isset($params['sizes'])) {
-            $sizes = [];
-            foreach ($params['sizes'] as $size) {
-                $sizes[] = $this->createSize($size);
-            }
-
-            $parent->setSizes($sizes);
+        $sizes = $params['sizes'] ?? [];
+        foreach ($sizes as $size) {
+            $parent->addSize(new PhotoSizeDTO(
+                $size['url'],
+                $size['width'],
+                $size['height'],
+            ));
         }
 
         return $parent;
-    }
-
-    /**
-     * @param array $params
-     * @return PhotoSizeDTO
-     */
-    private function createSize(array $params): PhotoSizeDTO
-    {
-        return new PhotoSizeDTO(
-            $params['url'],
-            $params['width'],
-            $params['height'],
-        );
     }
 
     /**

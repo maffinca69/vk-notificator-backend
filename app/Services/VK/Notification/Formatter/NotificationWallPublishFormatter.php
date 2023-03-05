@@ -35,6 +35,6 @@ class NotificationWallPublishFormatter implements NotificationFormatterInterface
             'запись'
         );
 
-        return sprintf('🫵🏻 Сообщество %s опубликовало предложенную Вами %s', $fullName, $postName);
+        return sprintf('🫵 Сообщество %s опубликовало предложенную Вами %s', $fullName, $postName);
     }
 }

@@ -13,16 +13,18 @@ class NotificationGettingService
 {
     public const DEFAULT_NOTIFICATION_COUNT = 100;
 
-    public const LIKES_FILTER_TYPES = 'likes';
-    public const FRIENDS_FILTER_TYPES = 'friends';
-    public const FOLLOWERS_FILTER_TYPES = 'followers';
-    public const WALL_FILTER_TYPES = 'wall';
+    public const LIKES_FILTER_TYPE = 'likes';
+    public const FRIENDS_FILTER_TYPE = 'friends';
+    public const FOLLOWERS_FILTER_TYPE = 'followers';
+    public const WALL_FILTER_TYPE = 'wall';
+    public const WALL_PUBLISH_FILTER_TYPE = 'wall_publish';
 
     public const AVAILABLE_FILTER_TYPES = [
-        self::LIKES_FILTER_TYPES,
-        self::FRIENDS_FILTER_TYPES,
-        self::FOLLOWERS_FILTER_TYPES,
-        self::WALL_FILTER_TYPES,
+        self::LIKES_FILTER_TYPE,
+        self::FRIENDS_FILTER_TYPE,
+        self::FOLLOWERS_FILTER_TYPE,
+        self::WALL_FILTER_TYPE,
+        self::WALL_PUBLISH_FILTER_TYPE,
     ];
 
     public function __construct(

@@ -24,7 +24,7 @@ class NotificationFollowFormatter implements NotificationFormatterInterface
     public function format(NotificationDTO $notification, array $profiles, array $groups): string
     {
         $ids = $notification->getFeedback()->getIds();
-        $id = current($ids)['from_id'];
+        $id = reset($ids)['from_id'];
 
         $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
 
@@ -32,7 +32,7 @@ class NotificationFollowFormatter implements NotificationFormatterInterface
         $action = $this->formatAction($profile->getSex());
 
         return sprintf(
-            '%s %s на Ваши объявления',
+            '🔔%s %s на Ваши объявления',
             $fullName,
             $action
         );

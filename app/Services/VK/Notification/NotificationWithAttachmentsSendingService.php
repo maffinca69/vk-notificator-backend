@@ -13,6 +13,7 @@ use App\Services\VK\DTO\Attachment\AttachmentDTO;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Attachment\NotificationAttachmentsGettingService;
+use App\Services\VK\Notification\Attachment\Translator\InputMediaTranslator;
 use App\Services\VK\Notification\Formatter\NotificationFormatterFactory;
 use App\Services\VK\Notification\Keyboard\ReplyMarkupCreatingService;
 use Psr\Container\ContainerExceptionInterface;
@@ -25,12 +26,14 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
      * @param NotificationFormatterFactory $notificationFormatterFactory
      * @param ReplyMarkupCreatingService $replyMarkupCreatingService
      * @param NotificationAttachmentsGettingService $notificationAttachmentsGettingService
+     * @param InputMediaTranslator $inputMediaTranslator
      */
     public function __construct(
         private PhotoSendingService $photoSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
         private ReplyMarkupCreatingService $replyMarkupCreatingService,
-        private NotificationAttachmentsGettingService $notificationAttachmentsGettingService
+        private NotificationAttachmentsGettingService $notificationAttachmentsGettingService,
+        private InputMediaTranslator $inputMediaTranslator
     ) {
     }
 
@@ -52,9 +55,11 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
         $message = $notificationFormatter->format($notification, $profiles, $groups);
 
         $attachments = $this->notificationAttachmentsGettingService->get($notification);
+        $medias = $this->inputMediaTranslator->translate($attachments);
 
-        $medias = $this->getMedia($attachments, $message);
+        /** @var AbstractInputMedia $media */
         $media = reset($medias);
+        $media->setCaption($message);
 
         $replyMarkup = $this->replyMarkupCreatingService->create($notification);
         $photoRequestDTO = new SendPhotoRequestDTO(
@@ -66,28 +71,5 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
         );
 
         $this->photoSendingService->send($photoRequestDTO);
-    }
-
-    /**
-     * @param array<AttachmentDTO> $attachments
-     * @return array<AbstractInputMedia>
-     */
-    private function getMedia(array $attachments, string $caption): array
-    {
-        $media = [];
-
-        foreach ($attachments as $attachment) {
-            $photo = $attachment->getPhoto();
-            if ($photo !== null) {
-                $photoSizes = $photo->getSizes() ?: [];
-                $maxSize = end($photoSizes);
-                $media[] = new InputMediaPhotoDTO(
-                    $maxSize->getUrl(),
-                    empty($media) ? $caption : null
-                );
-            }
-        }
-
-        return $media;
     }
 }
