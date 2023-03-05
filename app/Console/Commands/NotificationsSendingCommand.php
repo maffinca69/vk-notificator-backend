@@ -27,7 +27,6 @@ class NotificationsSendingCommand extends Command
         VKUser::query()->chunk(100, static function($users) use ($notificationMailingService) {
             foreach ($users as $user) {
                 $notificationMailingService->send($user);
-                sleep(1);
             }
         });
     }

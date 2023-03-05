@@ -6,12 +6,11 @@ use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\User;
 use App\Models\VKUser;
-use App\Services\RateLimiter\RateLimiterExecutionService;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Attachment\NotificationAttachmentsAssigningService;
+use Illuminate\Cache\RateLimiter;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -30,7 +29,7 @@ class NotificationMailingService
      * @param NotificationSendingServiceFactory $notificationSendingServiceFactory
      * @param NotificationMailingLogger $logger
      * @param NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService
-     * @param ContainerInterface $container
+     * @param RateLimiter $rateLimiter
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
@@ -38,7 +37,7 @@ class NotificationMailingService
         private NotificationSendingServiceFactory $notificationSendingServiceFactory,
         private NotificationMailingLogger $logger,
         private NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService,
-        private ContainerInterface $container
+        private RateLimiter $rateLimiter
     ) {
     }
 
@@ -77,15 +76,15 @@ class NotificationMailingService
      */
     private function prepareNotifications(VKUser $VKUser, NotificationDTO ...$notifications): void
     {
-        // Не используем DI, т.к нужны разные инстансы со своими ограничениями
-        /** @var RateLimiterExecutionService $rateLimiter */
-        $rateLimiter = $this->container->get(RateLimiterExecutionService::class);
-
         foreach ($notifications as $notification) {
             /** @see https://vk.com/support?act=faqs_api&c=5 */
-            $rateLimiter->execute(function() use ($VKUser, $notification) {
+            $attempt = $this->rateLimiter->attempt('vk-api', self::VK_MAX_ATTEMPT, function() use ($VKUser, $notification) {
                 $this->notificationAttachmentsAssigningService->assign($VKUser, $notification);
-            }, self::VK_MAX_ATTEMPT, self::TIMEOUT);
+            }, 1);
+
+            if (!$attempt) {
+                sleep(self::TIMEOUT);
+            }
         }
     }
 
@@ -114,20 +113,21 @@ class NotificationMailingService
      */
     private function sendNotifications(NotificationResponseDTO $response, User $recipient, NotificationDTO ...$notifications): void
     {
-        /** @var RateLimiterExecutionService $rateLimiter */
-        $rateLimiter = $this->container->get(RateLimiterExecutionService::class);
-
         foreach ($notifications as $notification) {
             $sendingService = $this->notificationSendingServiceFactory->create($notification);
 
             /** @see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once */
-            $rateLimiter->execute(static function() use ($sendingService, $response, $notification, $recipient) {
+            $attempt = $this->rateLimiter->attempt('telegram-client', self::TELEGRAM_MAX_ATTEMPT, static function() use ($sendingService, $response, $notification, $recipient) {
                 $sendingService->send(
                     $response,
                     $notification,
                     $recipient
                 );
-            }, self::TELEGRAM_MAX_ATTEMPT, self::TIMEOUT);
+            }, 1);
+
+            if (!$attempt) {
+                sleep(self::TIMEOUT);
+            }
         }
     }
 
