@@ -20,14 +20,24 @@ class NotificationAttachmentsGettingService
             $attachments = $commentAttachments;
         }
 
+        $postAttachments = $notification->getPostAttachments();
+        if (empty($attachments)) {
+            $attachments = $postAttachments;
+        }
+
         $parentAttachment = $this->getParentAttachment($notification);
         if (empty($attachments) && $parentAttachment !== null) {
             $attachments = [$parentAttachment];
         }
 
-        $postAttachments = $notification->getParent()?->getPost()?->getAttachments() ?? [];
+        $parentAttachment = $this->getParentAttachment($notification);
+        if (empty($attachments) && $parentAttachment !== null) {
+            $attachments = [$parentAttachment];
+        }
+
+        $parentPostAttachments = $notification->getParent()?->getPost()?->getAttachments() ?? [];
         if (empty($attachments)) {
-            $attachments = $postAttachments;
+            $attachments = $parentPostAttachments;
         }
 
         return $attachments;

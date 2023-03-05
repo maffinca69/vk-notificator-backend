@@ -138,20 +138,14 @@ class NotificationDTOAssembler
             $ids[$key] = $item;
         }
 
-        $feedback = new NotificationFeedbackDTO($params['count'] ?? 1, $ids);
-
-        if (isset($params['from_id'])) {
-            $feedback->setFromId($params['from_id']);
-        }
-
-        if (isset($params['id'])) {
-            $feedback->setId($params['id']);
-        }
-
-        if (isset($params['text'])) {
-            $feedback->setText($params['text']);
-        }
-
-        return $feedback;
+        return new NotificationFeedbackDTO(
+            count: $params['count'] ?? 1,
+            ids: $ids,
+            fromId: $params['from_id'] ?? null,
+            id: $params['id'] ?? null,
+            text: $params['text'] ?? null,
+            ownerId: $params['from_id'] ?? null,
+            type: $params['type'] ?? null
+        );
     }
 }

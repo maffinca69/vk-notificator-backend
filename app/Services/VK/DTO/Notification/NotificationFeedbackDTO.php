@@ -4,23 +4,24 @@ namespace App\Services\VK\DTO\Notification;
 
 class NotificationFeedbackDTO
 {
-    private int $count;
-
-    /** @var array <string, int> */
-    private array $ids;
-
-    private ?int $fromId = null;
-    private ?int $Id = null;
-    private ?string $text = null;
-
     /**
      * @param int $count
-     * @param array $ids
+     * @param array<string, int> $ids
+     * @param int|null $fromId
+     * @param int|null $id
+     * @param string|null $text
+     * @param int|null $ownerId
+     * @param string|null $type
      */
-    public function __construct(int $count, array $ids)
-    {
-        $this->count = $count;
-        $this->ids = $ids;
+    public function __construct(
+        private int $count,
+        private array $ids,
+        private ?int $fromId = null,
+        private ?int $id = null,
+        private ?string $text = null,
+        private ?int $ownerId = null,
+        private ?string $type = null
+    ) {
     }
 
     /**
@@ -48,27 +49,11 @@ class NotificationFeedbackDTO
     }
 
     /**
-     * @param int|null $fromId
-     */
-    public function setFromId(?int $fromId): void
-    {
-        $this->fromId = $fromId;
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
     {
-        return $this->Id;
-    }
-
-    /**
-     * @param int|null $Id
-     */
-    public function setId(?int $Id): void
-    {
-        $this->Id = $Id;
+        return $this->id;
     }
 
     /**
@@ -80,10 +65,18 @@ class NotificationFeedbackDTO
     }
 
     /**
-     * @param string|null $text
+     * @return int|null
      */
-    public function setText(?string $text): void
+    public function getOwnerId(): ?int
     {
-        $this->text = $text;
+        return $this->ownerId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 }

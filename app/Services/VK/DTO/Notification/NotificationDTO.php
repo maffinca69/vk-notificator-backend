@@ -9,6 +9,7 @@ class NotificationDTO
     private ?NotificationParentDTO $parent = null;
     private NotificationFeedbackDTO $feedback;
     private array $commentAttachments = [];
+    private array $postAttachments = [];
 
     /**
      * @param string $type
@@ -79,5 +80,21 @@ class NotificationDTO
     public function setCommentAttachments(array $commentAttachments): void
     {
         $this->commentAttachments = $commentAttachments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPostAttachments(): array
+    {
+        return $this->postAttachments;
+    }
+
+    /**
+     * @param array $postAttachments
+     */
+    public function setPostAttachments(array $postAttachments): void
+    {
+        $this->postAttachments = $postAttachments;
     }
 }
