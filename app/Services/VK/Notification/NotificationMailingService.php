@@ -9,6 +9,7 @@ use App\Models\VKUser;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Attachment\NotificationAttachmentsAssigningService;
+use App\Services\VK\Notification\Specification\HasAttachmentsSpecification;
 use Illuminate\Cache\RateLimiter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -37,7 +38,8 @@ class NotificationMailingService
         private NotificationSendingServiceFactory $notificationSendingServiceFactory,
         private NotificationMailingLogger $logger,
         private NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService,
-        private RateLimiter $rateLimiter
+        private RateLimiter $rateLimiter,
+        private HasAttachmentsSpecification $hasAttachmentsSpecification
     ) {
     }
 
@@ -77,6 +79,10 @@ class NotificationMailingService
     private function prepareNotifications(VKUser $VKUser, NotificationDTO ...$notifications): void
     {
         foreach ($notifications as $notification) {
+            if ($this->hasAttachmentsSpecification->isSatisfiedBy($notification)) {
+                continue;
+            }
+
             /** @see https://vk.com/support?act=faqs_api&c=5 */
             $attempt = $this->rateLimiter->attempt('vk-api', self::VK_MAX_ATTEMPT, function() use ($VKUser, $notification) {
                 $this->notificationAttachmentsAssigningService->assign($VKUser, $notification);
