@@ -2,6 +2,7 @@
 
 namespace App\Services\VK\Notification;
 
+use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\InputMedia\AbstractInputMedia;
@@ -27,13 +28,15 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
      * @param ReplyMarkupCreatingService $replyMarkupCreatingService
      * @param NotificationAttachmentsGettingService $notificationAttachmentsGettingService
      * @param InputMediaTranslator $inputMediaTranslator
+     * @param NotificationMailingLogger $logger
      */
     public function __construct(
         private PhotoSendingService $photoSendingService,
         private NotificationFormatterFactory $notificationFormatterFactory,
         private ReplyMarkupCreatingService $replyMarkupCreatingService,
         private NotificationAttachmentsGettingService $notificationAttachmentsGettingService,
-        private InputMediaTranslator $inputMediaTranslator
+        private InputMediaTranslator $inputMediaTranslator,
+        private NotificationMailingLogger $logger
     ) {
     }
 
@@ -59,6 +62,15 @@ class NotificationWithAttachmentsSendingService implements NotificationSendingIn
 
         /** @var AbstractInputMedia $media */
         $media = reset($medias);
+        if (!$media) {
+            $this->logger->critical('Unknown media', [
+                'medias' => $medias,
+                'attachments' => $attachments
+            ]);
+
+            return;
+        }
+
         $media->setCaption($message);
 
         $replyMarkup = $this->replyMarkupCreatingService->create($notification);
