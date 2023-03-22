@@ -2,7 +2,6 @@
 
 namespace App\Services\VK\Notification;
 
-use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\VK\Client\Exception\VKAPIHttpClientException;
 use App\Models\User;
 use App\Models\VKUser;
@@ -28,15 +27,14 @@ class NotificationMailingService
      * @param LastNotificationDateCacheService $lastNotificationDateCacheService
      * @param NotificationGettingService $notificationGettingService
      * @param NotificationSendingServiceFactory $notificationSendingServiceFactory
-     * @param NotificationMailingLogger $logger
      * @param NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService
      * @param RateLimiter $rateLimiter
+     * @param HasAttachmentsSpecification $hasAttachmentsSpecification
      */
     public function __construct(
         private LastNotificationDateCacheService $lastNotificationDateCacheService,
         private NotificationGettingService $notificationGettingService,
         private NotificationSendingServiceFactory $notificationSendingServiceFactory,
-        private NotificationMailingLogger $logger,
         private NotificationAttachmentsAssigningService $notificationAttachmentsAssigningService,
         private RateLimiter $rateLimiter,
         private HasAttachmentsSpecification $hasAttachmentsSpecification
@@ -57,7 +55,6 @@ class NotificationMailingService
 
         $notifications = $response->getNotifications();
         if (empty($notifications)) {
-            $this->logger->info('No new notifications');
             return;
         }
 
