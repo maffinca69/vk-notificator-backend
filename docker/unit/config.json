@@ -22,6 +22,11 @@
             "type": "php",
             "user": "www-data",
             "group": "www-data",
+            "processes": {
+                "max": 3,
+                "spare": 2,
+                "idle_timeout": 30
+            },
             "root": "/var/www/public",
             "script": "index.php"
         }
