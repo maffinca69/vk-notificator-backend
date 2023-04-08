@@ -5,13 +5,13 @@ namespace App\Services\VK\Notification\Formatter;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
-use App\Services\VK\Notification\ProfileForNotificationGettingService;
+use App\Services\VK\Notification\NotificationProfileGettingService;
 
 class NotificationFriendAcceptedFormatter implements NotificationFormatterInterface
 {
     public function __construct(
-        private ProfileForNotificationGettingService $profileForNotificationGettingService,
-        private ProfileLinkFormatter $profileLinkFormatter,
+        private NotificationProfileGettingService $profileForNotificationGettingService,
+        private ProfileLinkFormatter              $profileLinkFormatter,
     ) {
     }
 

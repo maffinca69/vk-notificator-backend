@@ -8,13 +8,13 @@ use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
 use App\Services\VK\Notification\Formatter\Link\VideoLinkFormatter;
-use App\Services\VK\Notification\ProfileForNotificationGettingService;
+use App\Services\VK\Notification\NotificationProfileGettingService;
 use App\Services\VK\Notification\Translator\ProfileUrlTranslator;
 
 class NotificationLikeFormatter implements NotificationFormatterInterface
 {
     public function __construct(
-        private ProfileForNotificationGettingService $profileForNotificationGettingService,
+        private NotificationProfileGettingService $notificationProfileGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,
         private ProfileUrlTranslator $profileUrlTranslator,
         private VideoLinkFormatter $videoUrlFormatter,
@@ -23,22 +23,22 @@ class NotificationLikeFormatter implements NotificationFormatterInterface
     }
 
     /**
-     * @param NotificationDTO $notificationDTO
+     * @param NotificationDTO $notification
      * @param array $profiles
      * @param array $groups
      * @return string
      */
-    public function format(NotificationDTO $notificationDTO, array $profiles, array $groups): string
+    public function format(NotificationDTO $notification, array $profiles, array $groups): string
     {
-        $ids = $notificationDTO->getFeedback()->getIds();
+        $ids = $notification->getFeedback()->getIds();
         $id = reset($ids)['from_id'];
-        $profile = $this->profileForNotificationGettingService->getProfile($id, $profiles);
-        $parent = $notificationDTO->getParent();
-        $countFeedback = $notificationDTO->getFeedback()->getCount();
+        $profile = $this->notificationProfileGettingService->getProfile($id, $profiles);
+        $parent = $notification->getParent();
+        $countFeedback = $notification->getFeedback()->getCount();
 
         $fullName = $this->profileLinkFormatter->format($profile);
         $action = $this->formatAction($profile->getSex(), $countFeedback);
-        $type = $this->formatType($notificationDTO);
+        $type = $this->formatType($notification);
 
         $text = $parent?->getText();
         if (!empty($text)) {

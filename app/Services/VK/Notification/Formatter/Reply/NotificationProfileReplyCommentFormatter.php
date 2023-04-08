@@ -6,18 +6,18 @@ use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
 use App\Services\VK\Notification\Formatter\NotificationFormatterInterface;
-use App\Services\VK\Notification\ProfileForNotificationGettingService;
+use App\Services\VK\Notification\NotificationProfileGettingService;
 use App\Services\VK\Notification\Translator\ProfileUrlTranslator;
 
 class NotificationProfileReplyCommentFormatter implements NotificationFormatterInterface
 {
     /**
-     * @param ProfileForNotificationGettingService $profileForNotificationGettingService
+     * @param NotificationProfileGettingService $notificationProfileGettingService
      * @param ProfileLinkFormatter $profileLinkFormatter
      * @param ProfileUrlTranslator $profileUrlTranslator
      */
     public function __construct(
-        private ProfileForNotificationGettingService $profileForNotificationGettingService,
+        private NotificationProfileGettingService $notificationProfileGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,
         private ProfileUrlTranslator $profileUrlTranslator
     ) {
@@ -35,7 +35,7 @@ class NotificationProfileReplyCommentFormatter implements NotificationFormatterI
         $fromId = $feedback->getFromId();
         $commentText = $feedback->getText();
 
-        $profile = $this->profileForNotificationGettingService->getProfile($fromId, $profiles);
+        $profile = $this->notificationProfileGettingService->getProfile($fromId, $profiles);
 
         $fullName = $this->profileLinkFormatter->format($profile);
         $action = $this->formatAction($profile->getSex());

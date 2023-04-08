@@ -7,12 +7,12 @@ use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Formatter\NotificationFormatterInterface;
 use App\Services\VK\Notification\NotificationGroupGettingService;
-use App\Services\VK\Notification\ProfileForNotificationGettingService;
+use App\Services\VK\Notification\NotificationProfileGettingService;
 
 class NotificationReplyCommentFormatter implements NotificationFormatterInterface
 {
     public function __construct(
-        private ProfileForNotificationGettingService $profileForNotificationGettingService,
+        private NotificationProfileGettingService $notificationProfileGettingService,
         private NotificationGroupGettingService $notificationGroupGettingService,
         private NotificationGroupReplyCommentFormatter $groupReplyCommentFormatter,
         private NotificationProfileReplyCommentFormatter $profileReplyCommentFormatter,
@@ -30,7 +30,7 @@ class NotificationReplyCommentFormatter implements NotificationFormatterInterfac
         $feedback = $notification->getFeedback();
         $fromId = $feedback->getFromId();
 
-        $profile = $this->profileForNotificationGettingService->getProfile($fromId, $profiles);
+        $profile = $this->notificationProfileGettingService->getProfile($fromId, $profiles);
         if ($profile instanceof ProfileDTO) {
             return $this->profileReplyCommentFormatter->format($notification, $profiles, $groups);
         }

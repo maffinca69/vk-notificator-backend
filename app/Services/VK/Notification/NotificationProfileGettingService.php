@@ -4,7 +4,7 @@ namespace App\Services\VK\Notification;
 
 use App\Services\VK\DTO\Notification\ProfileDTO;
 
-class ProfileForNotificationGettingService
+class NotificationProfileGettingService
 {
     /**
      * @param int $id
