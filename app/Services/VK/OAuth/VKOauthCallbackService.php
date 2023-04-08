@@ -7,27 +7,29 @@ use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 use App\Services\Telegram\MessageSendingService;
-use App\Services\VK\OAuth\Assembler\VKOauthDTOAssembler;
+use App\Services\VK\OAuth\DTO\VKOAuthDTO;
 
 class VKOauthCallbackService
 {
     private const SUCCESS_AUTH_MESSAGE = '🎉 Вы успешно авторизовались. Бот начнет рассылку уведомлений автоматически';
 
+    /**
+     * @param VKUserCreatingService $VKUserCreatingService
+     * @param MessageSendingService $messageSendingService
+     */
     public function __construct(
-        private VKOauthDTOAssembler $VKOauthDTOAssembler,
         private VKUserCreatingService $VKUserCreatingService,
         private MessageSendingService $messageSendingService
     ) {
     }
 
     /**
-     * @param array $params
+     * @param VKOAuthDTO $VKOAuthDTO
      * @throws TelegramHttpClientException
      */
-    public function process(array $params): void
+    public function process(VKOAuthDTO $VKOAuthDTO): void
     {
-        $oauthDTO = $this->VKOauthDTOAssembler->create($params);
-        $vkUser = $this->VKUserCreatingService->create($oauthDTO);
+        $vkUser = $this->VKUserCreatingService->create($VKOAuthDTO);
         $this->sendSuccessfulAuthMessage($vkUser->user);
     }
 

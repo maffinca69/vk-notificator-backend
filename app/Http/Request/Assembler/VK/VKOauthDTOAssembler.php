@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\OAuth\Assembler;
+namespace App\Http\Request\Assembler\VK;
 
 use App\Services\VK\OAuth\DTO\VKOAuthDTO;
 
