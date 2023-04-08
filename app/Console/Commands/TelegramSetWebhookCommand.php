@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 
 use App\Infrastructure\Telegram\Client\HttpClient;
 use App\Infrastructure\Telegram\Client\Request\SetWebhookRequest;
-use App\Models\VKUser;
-use App\Services\VK\Notification\NotificationMailingService;
 use Illuminate\Console\Command;
 
 class TelegramSetWebhookCommand extends Command
@@ -22,11 +20,15 @@ class TelegramSetWebhookCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Send unread notification to user';
+    protected $description = 'Set webhook url';
 
     public function handle(HttpClient $client): void
     {
         $url = $this->ask('Enter webhook url');
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            $this->error('Invalid url!');
+            return;
+        }
 
         $request = new SetWebhookRequest($url);
         $response = $client->sendRequest($request);
