@@ -49,15 +49,10 @@ class HttpClient
             RequestOptions::HEADERS => self::REQUEST_HEADERS
         ];
 
-        switch ($method) {
-            case HttpRequest::METHOD_POST:
-                $options[RequestOptions::JSON] = $requestParams;
-                break;
-            case HttpRequest::METHOD_GET:
-                $options[RequestOptions::QUERY] = $requestParams;
-                break;
-        }
-
+        match ($method) {
+            HttpRequest::METHOD_POST => $options[RequestOptions::JSON] = $requestParams,
+            HttpRequest::METHOD_GET => $options[RequestOptions::QUERY] = $requestParams,
+        };
 
         $this->logRequest($request);
 
