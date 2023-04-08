@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Services\VK\Notification\Formatter;
+namespace App\Services\VK\Notification\Formatter\Reply;
 
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\ProfileDTO;
 use App\Services\VK\Notification\Formatter\Link\ProfileLinkFormatter;
+use App\Services\VK\Notification\Formatter\NotificationFormatterInterface;
 use App\Services\VK\Notification\ProfileForNotificationGettingService;
 use App\Services\VK\Notification\Translator\ProfileUrlTranslator;
 
-class NotificationReplyCommentType implements NotificationFormatterInterface
+class NotificationProfileReplyCommentFormatter implements NotificationFormatterInterface
 {
+    /**
+     * @param ProfileForNotificationGettingService $profileForNotificationGettingService
+     * @param ProfileLinkFormatter $profileLinkFormatter
+     * @param ProfileUrlTranslator $profileUrlTranslator
+     */
     public function __construct(
         private ProfileForNotificationGettingService $profileForNotificationGettingService,
         private ProfileLinkFormatter $profileLinkFormatter,

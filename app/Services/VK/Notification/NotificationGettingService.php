@@ -18,6 +18,7 @@ class NotificationGettingService
     public const FOLLOWERS_FILTER_TYPE = 'followers';
     public const WALL_FILTER_TYPE = 'wall';
     public const WALL_PUBLISH_FILTER_TYPE = 'wall_publish';
+    public const MENTIONS_TYPE = 'mentions';
 
     public const AVAILABLE_FILTER_TYPES = [
         self::LIKES_FILTER_TYPE,
@@ -25,6 +26,7 @@ class NotificationGettingService
         self::FOLLOWERS_FILTER_TYPE,
         self::WALL_FILTER_TYPE,
         self::WALL_PUBLISH_FILTER_TYPE,
+        self::MENTIONS_TYPE,
     ];
 
     public function __construct(

@@ -55,6 +55,7 @@ class NotificationMailingService
 
         $notifications = $response->getNotifications();
         if (empty($notifications)) {
+            echo 'empty'. PHP_EOL;
             return;
         }
 

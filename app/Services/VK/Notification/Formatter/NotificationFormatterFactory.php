@@ -4,6 +4,7 @@ namespace App\Services\VK\Notification\Formatter;
 
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
+use App\Services\VK\Notification\Formatter\Reply\NotificationReplyCommentFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -31,7 +32,7 @@ class NotificationFormatterFactory
             NotificationTypesDictionary::FOLLOW_TYPE => $this->container->get(NotificationFollowFormatter::class),
             NotificationTypesDictionary::FRIEND_ACCEPTED_TYPE => $this->container->get(NotificationFriendAcceptedFormatter::class),
             NotificationTypesDictionary::WALL_PUBLISH_TYPE => $this->container->get(NotificationWallPublishFormatter::class),
-            NotificationTypesDictionary::REPLY_COMMENT_TYPE => $this->container->get(NotificationReplyCommentType::class),
+            NotificationTypesDictionary::REPLY_COMMENT_TYPE => $this->container->get(NotificationReplyCommentFormatter::class),
         };
     }
 }
