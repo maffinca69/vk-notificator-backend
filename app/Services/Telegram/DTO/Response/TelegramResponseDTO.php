@@ -9,10 +9,12 @@ class TelegramResponseDTO
     /**
      * @param bool $isOk
      * @param array<MessageDTO>|bool $result
+     * @param string $rawResponse
      */
     public function __construct(
         private bool $isOk,
-        private array|bool $result
+        private array|bool $result,
+        private string $rawResponse,
     ) {
     }
 
@@ -30,5 +32,13 @@ class TelegramResponseDTO
     public function getResult(): array|bool
     {
         return $this->result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawResponse(): string
+    {
+        return $this->rawResponse;
     }
 }

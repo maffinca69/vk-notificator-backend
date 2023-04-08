@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class HttpClient
 {
@@ -45,9 +46,18 @@ class HttpClient
         $method = $request->getMethod();
 
         $options = [
-            RequestOptions::JSON => $requestParams,
             RequestOptions::HEADERS => self::REQUEST_HEADERS
         ];
+
+        switch ($method) {
+            case HttpRequest::METHOD_POST:
+                $options[RequestOptions::JSON] = $requestParams;
+                break;
+            case HttpRequest::METHOD_GET:
+                $options[RequestOptions::QUERY] = $requestParams;
+                break;
+        }
+
 
         $this->logRequest($request);
 

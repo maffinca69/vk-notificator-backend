@@ -30,4 +30,7 @@ final class ApiMethodDictionary
 
     /** @var string Удаление сообщения */
     public const DELETE_MESSAGE_METHOD = 'deleteMessage';
+
+    /** @var string Установка webhook'а */
+    public const SET_WEBHOOK_METHOD = 'setWebhook';
 }

@@ -44,6 +44,6 @@ class TelegramResponseTranslator
             $result = $response['result'];
         }
 
-        return new TelegramResponseDTO($response['ok'], $result);
+        return new TelegramResponseDTO($response['ok'], $result, json_encode($response));
     }
 }
