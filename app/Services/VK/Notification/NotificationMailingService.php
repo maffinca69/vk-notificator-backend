@@ -121,14 +121,16 @@ class NotificationMailingService
         foreach ($notifications as $notification) {
             $sendingService = $this->notificationSendingServiceFactory->create($notification);
 
-            /** @see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once */
-            $attempt = $this->rateLimiter->attempt('telegram-client', self::TELEGRAM_MAX_ATTEMPT, static function() use ($sendingService, $response, $notification, $recipient) {
+            $callback = static function() use ($sendingService, $response, $notification, $recipient) {
                 $sendingService->send(
                     $response,
                     $notification,
                     $recipient
                 );
-            }, 1);
+            };
+
+            /** @see https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once */
+            $attempt = $this->rateLimiter->attempt('telegram-client', self::TELEGRAM_MAX_ATTEMPT, $callback, 1);
 
             if (!$attempt) {
                 sleep(self::TIMEOUT);

@@ -4,6 +4,7 @@ namespace App\Services\VK\Notification\Formatter;
 
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\Notification\Dictionary\NotificationTypesDictionary;
+use App\Services\VK\Notification\Exception\UnknownNotificationTypeException;
 use App\Services\VK\Notification\Formatter\Reply\NotificationReplyCommentFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -20,10 +21,13 @@ class NotificationFormatterFactory
      * @return NotificationFormatterInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws UnknownNotificationTypeException
      */
     public function create(NotificationDTO $notification): NotificationFormatterInterface
     {
-        return match ($notification->getType()) {
+        $type = $notification->getType();
+
+        return match ($type) {
             NotificationTypesDictionary::LIKE_VIDEO_TYPE,
             NotificationTypesDictionary::LIKE_PHOTO_TYPE,
             NotificationTypesDictionary::LIKE_COMMENT_PHOTO_TYPE,
@@ -34,6 +38,7 @@ class NotificationFormatterFactory
             NotificationTypesDictionary::FRIEND_ACCEPTED_TYPE => $this->container->get(NotificationFriendAcceptedFormatter::class),
             NotificationTypesDictionary::WALL_PUBLISH_TYPE => $this->container->get(NotificationWallPublishFormatter::class),
             NotificationTypesDictionary::REPLY_COMMENT_TYPE => $this->container->get(NotificationReplyCommentFormatter::class),
+            default => throw new UnknownNotificationTypeException($type)
         };
     }
 }
