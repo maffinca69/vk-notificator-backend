@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\Notification;
+namespace App\Services\VK\Notification\Send;
 
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\Notification\Specification\HasAttachmentsSpecification;

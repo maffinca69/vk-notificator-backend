@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Services\VK\Notification;
+namespace App\Services\VK\Notification\Send;
 
 use App\Infrastructure\Logger\NotificationMailingLogger;
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;
 use App\Services\Telegram\DTO\InputMedia\AbstractInputMedia;
-use App\Services\Telegram\DTO\InputMedia\InputMediaPhotoDTO;
 use App\Services\Telegram\DTO\Request\MessageRequestDTO;
 use App\Services\Telegram\DTO\Request\SendPhotoRequestDTO;
 use App\Services\Telegram\PhotoSendingService;
-use App\Services\VK\DTO\Attachment\AttachmentDTO;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Attachment\NotificationAttachmentsGettingService;

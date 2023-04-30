@@ -8,6 +8,7 @@ use App\Models\VKUser;
 use App\Services\VK\DTO\Notification\NotificationDTO;
 use App\Services\VK\DTO\Notification\NotificationResponseDTO;
 use App\Services\VK\Notification\Attachment\NotificationAttachmentsAssigningService;
+use App\Services\VK\Notification\Send\NotificationSendingServiceFactory;
 use App\Services\VK\Notification\Specification\HasAttachmentsSpecification;
 use Illuminate\Cache\RateLimiter;
 use Psr\Container\ContainerExceptionInterface;

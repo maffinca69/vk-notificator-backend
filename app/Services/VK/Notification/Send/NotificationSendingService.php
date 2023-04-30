@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VK\Notification;
+namespace App\Services\VK\Notification\Send;
 
 use App\Infrastructure\Telegram\Client\Exception\TelegramHttpClientException;
 use App\Models\User;

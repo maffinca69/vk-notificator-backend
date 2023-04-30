@@ -1,7 +1,6 @@
 <?php
 
 use App\Services\Telegram\Command\{
-    AccessCommand,
     LogoutCommand,
     StartCommand,
 };
@@ -12,7 +11,6 @@ return [
     'commands' => [
         StartCommand::class,
         LogoutCommand::class,
-        AccessCommand::class,
     ],
     'base_api_url' => 'https://api.telegram.org/bot%s/',
 ];
