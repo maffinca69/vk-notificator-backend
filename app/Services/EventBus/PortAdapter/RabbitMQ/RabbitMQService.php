@@ -49,7 +49,11 @@ class RabbitMQService implements EventBusInterface
     {
         $channel = $this->connection->channel();
 
-        $channel->basic_publish(gzcompress($message, self::DEFAULT_COMPRESSION_LEVEL));
+        $msg = new AMQPMessage(gzcompress($message, self::DEFAULT_COMPRESSION_LEVEL), [
+            'content_type' => self::CONTENT_TYPE_GZCOMPRESSED,
+        ]);
+
+        $channel->basic_publish($msg, 'logger');
         return true;
     }
 
