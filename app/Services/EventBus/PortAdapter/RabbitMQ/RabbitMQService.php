@@ -47,7 +47,7 @@ class RabbitMQService implements EventBusInterface
      */
     protected function publishInternal(string $message): bool
     {
-        $channel = $this->connection->channel($this->connection->getChannelId());
+        $channel = $this->connection->channel();
 
         $channel->basic_publish(gzcompress($message, self::DEFAULT_COMPRESSION_LEVEL));
         return true;
