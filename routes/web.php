@@ -1,6 +1,6 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
+/** @var Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +13,16 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+use App\Http\Middleware\LoggerMiddleware;
+use Laravel\Lumen\Routing\Router;
+
+$router->group(['middleware' => LoggerMiddleware::class], static function(Router $router) {
+    $router->get('/', function () use ($router) {
+        return $router->app->version();
+    });
+
+    $router->post('telegram-webhook', 'TelegramWebhookController@process');
+    $router->get('vk-oauth-callback', 'VKOAuthCallbackController@callback');
+    $router->post('vk-oauth-callback', 'VKOAuthCallbackController@callback');
 });
 
-$router->post('telegram-webhook', 'TelegramWebhookController@process');
-$router->get('vk-oauth-callback', 'VKOAuthCallbackController@callback');
-$router->post('vk-oauth-callback', 'VKOAuthCallbackController@callback');

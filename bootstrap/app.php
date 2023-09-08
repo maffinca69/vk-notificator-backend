@@ -1,6 +1,7 @@
 <?php
 
 use Anik\Form\FormRequestServiceProvider;
+use App\Providers\RabbitMQServiceProvider;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -100,6 +101,7 @@ $app->register(App\Providers\CacheServiceProvider::class);
 $app->register(App\Providers\LoggerServiceProvider::class);
 $app->register(App\Providers\HttpClientProvider::class);
 $app->register(FormRequestServiceProvider::class);
+$app->register(RabbitMQServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
