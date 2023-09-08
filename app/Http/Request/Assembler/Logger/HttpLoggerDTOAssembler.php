@@ -23,7 +23,7 @@ class HttpLoggerDTOAssembler
             request: json_encode($request->all()),
             response: $response->getContent(),
             ip: $request->ip(),
-            userAgent: $request->userAgent(),
+            userAgent: $request->userAgent() ?? 'unknown',
             pid: sha1(time()),
             route: $request->decodedPath()
         );
