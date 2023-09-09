@@ -13,8 +13,8 @@
 |
 */
 
-use App\Http\Middleware\LoggerMiddleware;
 use Laravel\Lumen\Routing\Router;
+use Maffinca69\Logger\Middleware\LoggerMiddleware;
 
 $router->group(['middleware' => LoggerMiddleware::class], static function(Router $router) {
     $router->get('/', function () use ($router) {

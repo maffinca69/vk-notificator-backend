@@ -4,8 +4,15 @@
     "keywords": ["framework", "laravel", "lumen"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/maffinca69/logger-middleware.git"
+        }
+    ],
     "require": {
         "php": "^8.1",
+        "maffinca69/logger-middleware": "dev-main",
         "anik/form-request": "^4.5",
         "guzzlehttp/guzzle": "^7.5",
         "illuminate/redis": "^9.35",
