@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd079cc554018addffc0c4a593f09f0",
+    "content-hash": "3562a42cbaa888710a32180fe2d3e054",
     "packages": [
         {
             "name": "anik/form-request",
@@ -8152,8 +8152,9 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
+        "ext-sockets": "*",
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
