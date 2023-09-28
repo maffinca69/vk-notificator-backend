@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "ext-sockets": "*",
         "php": "^8.1",
         "maffinca69/logger-middleware": "dev-main",
         "anik/form-request": "^4.5",
